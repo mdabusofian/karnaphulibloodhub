@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>রক্তদান — জীবন বাঁচাই | এক পেইজ ওয়েবসাইট</title>
+  <meta name="description" content="একটি সম্পূর্ণ এক-পেইজ ব্লাড ডোনার ওয়েবসাইট – ডোনার খুঁজুন, রিকোয়েস্ট দিন, রেজিস্ট্রেশন করুন।" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    :root { --brand:#e11d48; }
+    html { scroll-behavior:smooth; }
+    body { font-family:'Hind Siliguri', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Segoe UI Emoji"; }
+    .glass { background:rgba(255,255,255,.7); backdrop-filter:saturate(160%) blur(6px); }
+    .container-max { max-width: 1100px; }
+    .heading-gradient{ background:linear-gradient(90deg,#e11d48, #ef4444); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+  <!-- Header -->
+  <header class="sticky top-0 z-40 glass border-b border-white/60">
+    <div class="mx-auto container-max px-4 py-3 flex items-center justify-between">
+      <a href="#home" class="flex items-center gap-2 font-bold text-lg">
+        <span class="inline-flex items-center justify-center w-9 h-9 rounded-xl bg-rose-600 text-white"><i data-lucide="heart-pulse" class="w-5 h-5"></i></span>
+        <span>রক্তদান</span>
+      </a>
+      <nav class="hidden md:flex items-center gap-6 text-sm font-semibold">
+        <a href="#search" class="hover:text-rose-600">ডোনার খুঁজুন</a>
+        <a href="#request" class="hover:text-rose-600">রক্তের প্রয়োজন</a>
+        <a href="#register" class="hover:text-rose-600">ডোনার রেজিস্ট্রেশন</a>
+        <a href="#stats" class="hover:text-rose-600">পরিসংখ্যান</a>
+        <a href="#faq" class="hover:text-rose-600">FAQ</a>
+        <a href="#contact" class="hover:text-rose-600">যোগাযোগ</a>
+      </nav>
+      <a href="#register" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-rose-600 text-white text-sm font-bold shadow hover:bg-rose-700">
+        <i data-lucide="plus" class="w-4 h-4"></i> ডোনার হোন
+      </a>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section id="home" class="relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-b from-rose-50 via-white to-slate-50"></div>
+    <div class="mx-auto container-max px-4 pt-12 pb-10 relative">
+      <div class="grid md:grid-cols-2 gap-8 items-center">
+        <div>
+          <h1 class="text-3xl md:text-5xl font-extrabold leading-tight">
+            <span class="heading-gradient">এক ফোঁটা রক্ত—একটি জীবন</span><br>
+            আপনার কাছেই আছেন উপযুক্ত ডোনার
+          </h1>
+          <p class="mt-4 text-slate-600 text-lg">জরুরী মুহূর্তে দ্রুত ডোনার খুঁজে পান, রক্তের রিকোয়েস্ট পোস্ট করুন, আর মাত্র এক ক্লিকেই সাহায্যের হাত বাড়ান।</p>
+          <div class="mt-6 flex flex-wrap gap-3">
+            <a href="#search" class="px-5 py-3 rounded-xl bg-slate-900 text-white font-semibold hover:bg-slate-800">ডোনার খুঁজুন</a>
+            <a href="#request" class="px-5 py-3 rounded-xl border border-slate-300 font-semibold hover:border-slate-400">রক্ত লাগবে</a>
+          </div>
+          <dl class="mt-8 grid grid-cols-3 gap-4">
+            <div class="p-4 rounded-2xl bg-white shadow-sm border"><dt class="text-2xl font-extrabold" id="stat-donors">0</dt><dd class="text-slate-500">নিবন্ধিত ডোনার</dd></div>
+            <div class="p-4 rounded-2xl bg-white shadow-sm border"><dt class="text-2xl font-extrabold" id="stat-requests">0</dt><dd class="text-slate-500">চলমান রিকোয়েস্ট</dd></div>
+            <div class="p-4 rounded-2xl bg-white shadow-sm border"><dt class="text-2xl font-extrabold" id="stat-fulfilled">0</dt><dd class="text-slate-500">পূর্ণ হয়েছে</dd></div>
+          </dl>
+        </div>
+        <div class="relative">
+          <div class="absolute -inset-6 -z-10 blur-3xl opacity-60" style="background: radial-gradient(600px circle at 20% 10%, #fecaca, transparent 40%), radial-gradient(600px circle at 80% 20%, #ffe4e6, transparent 42%), radial-gradient(600px circle at 50% 80%, #e5e7eb, transparent 45%);"></div>
+          <div class="p-5 bg-white rounded-3xl shadow-xl border">
+            <div class="flex items-center gap-3">
+              <span class="inline-flex w-10 h-10 rounded-xl bg-rose-600 text-white items-center justify-center"><i data-lucide="droplets" class="w-5 h-5"></i></span>
+              <div>
+                <h3 class="font-bold">দ্রুত সার্চ</h3>
+                <p class="text-sm text-slate-500">ব্লাড গ্রুপ, জেলা ও এলাকা দিয়ে ফিল্টার করুন</p>
+              </div>
+            </div>
+            <form id="quickSearch" class="mt-6 grid grid-cols-2 md:grid-cols-4 gap-3">
+              <select id="qGroup" class="px-3 py-2 rounded-xl border focus:outline-none focus:ring-2 focus:ring-rose-200">
+                <option value="">ব্লাড গ্রুপ</option>
+              </select>
+              <input id="qDistrict" placeholder="জেলা" class="px-3 py-2 rounded-xl border focus:outline-none focus:ring-2 focus:ring-rose-200" />
+              <input id="qArea" placeholder="এলাকা/থানা" class="px-3 py-2 rounded-xl border focus:outline-none focus:ring-2 focus:ring-rose-200" />
+              <button class="px-4 py-2 rounded-xl bg-rose-600 text-white font-semibold hover:bg-rose-700">সার্চ</button>
+            </form>
+            <p class="mt-3 text-xs text-slate-500">নিরাপত্তা টিপস: কখনোই এমপিএস/চার্জ আগে পাঠাবেন না। সরকারী/স্বীকৃত হাসপাতালে মিলিত হোন।</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Search Donors -->
+  <section id="search" class="py-12">
+    <div class="mx-auto container-max px-4">
+      <div class="flex items-center justify-between gap-3">
+        <div>
+          <h2 class="text-2xl md:text-3xl font-extrabold">ডোনার খুঁজুন</h2>
+          <p class="text-slate-600">রক্ত গ্রুপ, জেলা/এলাকা, লাস্ট ডোনেশন তারিখ অনুযায়ী ফিল্টার করুন।</p>
+        </div>
+        <div class="flex gap-2">
+          <button id="exportCSV" class="px-3 py-2 rounded-xl border hover:bg-slate-50 text-sm">CSV এক্সপোর্ট</button>
+          <button id="printList" class="px-3 py-2 rounded-xl border hover:bg-slate-50 text-sm">প্রিন্ট</button>
+        </div>
+      </div>
+
+      <div class="mt-5 grid md:grid-cols-5 gap-3">
+        <select id="fGroup" class="px-3 py-2 rounded-xl border"><option value="">সব গ্রুপ</option></select>
+        <input id="fDistrict" placeholder="জেলা" class="px-3 py-2 rounded-xl border" />
+        <input id="fArea" placeholder="এলাকা/থানা" class="px-3 py-2 rounded-xl border" />
+        <select id="fReady" class="px-3 py-2 rounded-xl border">
+          <option value="">উপস্থিতি</option>
+          <option value="ready">উপলব্ধ</option>
+          <option value="rest">বিরতিতে</option>
+        </select>
+        <button id="applyFilters" class="px-4 py-2 rounded-xl bg-slate-900 text-white font-semibold">ফিল্টার</button>
+      </div>
+
+      <div id="donorList" class="mt-6 grid sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+    </div>
+  </section>
+
+  <!-- Request Blood -->
+  <section id="request" class="py-12 bg-white">
+    <div class="mx-auto container-max px-4">
+      <div class="grid md:grid-cols-2 gap-8 items-start">
+        <div>
+          <h2 class="text-2xl md:text-3xl font-extrabold">রক্তের প্রয়োজন</h2>
+          <p class="text-slate-600">প্রয়োজনে পোস্ট করুন—ডোনাররা নোটিফিকেশন দেখবে।</p>
+          <form id="requestForm" class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <select id="rqGroup" class="px-3 py-2 rounded-xl border" required></select>
+            <input id="rqUnits" type="number" min="1" value="1" class="px-3 py-2 rounded-xl border" placeholder="ইউনিট" required />
+            <input id="rqPatient" class="px-3 py-2 rounded-xl border" placeholder="রোগীর নাম" required />
+            <input id="rqHospital" class="px-3 py-2 rounded-xl border" placeholder="হাসপাতাল/ঠিকানা" required />
+            <input id="rqDistrict" class="px-3 py-2 rounded-xl border" placeholder="জেলা" required />
+            <input id="rqArea" class="px-3 py-2 rounded-xl border" placeholder="এলাকা/থানা" />
+            <input id="rqContact" class="px-3 py-2 rounded-xl border" placeholder="যোগাযোগ নম্বর" required />
+            <input id="rqDate" type="date" class="px-3 py-2 rounded-xl border" required />
+            <textarea id="rqNotes" class="sm:col-span-2 px-3 py-2 rounded-xl border" placeholder="অতিরিক্ত তথ্য (ঐচ্ছিক)"></textarea>
+            <button class="sm:col-span-2 px-5 py-3 rounded-xl bg-rose-600 text-white font-semibold hover:bg-rose-700">রিকোয়েস্ট সাবমিট</button>
+          </form>
+          <p class="mt-2 text-xs text-slate-500">আপনার তথ্য স্থানীয়ভাবে সেভ হয় (LocalStorage)।</p>
+        </div>
+        <div>
+          <h3 class="text-xl font-bold">চলমান রিকোয়েস্ট</h3>
+          <div id="requestList" class="mt-3 space-y-3"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Register Donor -->
+  <section id="register" class="py-12 bg-rose-50/50">
+    <div class="mx-auto container-max px-4">
+      <h2 class="text-2xl md:text-3xl font-extrabold">ডোনার রেজিস্ট্রেশন</h2>
+      <p class="text-slate-600">নিজের তথ্য যুক্ত করুন—সবার আগে আপনি পৌঁছে যেতে পারেন এক প্রাণ বাঁচাতে।</p>
+      <form id="registerForm" class="mt-4 grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+        <input id="fullName" class="px-3 py-2 rounded-xl border" placeholder="পুরো নাম" required />
+        <select id="bloodGroup" class="px-3 py-2 rounded-xl border" required></select>
+        <input id="district" class="px-3 py-2 rounded-xl border" placeholder="জেলা" required />
+        <input id="area" class="px-3 py-2 rounded-xl border" placeholder="এলাকা/থানা" required />
+        <input id="phone" class="px-3 py-2 rounded-xl border" placeholder="মোবাইল" required />
+        <input id="lastDonation" type="date" class="px-3 py-2 rounded-xl border" />
+        <select id="availability" class="px-3 py-2 rounded-xl border">
+          <option value="ready">উপলব্ধ</option>
+          <option value="rest">বিরতিতে</option>
+        </select>
+        <input id="email" type="email" class="px-3 py-2 rounded-xl border" placeholder="ইমেইল (ঐচ্ছিক)" />
+        <textarea id="notes" class="sm:col-span-2 lg:col-span-4 px-3 py-2 rounded-xl border" placeholder="নোট (ঐচ্ছিক)"></textarea>
+        <button class="sm:col-span-2 lg:col-span-4 px-5 py-3 rounded-xl bg-slate-900 text-white font-semibold">রেজিস্টার করুন</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Stats & How it Works -->
+  <section id="stats" class="py-12">
+    <div class="mx-auto container-max px-4">
+      <div class="grid md:grid-cols-2 gap-8 items-start">
+        <div>
+          <h2 class="text-2xl md:text-3xl font-extrabold">কীভাবে কাজ করে</h2>
+          <ol class="mt-3 space-y-3">
+            <li class="flex gap-3"><span class="inline-flex w-8 h-8 rounded-lg bg-slate-900 text-white items-center justify-center font-bold">1</span><p><b>ডোনার রেজিস্ট্রেশন:</b> নিজের তথ্য দিন, লাস্ট ডোনেশনের তারিখ উল্লেখ করুন।</p></li>
+            <li class="flex gap-3"><span class="inline-flex w-8 h-8 rounded-lg bg-slate-900 text-white items-center justify-center font-bold">2</span><p><b>রিকোয়েস্ট পোস্ট:</b> প্রয়োজনের তথ্য দিয়ে রিকোয়েস্ট তৈরি করুন।</p></li>
+            <li class="flex gap-3"><span class="inline-flex w-8 h-8 rounded-lg bg-slate-900 text-white items-center justify-center font-bold">3</span><p><b>দ্রুত সার্চ:</b> ব্লাড গ্রুপ/লোকেশন অনুসারে ডোনার ফিল্টার করুন এবং যোগাযোগ করুন।</p></li>
+          </ol>
+        </div>
+        <div class="p-5 bg-white rounded-3xl shadow-xl border">
+          <h3 class="text-xl font-bold">লাইভ পরিসংখ্যান</h3>
+          <ul class="mt-3 space-y-2 text-slate-700" id="liveStats"></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="py-12 bg-white">
+    <div class="mx-auto container-max px-4">
+      <h2 class="text-2xl md:text-3xl font-extrabold">সাধারণ জিজ্ঞাসা</h2>
+      <div class="mt-5 grid md:grid-cols-2 gap-5">
+        <details class="p-4 rounded-2xl border bg-slate-50">
+          <summary class="font-bold cursor-pointer">কতদিন পরপর রক্ত দেওয়া যায়?</summary>
+          <p class="mt-2 text-slate-600">সাধারণত ১১০–১২০ দিন পর (পুরুষ) এবং ১২০–১৩০ দিন পর (মহিলা)। সন্দেহ হলে চিকিৎসকের পরামর্শ নিন।</p>
+        </details>
+        <details class="p-4 rounded-2xl border bg-slate-50">
+          <summary class="font-bold cursor-pointer">কোনো চার্জ আছে?</summary>
+          <p class="mt-2 text-slate-600">না, এই প্ল্যাটফর্ম সম্পূর্ণ স্বেচ্ছাসেবী উদ্যোগ।</p>
+        </details>
+        <details class="p-4 rounded-2xl border bg-slate-50">
+          <summary class="font-bold cursor-pointer">ডাটা নিরাপত্তা</summary>
+          <p class="mt-2 text-slate-600">তথ্য আপনার ব্রাউজারের LocalStorage-এ সেভ থাকে। সার্ভারে পাঠানো হয় না।</p>
+        </details>
+        <details class="p-4 rounded-2xl border bg-slate-50">
+          <summary class="font-bold cursor-pointer">কিভাবে টিমের সাথে যোগাযোগ করবো?</summary>
+          <p class="mt-2 text-slate-600">নীচের যোগাযোগ সেকশনে ফর্ম/লিংক দেওয়া আছে।</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact" class="py-12">
+    <div class="mx-auto container-max px-4">
+      <div class="grid md:grid-cols-2 gap-8 items-start">
+        <div>
+          <h2 class="text-2xl md:text-3xl font-extrabold">যোগাযোগ</h2>
+          <p class="text-slate-600">আপনার সংগঠনের নাম, ফেসবুক পেজ/হোয়াটসঅ্যাপ গ্রুপ লিংক যুক্ত করুন।</p>
+          <ul class="mt-3 space-y-2 text-slate-700">
+            <li class="flex items-center gap-2"><i data-lucide="phone" class="w-4 h-4"></i> হটলাইন: <a href="tel:01300000000" class="text-rose-700 font-semibold">01300-000000</a></li>
+            <li class="flex items-center gap-2"><i data-lucide="message-circle" class="w-4 h-4"></i> WhatsApp: <a href="https://wa.me/8801300000000" target="_blank" class="text-rose-700 font-semibold">বার্তা পাঠান</a></li>
+            <li class="flex items-center gap-2"><i data-lucide="facebook" class="w-4 h-4"></i> Facebook: <a href="#" class="text-rose-700 font-semibold">পেজ লিংক</a></li>
+          </ul>
+        </div>
+        <form id="contactForm" class="p-5 bg-white rounded-3xl shadow-xl border">
+          <h3 class="text-xl font-bold">বার্তা পাঠান</h3>
+          <input class="mt-3 w-full px-3 py-2 rounded-xl border" placeholder="আপনার নাম" required />
+          <input class="mt-3 w-full px-3 py-2 rounded-xl border" type="email" placeholder="ইমেইল" required />
+          <textarea class="mt-3 w-full px-3 py-2 rounded-xl border" rows="4" placeholder="বার্তা" required></textarea>
+          <button class="mt-4 px-5 py-3 rounded-xl bg-rose-600 text-white font-semibold w-full">সাবমিট</button>
+          <p class="mt-2 text-xs text-slate-500">*এই ডেমোতে বার্তা লোকালভাবেই সেভ হয়।</p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <footer class="py-8 border-t bg-slate-50 text-center text-sm text-slate-600">
+    <div class="mx-auto container-max px-4">
+      © <span id="year"></span> রক্তদান | তৈরি করেছেন আপনার টিম — মানবতার জন্য ❤
+    </div>
+  </footer>
+
+  <!-- Toast -->
+  <div id="toast" class="hidden fixed bottom-4 left-1/2 -translate-x-1/2 z-50 px-4 py-2 rounded-xl bg-slate-900 text-white text-sm shadow"></div>
+
+  <script>
+    const BG = ["A+","A-","B+","B-","AB+","AB-","O+","O-"];
+    const els = {
+      qGroup: id('qGroup'), qDistrict: id('qDistrict'), qArea: id('qArea'), quickSearch: id('quickSearch'),
+      fGroup: id('fGroup'), fDistrict: id('fDistrict'), fArea: id('fArea'), fReady: id('fReady'), applyFilters: id('applyFilters'),
+      donorList: id('donorList'),
+      registerForm: id('registerForm'), bloodGroup: id('bloodGroup'), availability: id('availability'),
+      requestForm: id('requestForm'), requestList: id('requestList'), rqGroup: id('rqGroup'),
+      stats: { donors: id('stat-donors'), requests: id('stat-requests'), fulfilled: id('stat-fulfilled'), live: id('liveStats') },
+      exportCSV: id('exportCSV'), printList: id('printList'), toast: id('toast'), year: id('year')
+    };
+
+    function id(x){ return document.getElementById(x); }
+    function save(key, data){ localStorage.setItem(key, JSON.stringify(data)); }
+    function load(key, fallback){ try { return JSON.parse(localStorage.getItem(key)) || fallback } catch { return fallback } }
+    function toast(msg){ const t=els.toast; t.textContent=msg; t.classList.remove('hidden'); setTimeout(()=>t.classList.add('hidden'), 2200); }
+
+    const store = {
+      donors: load('donors', [
+        { id: uid(), name:'রাফি ইসলাম', group:'O+', district:'ঢাকা', area:'মিরপুর', phone:'01700000000', email:'', last:'2025-04-05', availability:'ready', notes:'' },
+        { id: uid(), name:'মাহি রহমান', group:'A+', district:'চট্টগ্রাম', area:'পাহাড়তলী', phone:'01800000000', email:'', last:'2025-06-20', availability:'rest', notes:'পরীক্ষা চলছে' },
+        { id: uid(), name:'তাসিন হোসেন', group:'B-', district:'রাজশাহী', area:'বোয়ালিয়া', phone:'01600000000', email:'', last:'2025-07-10', availability:'ready', notes:'' },
+      ]),
+      requests: load('requests', []),
+      messages: load('messages', [])
+    };
+
+    function uid(){ return Math.random().toString(36).slice(2,9); }
+    function daysSince(date){ if(!date) return Infinity; const d = new Date(date); return Math.floor((Date.now()-d.getTime())/86400000); }
+
+    // Populate dropdowns
+    function fillGroups(){
+      [els.qGroup, els.fGroup, els.bloodGroup, els.rqGroup].forEach(sel=>{
+        sel.innerHTML = '<option value="">'+(sel===els.bloodGroup?'ব্লাড গ্রুপ':'সব গ্রুপ')+'</option>' + BG.map(g=>`<option value="${g}">${g}</option>`).join('')
+      });
+    }
+
+    // Render donors
+    function renderDonors(list){
+      const html = list.map(d=>{
+        const okAfter = daysSince(d.last);
+        const ready = d.availability==='ready' && okAfter >= 110; // basic rule
+        const tag = ready? 'উপলব্ধ' : (d.availability==='rest' ? 'বিরতিতে' : (okAfter<110? `আর ${110-okAfter} দিন` : '')); 
+        return `
+          <article class="p-4 rounded-2xl bg-white shadow-sm border">
+            <div class="flex items-start justify-between gap-3">
+              <div>
+                <h4 class="font-bold text-lg">${d.name} <span class="ml-2 inline-flex text-xs px-2 py-0.5 rounded-full ${chip(d.group)}">${d.group}</span></h4>
+                <p class="text-slate-600 text-sm">${d.district} · ${d.area}</p>
+                <p class="text-slate-500 text-xs">সর্বশেষ দান: ${d.last||'—'} (${isFinite(okAfter)?okAfter:'∞'} দিন আগে)</p>
+              </div>
+              <span class="text-xs px-2 py-1 rounded-full ${ready?'bg-green-100 text-green-700':'bg-amber-100 text-amber-700'}">${tag||'স্ট্যাটাস'}</span>
+            </div>
+            <div class="mt-3 flex flex-wrap gap-2">
+              <a href="tel:${d.phone}" class="px-3 py-2 rounded-xl border text-sm inline-flex items-center gap-2"><i data-lucide="phone" class="w-4 h-4"></i>কল</a>
+              <a href="https://wa.me/${normalizeBD(d.phone)}" target="_blank" class="px-3 py-2 rounded-xl border text-sm inline-flex items-center gap-2"><i data-lucide="message-circle" class="w-4 h-4"></i>হোয়াটসঅ্যাপ</a>
+              <button onclick="copyText('${d.phone}')" class="px-3 py-2 rounded-xl border text-sm">নম্বর কপি</button>
+              <button onclick="removeDonor('${d.id}')" class="ml-auto px-3 py-2 rounded-xl bg-rose-50 text-rose-700 text-sm hover:bg-rose-100">মুছুন</button>
+            </div>
+            ${d.notes?`<p class="mt-2 text-slate-600 text-sm">নোট: ${d.notes}</p>`:''}
+          </article>`;
+      }).join('');
+      els.donorList.innerHTML = html || `<div class="text-center text-slate-500 p-8 border rounded-2xl bg-slate-50">কোনো ডোনার পাওয়া যায়নি</div>`;
+      lucide.createIcons();
+    }
+
+    function normalizeBD(phone){ phone = (''+phone).replace(/\D/g,''); if(phone.startsWith('0')) return '88'+phone; if(phone.startsWith('880')) return phone; return '88'+phone; }
+    function copyText(t){ navigator.clipboard.writeText(t).then(()=>toast('কপি হয়েছে')); }
+
+    function chip(g){ return 'bg-slate-800 text-white'; }
+
+    function filterDonors(){
+      const q = {
+        group: els.fGroup.value || els.qGroup.value,
+        district: (els.fDistrict.value||els.qDistrict.value||'').trim().toLowerCase(),
+        area: (els.fArea.value||els.qArea.value||'').trim().toLowerCase(),
+        ready: els.fReady.value
+      };
+      let out = [...store.donors];
+      if(q.group) out = out.filter(d=>d.group===q.group);
+      if(q.district) out = out.filter(d=>d.district.toLowerCase().includes(q.district));
+      if(q.area) out = out.filter(d=>d.area.toLowerCase().includes(q.area));
+      if(q.ready==='ready') out = out.filter(d=> d.availability==='ready' && daysSince(d.last)>=110);
+      if(q.ready==='rest') out = out.filter(d=> d.availability==='rest' || daysSince(d.last)<110);
+      renderDonors(out);
+    }
+
+    // Donor CRUD
+    els.registerForm.addEventListener('submit', e=>{
+      e.preventDefault();
+      const d = {
+        id: uid(),
+        name: val('fullName'),
+        group: val('bloodGroup'),
+        district: val('district'),
+        area: val('area'),
+        phone: val('phone'),
+        email: val('email'),
+        last: val('lastDonation'),
+        availability: val('availability'),
+        notes: val('notes')
+      };
+      if(!d.name || !d.group || !d.district || !d.area || !d.phone){ toast('সব আবশ্যক ঘর পূরণ করুন'); return; }
+      store.donors.unshift(d); save('donors', store.donors); toast('ডোনার যুক্ত হয়েছে');
+      e.target.reset(); filterDonors(); updateStats();
+    });
+
+    function removeDonor(id){
+      if(!confirm('ডোনারটি মুছতে চান?')) return;
+      store.donors = store.donors.filter(x=>x.id!==id); save('donors', store.donors); filterDonors(); updateStats();
+    }
+
+    // Requests
+    els.requestForm.addEventListener('submit', e=>{
+      e.preventDefault();
+      const r = {
+        id: uid(), group: val('rqGroup'), units: +val('rqUnits')||1, patient: val('rqPatient'), hospital: val('rqHospital'),
+        district: val('rqDistrict'), area: val('rqArea'), contact: val('rqContact'), date: val('rqDate'), notes: val('rqNotes'),
+        status: 'open'
+      };
+      if(!r.group || !r.patient || !r.hospital || !r.district || !r.contact || !r.date){ toast('আবশ্যক তথ্য দিন'); return; }
+      store.requests.unshift(r); save('requests', store.requests); toast('রিকোয়েস্ট পোস্ট হয়েছে');
+      e.target.reset(); renderRequests(); updateStats();
+    });
+
+    function renderRequests(){
+      els.requestList.innerHTML = store.requests.map(r=>{
+        return `
+        <div class="p-4 rounded-2xl border ${r.status==='open'?'bg-rose-50/50':'bg-green-50/50'}">
+          <div class="flex items-start justify-between gap-3">
+            <div>
+              <h4 class="font-bold">${r.patient} — <span class="inline-flex text-xs px-2 py-0.5 rounded-full ${chip(r.group)} text-white">${r.group}</span></h4>
+              <p class="text-slate-600 text-sm">${r.hospital} • ${r.district}${r.area?(', '+r.area):''}</p>
+              <p class="text-slate-500 text-xs">তারিখ: ${r.date} • ইউনিট: ${r.units}</p>
+              ${r.notes?`<p class="text-slate-600 text-sm mt-1">নোট: ${r.notes}</p>`:''}
+            </div>
+            <span class="text-xs px-2 py-1 rounded-full ${r.status==='open'?'bg-amber-100 text-amber-700':'bg-green-100 text-green-700'}">${r.status==='open'?'চলমান':'সম্পন্ন'}</span>
+          </div>
+          <div class="mt-3 flex flex-wrap gap-2">
+            <a href="tel:${r.contact}" class="px-3 py-2 rounded-xl border text-sm inline-flex items-center gap-2"><i data-lucide="phone" class="w-4 h-4"></i>কল</a>
+            <a href="https://wa.me/${normalizeBD(r.contact)}" target="_blank" class="px-3 py-2 rounded-xl border text-sm inline-flex items-center gap-2"><i data-lucide="message-circle" class="w-4 h-4"></i>হোয়াটসঅ্যাপ</a>
+            <button onclick="shareReq('${r.id}')" class="px-3 py-2 rounded-xl border text-sm">শেয়ার</button>
+            <button onclick="toggleReq('${r.id}')" class="ml-auto px-3 py-2 rounded-xl ${r.status==='open'?'bg-green-600 text-white':'bg-amber-600 text-white'} text-sm">${r.status==='open'?'পূর্ণ হয়েছে':'পুনরায় খুলুন'}</button>
+            <button onclick="removeReq('${r.id}')" class="px-3 py-2 rounded-xl bg-rose-50 text-rose-700 text-sm hover:bg-rose-100">মুছুন</button>
+          </div>
+        </div>`
+      }).join('') || `<div class="text-center text-slate-500 p-6 border rounded-2xl bg-slate-50">কোনো রিকোয়েস্ট নেই</div>`;
+      lucide.createIcons();
+    }
+
+    function toggleReq(id){
+      const r = store.requests.find(x=>x.id===id); if(!r) return; r.status = r.status==='open'?'done':'open'; save('requests', store.requests); renderRequests(); updateStats();
+    }
+    function removeReq(id){ if(!confirm('রিকোয়েস্টটি মুছতে চান?')) return; store.requests = store.requests.filter(x=>x.id!==id); save('requests', store.requests); renderRequests(); updateStats(); }
+    async function shareReq(id){
+      const r = store.requests.find(x=>x.id===id); if(!r) return;
+      const text = `জরুরি রক্ত প্রয়োজন\nগ্রুপ: ${r.group}\nইউনিট: ${r.units}\nস্থান: ${r.hospital}, ${r.district}${r.area?(', '+r.area):''}\nতারিখ: ${r.date}\nযোগাযোগ: ${r.contact}`;
+      try { await navigator.share({ title:'রক্তের প্রয়োজন', text }); } catch { copyText(text); }
+    }
+
+    // Export / Print
+    els.exportCSV.addEventListener('click', ()=>{
+      const header = ['নাম','গ্রুপ','জেলা','এলাকা','মোবাইল','ইমেইল','সর্বশেষ দান','স্ট্যাটাস'];
+      const rows = store.donors.map(d=>[d.name,d.group,d.district,d.area,d.phone,d.email,d.last,d.availability]);
+      const csv = [header, ...rows].map(r=>r.map(x=>`"${(x||'').toString().replace(/"/g,'\"')}"`).join(',')).join('\n');
+      const blob = new Blob(["\ufeff"+csv], {type:'text/csv;charset=utf-8;'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href=url; a.download='donors.csv'; a.click(); URL.revokeObjectURL(url);
+    });
+    els.printList.addEventListener('click', ()=>{ window.print(); });
+
+    // Filters
+    els.applyFilters.addEventListener('click', (e)=>{ e.preventDefault(); filterDonors(); });
+    els.quickSearch.addEventListener('submit', (e)=>{ e.preventDefault(); filterDonors(); document.querySelector('a[href="#search"]').click(); window.location.hash = '#search'; });
+
+    // Stats
+    function updateStats(){
+      els.stats.donors.textContent = store.donors.length;
+      els.stats.requests.textContent = store.requests.filter(r=>r.status==='open').length;
+      els.stats.fulfilled.textContent = store.requests.filter(r=>r.status==='done').length;
+      const byGroup = BG.map(g=>({g, n: store.donors.filter(d=>d.group===g).length})).filter(x=>x.n>0);
+      els.stats.live.innerHTML = byGroup.map(x=>`<li>গ্রুপ <b>${x.g}</b>: ${x.n} জন</li>`).join('') || '<li>এখনো কোনো ডোনার নেই</li>';
+    }
+
+    function val(id){ return document.getElementById(id).value.trim(); }
+
+    // Init
+    fillGroups(); filterDonors(); renderRequests(); updateStats(); els.year.textContent = new Date().getFullYear();
+    lucide.createIcons();
+  </script>
+</body>
+</html>
