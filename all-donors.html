@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>সকল ডোনার - কর্ণফুলী ব্লাড হাব</title>
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    :root { --brand:#e11d48; }
+    body { font-family:'Hind Siliguri', system-ui; }
+    .container-max { max-width: 1100px; }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+<header class="sticky top-0 z-40 bg-white border-b shadow-sm">
+  <div class="mx-auto container-max px-4 py-3 flex items-center justify-between">
+    <a href="index.html" class="flex items-center gap-2 font-bold text-lg text-rose-600">
+      <i data-lucide="arrow-left" class="w-5 h-5"></i> হোমে ফিরে যান
+    </a>
+    <h1 class="font-bold text-xl">সকল ডোনার</h1>
+  </div>
+</header>
+
+<section class="py-8">
+  <div class="mx-auto container-max px-4">
+    <h2 class="text-2xl md:text-3xl font-extrabold mb-4">নিবন্ধিত ডোনারদের তালিকা</h2>
+    <p class="text-slate-600 mb-6">ফিল্টার ব্যবহার করে কাঙ্খিত ডোনার খুঁজে নিন।</p>
+
+    <!-- Filters -->
+    <div class="grid md:grid-cols-5 gap-3">
+      <select id="fGroup" class="px-3 py-2 rounded-xl border"><option value="">সব গ্রুপ</option></select>
+      <input id="fDistrict" placeholder="জেলা" class="px-3 py-2 rounded-xl border" />
+      <input id="fArea" placeholder="এলাকা/থানা" class="px-3 py-2 rounded-xl border" />
+      <select id="fReady" class="px-3 py-2 rounded-xl border">
+        <option value="">উপস্থিতি</option>
+        <option value="ready">রক্ত দিতে প্রস্তুত</option>
+        <option value="rest">বিরতিতে</option>
+      </select>
+      <button id="applyFilters" class="px-4 py-2 rounded-xl bg-slate-800 text-white font-semibold">ফিল্টার</button>
+    </div>
+
+    <!-- Donor List -->
+    <div id="donorList" class="mt-6 grid sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+  </div>
+</section>
+
+<footer class="py-6 border-t text-center text-sm text-slate-600">
+  © <span id="year"></span> কর্ণফুলী ব্লাড হাব
+</footer>
+
+<script>
+const DONOR_API = "https://script.google.com/macros/s/AKfycbyGguWgJdIpVgv0Sol7qF7gJOelhv-y47NoW6my1ZnlSjxHcj7ygwlMuDxffRezTW4wbA/exec?sheet=Donors";
+const BG = ["A+","A-","B+","B-","AB+","AB-","O+","O-"];
+
+const els = {
+  fGroup: document.getElementById('fGroup'),
+  fDistrict: document.getElementById('fDistrict'),
+  fArea: document.getElementById('fArea'),
+  fReady: document.getElementById('fReady'),
+  applyFilters: document.getElementById('applyFilters'),
+  donorList: document.getElementById('donorList'),
+  year: document.getElementById('year')
+};
+
+function fillGroups(){
+  els.fGroup.innerHTML = '<option value="">সব গ্রুপ</option>' + BG.map(g=>`<option value="${g}">${g}</option>`).join('');
+}
+
+async function loadDonors(){
+  const res = await fetch(DONOR_API);
+  const donors = await res.json();
+  renderDonors(donors);
+}
+
+function renderDonors(list){
+  els.donorList.innerHTML = list.map(d=>{
+    return `
+      <article class="p-4 rounded-2xl bg-white shadow-sm border">
+        <div class="flex items-start justify-between gap-3">
+          <div>
+            <h4 class="font-bold text-lg">${d[0]} <span class="ml-2 inline-flex text-xs px-2 py-0.5 rounded-full bg-slate-800 text-white">${d[1]}</span></h4>
+            <p class="text-slate-600 text-sm">${d[2]} · ${d[3]}</p>
+            <p class="text-slate-500 text-xs">সর্বশেষ দান: ${d[6]||'—'}</p>
+          </div>
+          <span class="text-xs px-2 py-1 rounded-full ${d[7]==='ready'?'bg-green-100 text-green-700':'bg-amber-100 text-amber-700'}">${d[7]==='ready'?'প্রস্তুত':'বিরতিতে'}</span>
+        </div>
+        <div class="mt-3 flex flex-wrap gap-2">
+          <a href="tel:${d[4]}" class="px-3 py-2 rounded-xl border text-sm">কল</a>
+          <a href="https://wa.me/88${d[4]}" target="_blank" class="px-3 py-2 rounded-xl border text-sm">হোয়াটসঅ্যাপ</a>
+        </div>
+      </article>`;
+  }).join('') || `<div class="text-center text-slate-500 p-8 border rounded-2xl bg-slate-50">কোনো ডোনার পাওয়া যায়নি</div>`;
+}
+
+els.applyFilters.addEventListener('click', async ()=>{
+  const res = await fetch(DONOR_API);
+  let donors = await res.json();
+  if(els.fGroup.value) donors = donors.filter(d=>d[1]===els.fGroup.value);
+  if(els.fDistrict.value) donors = donors.filter(d=>d[2].toLowerCase().includes(els.fDistrict.value.toLowerCase()));
+  if(els.fArea.value) donors = donors.filter(d=>d[3].toLowerCase().includes(els.fArea.value.toLowerCase()));
+  if(els.fReady.value) donors = donors.filter(d=>d[7]===els.fReady.value);
+  renderDonors(donors);
+});
+
+fillGroups();
+loadDonors();
+els.year.textContent = new Date().getFullYear();
+lucide.createIcons();
+</script>
+</body>
+</html>
