@@ -248,195 +248,196 @@
   <!-- Toast -->
   <div id="toast" class="hidden fixed bottom-4 left-1/2 -translate-x-1/2 z-50 px-4 py-2 rounded-xl bg-slate-900 text-white text-sm shadow"></div>
 
-  <script>
-    const BG = ["A+","A-","B+","B-","AB+","AB-","O+","O-"];
-    const els = {
-      qGroup: id('qGroup'), qDistrict: id('qDistrict'), qArea: id('qArea'), quickSearch: id('quickSearch'),
-      fGroup: id('fGroup'), fDistrict: id('fDistrict'), fArea: id('fArea'), fReady: id('fReady'), applyFilters: id('applyFilters'),
-      donorList: id('donorList'),
-      registerForm: id('registerForm'), bloodGroup: id('bloodGroup'), availability: id('availability'),
-      requestForm: id('requestForm'), requestList: id('requestList'), rqGroup: id('rqGroup'),
-      stats: { donors: id('stat-donors'), requests: id('stat-requests'), fulfilled: id('stat-fulfilled'), live: id('liveStats') },
-      exportCSV: id('exportCSV'), printList: id('printList'), toast: id('toast'), year: id('year')
-    };
+ <script>
+  // === তোমার Google Apps Script URL ===
+  const DONOR_API = "https://script.google.com/macros/s/AKfycbyGguWgJdIpVgv0Sol7qF7gJOelhv-y47NoW6my1ZnlSjxHcj7ygwlMuDxffRezTW4wbA/exec?sheet=Donors";
+  const REQUEST_API = "https://script.google.com/macros/s/AKfycbyGguWgJdIpVgv0Sol7qF7gJOelhv-y47NoW6my1ZnlSjxHcj7ygwlMuDxffRezTW4wbA/exec?sheet=Requests";
 
-    function id(x){ return document.getElementById(x); }
-    function save(key, data){ localStorage.setItem(key, JSON.stringify(data)); }
-    function load(key, fallback){ try { return JSON.parse(localStorage.getItem(key)) || fallback } catch { return fallback } }
-    function toast(msg){ const t=els.toast; t.textContent=msg; t.classList.remove('hidden'); setTimeout(()=>t.classList.add('hidden'), 2200); }
+  const BG = ["A+","A-","B+","B-","AB+","AB-","O+","O-"];
+  const els = {
+    qGroup: id('qGroup'), qDistrict: id('qDistrict'), qArea: id('qArea'), quickSearch: id('quickSearch'),
+    fGroup: id('fGroup'), fDistrict: id('fDistrict'), fArea: id('fArea'), fReady: id('fReady'), applyFilters: id('applyFilters'),
+    donorList: id('donorList'),
+    registerForm: id('registerForm'), bloodGroup: id('bloodGroup'), availability: id('availability'),
+    requestForm: id('requestForm'), requestList: id('requestList'), rqGroup: id('rqGroup'),
+    stats: { donors: id('stat-donors'), requests: id('stat-requests'), fulfilled: id('stat-fulfilled'), live: id('liveStats') },
+    exportCSV: id('exportCSV'), printList: id('printList'), toast: id('toast'), year: id('year')
+  };
 
-    const store = {
-      donors: load('donors', [
-        { id: uid(), name:'রাফি ইসলাম', group:'O+', district:'ঢাকা', area:'মিরপুর', phone:'01700000000', email:'', last:'2025-04-05', availability:'ready', notes:'' },
-        { id: uid(), name:'মাহি রহমান', group:'A+', district:'চট্টগ্রাম', area:'পাহাড়তলী', phone:'01800000000', email:'', last:'2025-06-20', availability:'rest', notes:'পরীক্ষা চলছে' },
-        { id: uid(), name:'তাসিন হোসেন', group:'B-', district:'রাজশাহী', area:'বোয়ালিয়া', phone:'01600000000', email:'', last:'2025-07-10', availability:'ready', notes:'' },
-      ]),
-      requests: load('requests', []),
-      messages: load('messages', [])
-    };
+  function id(x){ return document.getElementById(x); }
+  function toast(msg){ const t=els.toast; t.textContent=msg; t.classList.remove('hidden'); setTimeout(()=>t.classList.add('hidden'), 2200); }
+  function val(id){ return document.getElementById(id).value.trim(); }
 
-    function uid(){ return Math.random().toString(36).slice(2,9); }
-    function daysSince(date){ if(!date) return Infinity; const d = new Date(date); return Math.floor((Date.now()-d.getTime())/86400000); }
-
-    // Populate dropdowns
-    function fillGroups(){
-      [els.qGroup, els.fGroup, els.bloodGroup, els.rqGroup].forEach(sel=>{
-        sel.innerHTML = '<option value="">'+(sel===els.bloodGroup?'ব্লাড গ্রুপ':'সব গ্রুপ')+'</option>' + BG.map(g=>`<option value="${g}">${g}</option>`).join('')
-      });
-    }
-
-    // Render donors
-    function renderDonors(list){
-      const html = list.map(d=>{
-        const okAfter = daysSince(d.last);
-        const ready = d.availability==='ready' && okAfter >= 110; // basic rule
-        const tag = ready? 'উপলব্ধ' : (d.availability==='rest' ? 'বিরতিতে' : (okAfter<110? `আর ${110-okAfter} দিন` : '')); 
-        return `
-          <article class="p-4 rounded-2xl bg-white shadow-sm border">
-            <div class="flex items-start justify-between gap-3">
-              <div>
-                <h4 class="font-bold text-lg">${d.name} <span class="ml-2 inline-flex text-xs px-2 py-0.5 rounded-full ${chip(d.group)}">${d.group}</span></h4>
-                <p class="text-slate-600 text-sm">${d.district} · ${d.area}</p>
-                <p class="text-slate-500 text-xs">সর্বশেষ দান: ${d.last||'—'} (${isFinite(okAfter)?okAfter:'∞'} দিন আগে)</p>
-              </div>
-              <span class="text-xs px-2 py-1 rounded-full ${ready?'bg-green-100 text-green-700':'bg-amber-100 text-amber-700'}">${tag||'স্ট্যাটাস'}</span>
-            </div>
-            <div class="mt-3 flex flex-wrap gap-2">
-              <a href="tel:${d.phone}" class="px-3 py-2 rounded-xl border text-sm inline-flex items-center gap-2"><i data-lucide="phone" class="w-4 h-4"></i>কল</a>
-              <a href="https://wa.me/${normalizeBD(d.phone)}" target="_blank" class="px-3 py-2 rounded-xl border text-sm inline-flex items-center gap-2"><i data-lucide="message-circle" class="w-4 h-4"></i>হোয়াটসঅ্যাপ</a>
-              <button onclick="copyText('${d.phone}')" class="px-3 py-2 rounded-xl border text-sm">নম্বর কপি</button>
-              <button onclick="removeDonor('${d.id}')" class="ml-auto px-3 py-2 rounded-xl bg-rose-50 text-rose-700 text-sm hover:bg-rose-100">মুছুন</button>
-            </div>
-            ${d.notes?`<p class="mt-2 text-slate-600 text-sm">নোট: ${d.notes}</p>`:''}
-          </article>`;
-      }).join('');
-      els.donorList.innerHTML = html || `<div class="text-center text-slate-500 p-8 border rounded-2xl bg-slate-50">কোনো ডোনার পাওয়া যায়নি</div>`;
-      lucide.createIcons();
-    }
-
-    function normalizeBD(phone){ phone = (''+phone).replace(/\D/g,''); if(phone.startsWith('0')) return '88'+phone; if(phone.startsWith('880')) return phone; return '88'+phone; }
-    function copyText(t){ navigator.clipboard.writeText(t).then(()=>toast('কপি হয়েছে')); }
-
-    function chip(g){ return 'bg-slate-800 text-white'; }
-
-    function filterDonors(){
-      const q = {
-        group: els.fGroup.value || els.qGroup.value,
-        district: (els.fDistrict.value||els.qDistrict.value||'').trim().toLowerCase(),
-        area: (els.fArea.value||els.qArea.value||'').trim().toLowerCase(),
-        ready: els.fReady.value
-      };
-      let out = [...store.donors];
-      if(q.group) out = out.filter(d=>d.group===q.group);
-      if(q.district) out = out.filter(d=>d.district.toLowerCase().includes(q.district));
-      if(q.area) out = out.filter(d=>d.area.toLowerCase().includes(q.area));
-      if(q.ready==='ready') out = out.filter(d=> d.availability==='ready' && daysSince(d.last)>=110);
-      if(q.ready==='rest') out = out.filter(d=> d.availability==='rest' || daysSince(d.last)<110);
-      renderDonors(out);
-    }
-
-    // Donor CRUD
-    els.registerForm.addEventListener('submit', e=>{
-      e.preventDefault();
-      const d = {
-        id: uid(),
-        name: val('fullName'),
-        group: val('bloodGroup'),
-        district: val('district'),
-        area: val('area'),
-        phone: val('phone'),
-        email: val('email'),
-        last: val('lastDonation'),
-        availability: val('availability'),
-        notes: val('notes')
-      };
-      if(!d.name || !d.group || !d.district || !d.area || !d.phone){ toast('সব আবশ্যক ঘর পূরণ করুন'); return; }
-      store.donors.unshift(d); save('donors', store.donors); toast('ডোনার যুক্ত হয়েছে');
-      e.target.reset(); filterDonors(); updateStats();
+  // === Dropdown এ ব্লাড গ্রুপ বসানো ===
+  function fillGroups(){
+    [els.qGroup, els.fGroup, els.bloodGroup, els.rqGroup].forEach(sel=>{
+      sel.innerHTML = '<option value="">'+(sel===els.bloodGroup?'ব্লাড গ্রুপ':'সব গ্রুপ')+'</option>' + BG.map(g=>`<option value="${g}">${g}</option>`).join('')
     });
+  }
 
-    function removeDonor(id){
-      if(!confirm('ডোনারটি মুছতে চান?')) return;
-      store.donors = store.donors.filter(x=>x.id!==id); save('donors', store.donors); filterDonors(); updateStats();
-    }
+  // === Donor ফর্ম সাবমিট → Google Sheet এ POST ===
+  els.registerForm.addEventListener('submit', async e=>{
+    e.preventDefault();
+    const d = {
+      name: val('fullName'),
+      group: val('bloodGroup'),
+      district: val('district'),
+      area: val('area'),
+      phone: val('phone'),
+      email: val('email'),
+      lastDonation: val('lastDonation'),
+      availability: val('availability'),
+      notes: val('notes')
+    };
+    if(!d.name || !d.group || !d.district || !d.area || !d.phone){ toast('সব আবশ্যক ঘর পূরণ করুন'); return; }
+    await fetch(DONOR_API, { method:"POST", body: JSON.stringify(d) });
+    toast("ডোনার যুক্ত হয়েছে");
+    e.target.reset();
+    loadDonors();
+  });
 
-    // Requests
-    els.requestForm.addEventListener('submit', e=>{
-      e.preventDefault();
-      const r = {
-        id: uid(), group: val('rqGroup'), units: +val('rqUnits')||1, patient: val('rqPatient'), hospital: val('rqHospital'),
-        district: val('rqDistrict'), area: val('rqArea'), contact: val('rqContact'), date: val('rqDate'), notes: val('rqNotes'),
-        status: 'open'
-      };
-      if(!r.group || !r.patient || !r.hospital || !r.district || !r.contact || !r.date){ toast('আবশ্যক তথ্য দিন'); return; }
-      store.requests.unshift(r); save('requests', store.requests); toast('রিকোয়েস্ট পোস্ট হয়েছে');
-      e.target.reset(); renderRequests(); updateStats();
-    });
+  // === Request ফর্ম সাবমিট → Google Sheet এ POST ===
+  els.requestForm.addEventListener('submit', async e=>{
+    e.preventDefault();
+    const r = {
+      group: val('rqGroup'),
+      units: val('rqUnits'),
+      patient: val('rqPatient'),
+      hospital: val('rqHospital'),
+      district: val('rqDistrict'),
+      area: val('rqArea'),
+      contact: val('rqContact'),
+      date: val('rqDate'),
+      notes: val('rqNotes'),
+      status: "open"
+    };
+    if(!r.group || !r.patient || !r.hospital || !r.district || !r.contact || !r.date){ toast("আবশ্যক তথ্য দিন"); return; }
+    await fetch(REQUEST_API, { method:"POST", body: JSON.stringify(r) });
+    toast("রিকোয়েস্ট পোস্ট হয়েছে");
+    e.target.reset();
+    loadRequests();
+  });
 
-    function renderRequests(){
-      els.requestList.innerHTML = store.requests.map(r=>{
-        return `
-        <div class="p-4 rounded-2xl border ${r.status==='open'?'bg-rose-50/50':'bg-green-50/50'}">
+  // === Donor List লোড ===
+  async function loadDonors(){
+    const res = await fetch(DONOR_API);
+    const donors = await res.json();
+    renderDonors(donors);
+    updateStats(donors, null);
+  }
+
+  // === Request List লোড ===
+  async function loadRequests(){
+    const res = await fetch(REQUEST_API);
+    const requests = await res.json();
+    renderRequests(requests);
+    updateStats(null, requests);
+  }
+
+  // === Donor লিস্ট রেন্ডার ===
+  function renderDonors(list){
+    els.donorList.innerHTML = list.map(d=>{
+      return `
+        <article class="p-4 rounded-2xl bg-white shadow-sm border">
           <div class="flex items-start justify-between gap-3">
             <div>
-              <h4 class="font-bold">${r.patient} — <span class="inline-flex text-xs px-2 py-0.5 rounded-full ${chip(r.group)} text-white">${r.group}</span></h4>
-              <p class="text-slate-600 text-sm">${r.hospital} • ${r.district}${r.area?(', '+r.area):''}</p>
-              <p class="text-slate-500 text-xs">তারিখ: ${r.date} • ইউনিট: ${r.units}</p>
-              ${r.notes?`<p class="text-slate-600 text-sm mt-1">নোট: ${r.notes}</p>`:''}
+              <h4 class="font-bold text-lg">${d[0]} <span class="ml-2 inline-flex text-xs px-2 py-0.5 rounded-full bg-slate-800 text-white">${d[1]}</span></h4>
+              <p class="text-slate-600 text-sm">${d[2]} · ${d[3]}</p>
+              <p class="text-slate-500 text-xs">সর্বশেষ দান: ${d[6]||'—'}</p>
             </div>
-            <span class="text-xs px-2 py-1 rounded-full ${r.status==='open'?'bg-amber-100 text-amber-700':'bg-green-100 text-green-700'}">${r.status==='open'?'চলমান':'সম্পন্ন'}</span>
+            <span class="text-xs px-2 py-1 rounded-full ${d[7]==='ready'?'bg-green-100 text-green-700':'bg-amber-100 text-amber-700'}">${d[7]==='ready'?'উপলব্ধ':'বিরতিতে'}</span>
           </div>
           <div class="mt-3 flex flex-wrap gap-2">
-            <a href="tel:${r.contact}" class="px-3 py-2 rounded-xl border text-sm inline-flex items-center gap-2"><i data-lucide="phone" class="w-4 h-4"></i>কল</a>
-            <a href="https://wa.me/${normalizeBD(r.contact)}" target="_blank" class="px-3 py-2 rounded-xl border text-sm inline-flex items-center gap-2"><i data-lucide="message-circle" class="w-4 h-4"></i>হোয়াটসঅ্যাপ</a>
-            <button onclick="shareReq('${r.id}')" class="px-3 py-2 rounded-xl border text-sm">শেয়ার</button>
-            <button onclick="toggleReq('${r.id}')" class="ml-auto px-3 py-2 rounded-xl ${r.status==='open'?'bg-green-600 text-white':'bg-amber-600 text-white'} text-sm">${r.status==='open'?'পূর্ণ হয়েছে':'পুনরায় খুলুন'}</button>
-            <button onclick="removeReq('${r.id}')" class="px-3 py-2 rounded-xl bg-rose-50 text-rose-700 text-sm hover:bg-rose-100">মুছুন</button>
+            <a href="tel:${d[4]}" class="px-3 py-2 rounded-xl border text-sm inline-flex items-center gap-2">কল</a>
+            <a href="https://wa.me/88${d[4]}" target="_blank" class="px-3 py-2 rounded-xl border text-sm inline-flex items-center gap-2">হোয়াটসঅ্যাপ</a>
           </div>
-        </div>`
-      }).join('') || `<div class="text-center text-slate-500 p-6 border rounded-2xl bg-slate-50">কোনো রিকোয়েস্ট নেই</div>`;
-      lucide.createIcons();
+          ${d[8]?`<p class="mt-2 text-slate-600 text-sm">নোট: ${d[8]}</p>`:''}
+        </article>`;
+    }).join('') || `<div class="text-center text-slate-500 p-8 border rounded-2xl bg-slate-50">কোনো ডোনার পাওয়া যায়নি</div>`;
+  }
+
+  // === Request লিস্ট রেন্ডার ===
+  function renderRequests(list){
+    els.requestList.innerHTML = list.map(r=>{
+      return `
+        <div class="p-4 rounded-2xl border ${r[9]==='open'?'bg-rose-50/50':'bg-green-50/50'}">
+          <div class="flex items-start justify-between gap-3">
+            <div>
+              <h4 class="font-bold">${r[2]} — <span class="inline-flex text-xs px-2 py-0.5 rounded-full bg-slate-800 text-white">${r[0]}</span></h4>
+              <p class="text-slate-600 text-sm">${r[3]} • ${r[4]}${r[5]?(', '+r[5]):''}</p>
+              <p class="text-slate-500 text-xs">তারিখ: ${r[7]} • ইউনিট: ${r[1]}</p>
+              ${r[8]?`<p class="text-slate-600 text-sm mt-1">নোট: ${r[8]}</p>`:''}
+            </div>
+            <span class="text-xs px-2 py-1 rounded-full ${r[9]==='open'?'bg-amber-100 text-amber-700':'bg-green-100 text-green-700'}">${r[9]==='open'?'চলমান':'সম্পন্ন'}</span>
+          </div>
+          <div class="mt-3 flex flex-wrap gap-2">
+            <a href="tel:${r[6]}" class="px-3 py-2 rounded-xl border text-sm inline-flex items-center gap-2">কল</a>
+            <a href="https://wa.me/88${r[6]}" target="_blank" class="px-3 py-2 rounded-xl border text-sm inline-flex items-center gap-2">হোয়াটসঅ্যাপ</a>
+          </div>
+        </div>`;
+    }).join('') || `<div class="text-center text-slate-500 p-6 border rounded-2xl bg-slate-50">কোনো রিকোয়েস্ট নেই</div>`;
+  }
+
+  // === লাইভ স্ট্যাটস ===
+  function updateStats(donors, requests){
+    if(donors) els.stats.donors.textContent = donors.length;
+    if(requests) {
+      els.stats.requests.textContent = requests.filter(r=>r[9]==='open').length;
+      els.stats.fulfilled.textContent = requests.filter(r=>r[9]==='done').length;
     }
-
-    function toggleReq(id){
-      const r = store.requests.find(x=>x.id===id); if(!r) return; r.status = r.status==='open'?'done':'open'; save('requests', store.requests); renderRequests(); updateStats();
-    }
-    function removeReq(id){ if(!confirm('রিকোয়েস্টটি মুছতে চান?')) return; store.requests = store.requests.filter(x=>x.id!==id); save('requests', store.requests); renderRequests(); updateStats(); }
-    async function shareReq(id){
-      const r = store.requests.find(x=>x.id===id); if(!r) return;
-      const text = `জরুরি রক্ত প্রয়োজন\nগ্রুপ: ${r.group}\nইউনিট: ${r.units}\nস্থান: ${r.hospital}, ${r.district}${r.area?(', '+r.area):''}\nতারিখ: ${r.date}\nযোগাযোগ: ${r.contact}`;
-      try { await navigator.share({ title:'রক্তের প্রয়োজন', text }); } catch { copyText(text); }
-    }
-
-    // Export / Print
-    els.exportCSV.addEventListener('click', ()=>{
-      const header = ['নাম','গ্রুপ','জেলা','এলাকা','মোবাইল','ইমেইল','সর্বশেষ দান','স্ট্যাটাস'];
-      const rows = store.donors.map(d=>[d.name,d.group,d.district,d.area,d.phone,d.email,d.last,d.availability]);
-      const csv = [header, ...rows].map(r=>r.map(x=>`"${(x||'').toString().replace(/"/g,'\"')}"`).join(',')).join('\n');
-      const blob = new Blob(["\ufeff"+csv], {type:'text/csv;charset=utf-8;'});
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a'); a.href=url; a.download='donors.csv'; a.click(); URL.revokeObjectURL(url);
-    });
-    els.printList.addEventListener('click', ()=>{ window.print(); });
-
-    // Filters
-    els.applyFilters.addEventListener('click', (e)=>{ e.preventDefault(); filterDonors(); });
-    els.quickSearch.addEventListener('submit', (e)=>{ e.preventDefault(); filterDonors(); document.querySelector('a[href="#search"]').click(); window.location.hash = '#search'; });
-
-    // Stats
-    function updateStats(){
-      els.stats.donors.textContent = store.donors.length;
-      els.stats.requests.textContent = store.requests.filter(r=>r.status==='open').length;
-      els.stats.fulfilled.textContent = store.requests.filter(r=>r.status==='done').length;
-      const byGroup = BG.map(g=>({g, n: store.donors.filter(d=>d.group===g).length})).filter(x=>x.n>0);
+    if(donors){
+      const byGroup = BG.map(g=>({g, n: donors.filter(d=>d[1]===g).length})).filter(x=>x.n>0);
       els.stats.live.innerHTML = byGroup.map(x=>`<li>গ্রুপ <b>${x.g}</b>: ${x.n} জন</li>`).join('') || '<li>এখনো কোনো ডোনার নেই</li>';
     }
+  }
 
-    function val(id){ return document.getElementById(id).value.trim(); }
+  // === Export CSV ===
+  els.exportCSV.addEventListener('click', async ()=>{
+    const res = await fetch(DONOR_API);
+    const donors = await res.json();
+    const header = ['নাম','গ্রুপ','জেলা','এলাকা','মোবাইল','ইমেইল','সর্বশেষ দান','স্ট্যাটাস','নোট'];
+    const rows = donors.map(d=>[d[0],d[1],d[2],d[3],d[4],d[5],d[6],d[7],d[8]]);
+    const csv = [header, ...rows].map(r=>r.map(x=>`"${(x||'').toString().replace(/"/g,'""')}"`).join(',')).join('\n');
+    const blob = new Blob(["\ufeff"+csv], {type:'text/csv;charset=utf-8;'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href=url; a.download='donors.csv'; a.click(); URL.revokeObjectURL(url);
+  });
 
-    // Init
-    fillGroups(); filterDonors(); renderRequests(); updateStats(); els.year.textContent = new Date().getFullYear();
-    lucide.createIcons();
-  </script>
+  // === Print ===
+  els.printList.addEventListener('click', ()=>{ window.print(); });
+
+  // === Search / Filter ===
+  els.applyFilters.addEventListener('click', async e=>{
+    e.preventDefault();
+    const res = await fetch(DONOR_API);
+    let donors = await res.json();
+    const q = {
+      group: els.fGroup.value || els.qGroup.value,
+      district: (els.fDistrict.value||els.qDistrict.value||'').trim().toLowerCase(),
+      area: (els.fArea.value||els.qArea.value||'').trim().toLowerCase(),
+      ready: els.fReady.value
+    };
+    if(q.group) donors = donors.filter(d=>d[1]===q.group);
+    if(q.district) donors = donors.filter(d=>d[2].toLowerCase().includes(q.district));
+    if(q.area) donors = donors.filter(d=>d[3].toLowerCase().includes(q.area));
+    if(q.ready==='ready') donors = donors.filter(d=>d[7]==='ready');
+    if(q.ready==='rest') donors = donors.filter(d=>d[7]==='rest');
+    renderDonors(donors);
+  });
+
+  els.quickSearch.addEventListener('submit', async e=>{
+    e.preventDefault();
+    els.applyFilters.click();
+    document.querySelector('a[href="#search"]').click();
+    window.location.hash = '#search';
+  });
+
+  // === Init ===
+  fillGroups();
+  loadDonors();
+  loadRequests();
+  els.year.textContent = new Date().getFullYear();
+  lucide.createIcons();
+</script>
 </body>
 </html>
