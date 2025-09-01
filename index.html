@@ -86,6 +86,24 @@
       </div>
     </div>
   </section>
+<!-- Emergency Alert -->
+<section class="bg-red-600 py-3 overflow-hidden relative">
+  <div class="absolute inset-0 bg-red-800 opacity-20 animate-pulse"></div>
+  <div class="whitespace-nowrap animate-marquee text-white text-lg font-bold tracking-wide">
+    🚨 জরুরি রক্তের প্রয়োজন! এখনই যোগাযোগ করুন ☎️ | 🚨 জরুরি রক্তের প্রয়োজন! এখনই যোগাযোগ করুন ☎️ |
+  </div>
+</section>
+
+<style>
+  @keyframes marquee {
+    0%   { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+  }
+  .animate-marquee {
+    display: inline-block;
+    animation: marquee 12s linear infinite;
+  }
+</style>
 
   <!-- Search Donors -->
   <section id="search" class="py-12">
