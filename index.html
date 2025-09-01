@@ -40,39 +40,6 @@
       </a>
     </div>
   </header>
-<!-- Emergency Alert Banner -->
-<div class="sticky top-0 z-50">
-  <div class="relative bg-transparent text-red-600 py-2 shadow-md overflow-hidden">
-    <div class="whitespace-nowrap animate-marquee text-lg font-extrabold relative z-10 flex items-center gap-6 px-4">
-      🚨 <span class="animate-blink">জরুরি রক্তের প্রয়োজন!</span> এখনই যোগাযোগ করুন ☎️ 017XXXXXXXX 
-      🚨 <span class="animate-blink">জরুরি রক্তের প্রয়োজন!</span> এখনই যোগাযোগ করুন ☎️ 018XXXXXXXX
-    </div>
-  </div>
-</div>
-
-<style>
-  /* marquee effect */
-  @keyframes marquee {
-    0%   { transform: translateX(100%); }
-    100% { transform: translateX(-100%); }
-  }
-  .animate-marquee {
-    display: inline-block;
-    animation: marquee 15s linear infinite;
-  }
-
-  /* blink effect */
-  @keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.2; }
-  }
-  .animate-blink {
-    animation: blink 1.2s infinite;
-    color: #dc2626; /* Tailwind Red-600 */
-    text-shadow: 0 0 8px rgba(220, 38, 38, 0.8);
-  }
-</style>
-
 
   <!-- Hero -->
   <section id="home" class="relative overflow-hidden">
@@ -339,6 +306,39 @@
     flex-shrink: 0;
   }
   .animate-scroll:hover { animation-play-state: paused; }
+</style>
+
+<!-- Emergency Alert Banner -->
+<div class="sticky top-0 z-50">
+  <div class="relative bg-transparent text-red-600 py-2 shadow-md overflow-hidden">
+    <div class="whitespace-nowrap animate-marquee text-lg font-extrabold relative z-10 flex items-center gap-6 px-4">
+      🚨 <span class="animate-blink">জরুরি রক্তের প্রয়োজন!</span> এখনই যোগাযোগ করুন ☎️ 017XXXXXXXX 
+      🚨 <span class="animate-blink">জরুরি রক্তের প্রয়োজন!</span> এখনই যোগাযোগ করুন ☎️ 018XXXXXXXX
+    </div>
+  </div>
+</div>
+
+<style>
+  /* marquee effect */
+  @keyframes marquee {
+    0%   { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+  }
+  .animate-marquee {
+    display: inline-block;
+    animation: marquee 15s linear infinite;
+  }
+
+  /* blink effect */
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.2; }
+  }
+  .animate-blink {
+    animation: blink 1.2s infinite;
+    color: #dc2626; /* Tailwind Red-600 */
+    text-shadow: 0 0 8px rgba(220, 38, 38, 0.8);
+  }
 </style>
 
 
