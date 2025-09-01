@@ -40,6 +40,38 @@
       </a>
     </div>
   </header>
+  <!-- Emergency Alert Banner -->
+<div class="sticky top-0 z-50">
+  <div class="relative bg-gradient-to-r from-red-600 via-rose-500 to-red-600 text-white py-2 shadow-lg overflow-hidden">
+    <span class="absolute inset-0 bg-red-700 opacity-20 animate-pulse"></span>
+    <div class="whitespace-nowrap animate-marquee text-lg font-bold relative z-10 flex items-center gap-4 px-4">
+      🚨 <span class="animate-blink">জরুরি রক্তের প্রয়োজন!</span> এখনই যোগাযোগ করুন ☎️ 01871536468
+      🚨 <span class="animate-blink">জরুরি রক্তের প্রয়োজন!</span> এখনই যোগাযোগ করুন ☎️ 01871536468
+    </div>
+  </div>
+</div>
+
+<style>
+  /* marquee effect */
+  @keyframes marquee {
+    0%   { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+  }
+  .animate-marquee {
+    display: inline-block;
+    animation: marquee 15s linear infinite;
+  }
+
+  /* blink effect */
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+  .animate-blink {
+    animation: blink 1.2s infinite;
+  }
+</style>
+
 
   <!-- Hero -->
   <section id="home" class="relative overflow-hidden">
@@ -86,39 +118,6 @@
       </div>
     </div>
   </section>
-<!-- Emergency Alert -->
-<section class="py-3 bg-white relative">
-  <div class="max-w-6xl mx-auto px-4">
-    <div class="relative bg-gradient-to-r from-red-600 via-rose-500 to-red-600 text-white py-2 rounded-full shadow-lg overflow-hidden">
-      <span class="absolute inset-0 bg-red-700 opacity-20 animate-pulse"></span>
-      <div class="whitespace-nowrap animate-marquee text-lg font-bold relative z-10 flex items-center gap-2">
-        🚨 <span class="animate-blink">জরুরি রক্তের প্রয়োজন!</span> এখনই যোগাযোগ করুন ☎️ 
-        🚨 <span class="animate-blink">জরুরি রক্তের প্রয়োজন!</span> এখনই যোগাযোগ করুন ☎️
-      </div>
-    </div>
-  </div>
-</section>
-
-<style>
-  /* marquee */
-  @keyframes marquee {
-    0%   { transform: translateX(100%); }
-    100% { transform: translateX(-100%); }
-  }
-  .animate-marquee {
-    display: inline-block;
-    animation: marquee 12s linear infinite;
-  }
-
-  /* blink effect */
-  @keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
-  }
-  .animate-blink {
-    animation: blink 1.2s infinite;
-  }
-</style>
 
   <!-- Search Donors -->
   <section id="search" class="py-12">
