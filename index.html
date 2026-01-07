@@ -53,7 +53,7 @@
         <a href="#home" onclick="toggleMenu()" class="p-4 rounded-2xl hover:bg-rose-50 hover:text-rose-600 flex items-center gap-3"><i data-lucide="home"></i> হোম</a>
         <a href="#search" onclick="toggleMenu()" class="p-4 rounded-2xl hover:bg-rose-50 hover:text-rose-600 flex items-center gap-3"><i data-lucide="search"></i> ডোনার খুঁজুন</a>
         <a href="#request" onclick="toggleMenu()" class="p-4 rounded-2xl hover:bg-rose-50 hover:text-rose-600 flex items-center gap-3"><i data-lucide="droplets"></i> রক্তের প্রয়োজন</a>
-        <a href="donor_registration.html" onclick="toggleMenu()" class="p-4 rounded-2xl hover:bg-rose-50 hover:text-rose-600 flex items-center gap-3"><i data-lucide="user-plus"></i> ডোনার হোন</a>
+        <a href="#register" onclick="toggleMenu()" class="p-4 rounded-2xl hover:bg-rose-50 hover:text-rose-600 flex items-center gap-3"><i data-lucide="user-plus"></i> ডোনার হোন</a>
         <a href="#stats" onclick="toggleMenu()" class="p-4 rounded-2xl hover:bg-rose-50 hover:text-rose-600 flex items-center gap-3"><i data-lucide="bar-chart-3"></i> পরিসংখ্যান</a>
         <a href="#faq" onclick="toggleMenu()" class="p-4 rounded-2xl hover:bg-rose-50 hover:text-rose-600 flex items-center gap-3"><i data-lucide="help-circle"></i> সচরাচর জিজ্ঞাসা</a>
         <a href="#contact" onclick="toggleMenu()" class="p-4 rounded-2xl hover:bg-rose-50 hover:text-rose-600 flex items-center gap-3"><i data-lucide="phone"></i> যোগাযোগ</a>
@@ -74,7 +74,7 @@
       <nav class="hidden lg:flex items-center gap-8 text-[15px] font-bold">
         <a href="#search" class="hover:text-rose-600 transition-colors">ডোনার খুঁজুন</a>
         <a href="#request" class="hover:text-rose-600 transition-colors">রক্তের প্রয়োজন</a>
-        <a href="#donor_registration.html" class="hover:text-rose-600 transition-colors">রেজিস্ট্রেশন</a>
+        <a href="#register" class="hover:text-rose-600 transition-colors">রেজিস্ট্রেশন</a>
         <a href="#faq" class="hover:text-rose-600 transition-colors">FAQ</a>
         <a href="#contact" class="hover:text-rose-600 transition-colors">যোগাযোগ</a>
       </nav>
@@ -209,6 +209,32 @@
           <div id="requestList" class="space-y-4 max-h-[600px] overflow-y-auto pr-2"></div>
         </div>
       </div>
+    </div>
+  </section>
+
+  <section id="register" class="py-20 bg-slate-900 text-white relative overflow-hidden">
+    <div class="absolute top-0 right-0 w-64 h-64 bg-rose-600/20 blur-[120px] rounded-full"></div>
+    <div class="mx-auto container-max px-4 relative z-10">
+      <div class="max-w-4xl mx-auto text-center mb-12">
+        <h2 class="text-4xl font-black italic mb-6">ডোনার হিসেবে নিবন্ধন করুন</h2>
+        <p class="text-slate-400 text-lg font-medium">আপনার রক্ত দিতে আগ্রহী হলে আজই আমাদের তালিকায় যুক্ত হোন।</p>
+      </div>
+      
+      <form id="registerForm" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 bg-slate-800/50 p-6 md:p-10 rounded-[2.5rem] border border-slate-700 backdrop-blur-sm">
+        <input id="fullName" class="px-5 py-4 rounded-2xl bg-slate-900 border-slate-700 border text-white focus:ring-2 focus:ring-rose-500" placeholder="পুরো নাম" required />
+        <select id="bloodGroup" class="px-5 py-4 rounded-2xl bg-slate-900 border-slate-700 border text-white focus:ring-2 focus:ring-rose-500 font-bold" required></select>
+        <input id="district" class="px-5 py-4 rounded-2xl bg-slate-900 border-slate-700 border text-white focus:ring-2 focus:ring-rose-500" placeholder="জেলা" required />
+        <input id="area" class="px-5 py-4 rounded-2xl bg-slate-900 border-slate-700 border text-white focus:ring-2 focus:ring-rose-500" placeholder="থানা" required />
+        <input id="phone" class="px-5 py-4 rounded-2xl bg-slate-900 border-slate-700 border text-white focus:ring-2 focus:ring-rose-500" placeholder="মোবাইল নম্বর" required />
+        <input id="lastDonation" type="date" class="px-5 py-4 rounded-2xl bg-slate-900 border-slate-700 border text-white focus:ring-2 focus:ring-rose-500" title="সর্বশেষ রক্তদানের তারিখ" />
+        <select id="availability" class="px-5 py-4 rounded-2xl bg-slate-900 border-slate-700 border text-white focus:ring-2 focus:ring-rose-500 font-bold">
+          <option value="ready">রক্ত দিতে প্রস্তুত</option>
+          <option value="rest">বিরতিতে আছেন</option>
+        </select>
+        <input id="email" type="email" class="px-5 py-4 rounded-2xl bg-slate-900 border-slate-700 border text-white focus:ring-2 focus:ring-rose-500" placeholder="ইমেইল (ঐচ্ছিক)" />
+        <textarea id="notes" class="sm:col-span-2 lg:col-span-4 px-5 py-4 rounded-2xl bg-slate-900 border-slate-700 border text-white focus:ring-2 focus:ring-rose-500" placeholder="নোট বা অতিরিক্ত তথ্য (ঐচ্ছিক)"></textarea>
+        <button class="sm:col-span-2 lg:col-span-4 py-5 rounded-2xl bg-rose-600 text-white font-black text-xl hover:bg-rose-700 transition-all shadow-xl active:scale-95">নিবন্ধন সম্পন্ন করুন</button>
+      </form>
     </div>
   </section>
 
@@ -370,7 +396,7 @@
         <i data-lucide="search" class="w-6 h-6"></i>
         <span class="text-[10px] font-bold mt-1">সার্চ</span>
       </a>
-      <a href="donor_registration.html" class="flex flex-col items-center -mt-8">
+      <a href="#register" class="flex flex-col items-center -mt-8">
         <div class="w-14 h-14 bg-rose-600 rounded-full flex items-center justify-center text-white shadow-xl ring-4 ring-white">
           <i data-lucide="plus" class="w-8 h-8"></i>
         </div>
