@@ -439,9 +439,7 @@
   // API Config
   const DONOR_API = "https://script.google.com/macros/s/AKfycbyGguWgJdIpVgv0Sol7qF7gJOelhv-y47NoW6my1ZnlSjxHcj7ygwlMuDxffRezTW4wbA/exec?sheet=Donors";
   const REQUEST_API = "https://script.google.com/macros/s/AKfycbyGguWgJdIpVgv0Sol7qF7gJOelhv-y47NoW6my1ZnlSjxHcj7ygwlMuDxffRezTW4wbA/exec?sheet=Requests";
-  const BG = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
-
-  function id(x) { return document.getElementById(x); }
+  const BG = ["A+","A-","B+","B-","AB+","AB-","O+","O-"];
 
   const els = {
     qGroup: id('qGroup'), qDistrict: id('qDistrict'), qArea: id('qArea'), quickSearch: id('quickSearch'),
@@ -453,18 +451,9 @@
     exportCSV: id('exportCSV'), printList: id('printList'), toast: id('toast'), year: id('year')
   };
 
-  function toast(msg) { 
-    const t = els.toast; 
-    if(!t) return;
-    t.textContent = msg; 
-    t.classList.remove('hidden'); 
-    setTimeout(() => t.classList.add('hidden'), 3500); 
-  }
-
-  function val(idName) { 
-    const el = document.getElementById(idName);
-    return el ? el.value.trim() : ''; 
-  }
+  function id(x){ return document.getElementById(x); }
+  function toast(msg){ const t=els.toast; t.textContent=msg; t.classList.remove('hidden'); setTimeout(()=>t.classList.add('hidden'), 3500); }
+  function val(id){ return document.getElementById(id).value.trim(); }
 
   // Lucide Icons Fix & Auto Refresh
   function refreshIcons() {
@@ -473,70 +462,65 @@
     }
   }
 
-  // Monitor DOM changes to auto-refresh icons
+  // Monitor DOM changes to auto-refresh icons (Solves missing icon issue)
   const observer = new MutationObserver(() => refreshIcons());
   observer.observe(document.body, { childList: true, subtree: true });
 
   // Init Dropdowns
-  function fillGroups() {
-    [els.qGroup, els.fGroup, els.bloodGroup, els.rqGroup].forEach(sel => {
-      if(sel) sel.innerHTML = '<option value="">ব্লাড গ্রুপ</option>' + BG.map(g => `<option value="${g}">${g}</option>`).join('');
+  function fillGroups(){
+    [els.qGroup, els.fGroup, els.bloodGroup, els.rqGroup].forEach(sel=>{
+      sel.innerHTML = '<option value="">ব্লাড গ্রুপ</option>' + BG.map(g=>`<option value="${g}">${g}</option>`).join('')
     });
   }
 
   // Register Donor
-  if(els.registerForm) {
-    els.registerForm.addEventListener('submit', async e => {
-      e.preventDefault();
-      const d = { name: val('fullName'), group: val('bloodGroup'), district: val('district'), area: val('area'), phone: val('phone'), email: val('email'), lastDonation: val('lastDonation'), availability: val('availability'), notes: val('notes') };
-      if (!d.name || !d.group || !d.phone) { toast('প্রয়োজনীয় তথ্য দিন'); return; }
-      toast("নিবন্ধন প্রসেস হচ্ছে...");
-      try {
-        await fetch(DONOR_API, { method: "POST", body: JSON.stringify(d) });
-        toast("সফলভাবে ডোনার যুক্ত হয়েছেন!");
+  els.registerForm.addEventListener('submit', async e=>{
+    e.preventDefault();
+    const d = { name: val('fullName'), group: val('bloodGroup'), district: val('district'), area: val('area'), phone: val('phone'), email: val('email'), lastDonation: val('lastDonation'), availability: val('availability'), notes: val('notes') };
+    if(!d.name || !d.group || !d.phone){ toast('প্রয়োজনীয় তথ্য দিন'); return; }
+    toast("নিবন্ধন প্রসেস হচ্ছে...");
+    try {
+        await fetch(DONOR_API, { method:"POST", body: JSON.stringify(d) });
+        toast("সফলভাবে ডোনার যুক্ত হয়েছেন!");
         e.target.reset();
         loadDonors();
-      } catch (e) { toast("সমস্যা হয়েছে, আবার চেষ্টা করুন"); }
-    });
-  }
+    } catch(e) { toast("সমস্যা হয়েছে, আবার চেষ্টা করুন"); }
+  });
 
   // Post Request
-  if(els.requestForm) {
-    els.requestForm.addEventListener('submit', async e => {
-      e.preventDefault();
-      const r = { group: val('rqGroup'), units: val('rqUnits'), patient: val('rqPatient'), hospital: val('rqHospital'), district: val('rqDistrict'), area: val('rqArea'), contact: val('rqContact'), date: val('rqDate'), notes: val('rqNotes'), status: "open" };
-      toast("রিকোয়েস্ট পোস্ট হচ্ছে...");
-      try {
-        await fetch(REQUEST_API, { method: "POST", body: JSON.stringify(r) });
-        toast("রিকোয়েস্ট সফলভাবে দেওয়া হয়েছে");
+  els.requestForm.addEventListener('submit', async e=>{
+    e.preventDefault();
+    const r = { group: val('rqGroup'), units: val('rqUnits'), patient: val('rqPatient'), hospital: val('rqHospital'), district: val('rqDistrict'), area: val('rqArea'), contact: val('rqContact'), date: val('rqDate'), notes: val('rqNotes'), status: "open" };
+    toast("রিকোয়েস্ট পোস্ট হচ্ছে...");
+    try {
+        await fetch(REQUEST_API, { method:"POST", body: JSON.stringify(r) });
+        toast("রিকোয়েস্ট সফলভাবে দেওয়া হয়েছে");
         e.target.reset();
         loadRequests();
-      } catch (e) { toast("সমস্যা হয়েছে, আবার চেষ্টা করুন"); }
-    });
-  }
+    } catch(e) { toast("সমস্যা হয়েছে, আবার চেষ্টা করুন"); }
+  });
 
   // Load Data
-  async function loadDonors() {
+  async function loadDonors(){
     try {
-      const res = await fetch(DONOR_API);
-      const donors = await res.json();
-      renderDonors(donors);
-      updateStats(donors, null);
-    } catch (e) { console.error("Donor fetch error"); }
+        const res = await fetch(DONOR_API);
+        const donors = await res.json();
+        renderDonors(donors);
+        updateStats(donors, null);
+    } catch(e) { console.error("Donor fetch error"); }
   }
 
-  async function loadRequests() {
+  async function loadRequests(){
     try {
-      const res = await fetch(REQUEST_API);
-      const requests = await res.json();
-      renderRequests(requests);
-      updateStats(null, requests);
-    } catch (e) { console.error("Request fetch error"); }
+        const res = await fetch(REQUEST_API);
+        const requests = await res.json();
+        renderRequests(requests);
+        updateStats(null, requests);
+    } catch(e) { console.error("Request fetch error"); }
   }
 
   // Render Functions
-  function renderDonors(list) {
-    if(!els.donorList) return;
+  function renderDonors(list){
     els.donorList.innerHTML = list.map(d => {
       const isReady = d[7] === 'ready';
       return `
@@ -554,10 +538,11 @@
                 ${isReady ? 'Available' : 'On Break'}
             </span>
             <p class="text-[10px] font-bold text-slate-400 mt-4 flex items-center justify-end gap-1">
-                <i data-lucide="calendar" class="w-3 h-3"></i> শেষ দান: ${d[6] || 'অজানা'}
+                <i data-lucide="calendar" class="w-3 h-3"></i> শেষ দান: ${d[6]||'অজানা'}
             </p>
           </div>
         </div>
+        
         <div class="flex-grow">
             <h4 class="font-black text-2xl text-slate-800 leading-tight mb-2">${d[0]}</h4>
             <div class="flex items-center gap-1.5 text-slate-500 font-bold text-sm">
@@ -565,6 +550,7 @@
                 <span>${d[3]}, ${d[2]}</span>
             </div>
         </div>
+
         <div class="mt-10 grid grid-cols-2 gap-3 pt-6 border-t border-slate-50">
           <a href="tel:${d[4]}" class="flex items-center justify-center gap-2 py-4 rounded-2xl bg-slate-900 text-white font-black text-xs hover:bg-rose-600 transition-all shadow-lg active:scale-95">
             <i data-lucide="phone" class="w-4 h-4"></i> কল করুন
@@ -574,12 +560,11 @@
           </a>
         </div>
       </article>`;
-    }).join('') || `<div class="col-span-full text-center p-20 bg-slate-50 rounded-[3rem] text-slate-400 font-black italic">কোনো ডোনার খুঁজে পাওয়া যায়নি!</div>`;
+    }).join('') || `<div class="col-span-full text-center p-20 bg-slate-50 rounded-[3rem] text-slate-400 font-black italic">কোনো ডোনার খুঁজে পাওয়া যায়নি!</div>`;
     refreshIcons();
   }
 
-  function renderRequests(list) {
-    if(!els.requestList) return;
+  function renderRequests(list){
     els.requestList.innerHTML = list.reverse().map(r => {
       const isOpen = r[9] === 'open';
       return `
@@ -598,7 +583,7 @@
         <div class="space-y-2 mb-6 text-sm font-bold text-slate-500">
             <p class="flex items-center gap-2"><i data-lucide="building" class="w-4 h-4"></i> ${r[3]}</p>
             <p class="flex items-center gap-2"><i data-lucide="map-pin" class="w-4 h-4 text-rose-500"></i> ${r[5]}, ${r[4]}</p>
-            <p class="flex items-center gap-2 text-rose-600"><i data-lucide="layers" class="w-4 h-4"></i> প্রয়োজন: ${r[1]} ব্যাগ</p>
+            <p class="flex items-center gap-2 text-rose-600"><i data-lucide="layers" class="w-4 h-4"></i> প্রয়োজন: ${r[1]} ব্যাগ</p>
         </div>
         <div class="flex gap-4">
           <a href="tel:${r[6]}" class="flex-1 py-4 bg-slate-100 rounded-2xl text-center text-[11px] font-black hover:bg-rose-600 hover:text-white transition-all uppercase tracking-widest">Call Now</a>
@@ -609,68 +594,59 @@
     refreshIcons();
   }
 
-  function updateStats(donors, requests) {
-    if (donors && els.stats.donors) {
+  function updateStats(donors, requests){
+    if(donors) {
       els.stats.donors.textContent = donors.length;
-      const byGroup = BG.map(g => ({ g, n: donors.filter(d => d[1] === g).length })).filter(x => x.n > 0);
-      if(els.stats.live) {
-        els.stats.live.innerHTML = byGroup.map(x => `
-          <div class="p-5 rounded-[2rem] bg-slate-50 border border-slate-100 flex items-center justify-between transition-all hover:bg-white hover:shadow-lg">
-            <span class="font-black text-slate-800 text-xl italic">${x.g}</span>
-            <span class="px-4 py-1.5 bg-rose-600 rounded-xl font-black text-white text-xs">${x.n} জন</span>
-          </div>`).join('');
-      }
+      const byGroup = BG.map(g => ({ g, n: donors.filter(d=>d[1]===g).length })).filter(x=>x.n>0);
+      els.stats.live.innerHTML = byGroup.map(x => `
+        <div class="p-5 rounded-[2rem] bg-slate-50 border border-slate-100 flex items-center justify-between transition-all hover:bg-white hover:shadow-lg">
+          <span class="font-black text-slate-800 text-xl italic">${x.g}</span>
+          <span class="px-4 py-1.5 bg-rose-600 rounded-xl font-black text-white text-xs">${x.n} জন</span>
+        </div>`).join('');
     }
-    if (requests && els.stats.requests) {
-      els.stats.requests.textContent = requests.filter(r => r[9] === 'open').length;
-      els.stats.fulfilled.textContent = requests.filter(r => r[9] === 'done').length;
+    if(requests) {
+      els.stats.requests.textContent = requests.filter(r=>r[9]==='open').length;
+      els.stats.fulfilled.textContent = requests.filter(r=>r[9]==='done').length;
     }
     refreshIcons();
   }
 
   // Filter Action
-  if(els.applyFilters) {
-    els.applyFilters.addEventListener('click', async () => {
-      toast("ফিল্টার করা হচ্ছে...");
-      try {
+  els.applyFilters.addEventListener('click', async () => {
+    toast("ফিল্টার করা হচ্ছে...");
+    try {
         const res = await fetch(DONOR_API);
         let donors = await res.json();
-        const q = { group: els.fGroup.value || (els.qGroup ? els.qGroup.value : ''), district: (els.fDistrict.value || (els.qDistrict ? els.qDistrict.value : '') || '').toLowerCase(), area: (els.fArea.value || (els.qArea ? els.qArea.value : '') || '').toLowerCase(), ready: els.fReady.value };
-
-        if (q.group) donors = donors.filter(d => d[1] === q.group);
-        if (q.district) donors = donors.filter(d => d[2].toLowerCase().includes(q.district));
-        if (q.area) donors = donors.filter(d => d[3].toLowerCase().includes(q.area));
-        if (q.ready) donors = donors.filter(d => d[7] === q.ready);
-
+        const q = { group: els.fGroup.value || els.qGroup.value, district: (els.fDistrict.value||els.qDistrict.value||'').toLowerCase(), area: (els.fArea.value||els.qArea.value||'').toLowerCase(), ready: els.fReady.value };
+        
+        if(q.group) donors = donors.filter(d=>d[1]===q.group);
+        if(q.district) donors = donors.filter(d=>d[2].toLowerCase().includes(q.district));
+        if(q.area) donors = donors.filter(d=>d[3].toLowerCase().includes(q.area));
+        if(q.ready) donors = donors.filter(d=>d[7]===q.ready);
+        
         renderDonors(donors);
         window.location.hash = '#search';
-      } catch (e) { toast("ত্রুটি হয়েছে!"); }
-    });
-  }
+    } catch(e) { toast("ত্রুটি হয়েছে!"); }
+  });
 
-  if(els.quickSearch) {
-    els.quickSearch.addEventListener('submit', e => { e.preventDefault(); els.applyFilters.click(); });
-  }
-
-  if(els.exportCSV) {
-    els.exportCSV.addEventListener('click', async () => {
+  els.quickSearch.addEventListener('submit', e => { e.preventDefault(); els.applyFilters.click(); });
+  
+  els.exportCSV.addEventListener('click', async () => { 
       toast("CSV ফাইল তৈরি হচ্ছে...");
-      // CSV Logic remained original
-    });
-  }
+      // Logic remained as per original
+  });
 
-  if(els.printList) {
-    els.printList.addEventListener('click', () => {
+  els.printList.addEventListener('click', () => {
       window.print();
-    });
-  }
+  });
 
   // App Launch
   fillGroups();
   loadDonors();
   loadRequests();
-  if(els.year) els.year.textContent = new Date().getFullYear();
-
+  els.year.textContent = new Date().getFullYear();
+  
+  // Initial Icon Render
   window.onload = refreshIcons;
   setTimeout(refreshIcons, 1000);
 </script>
