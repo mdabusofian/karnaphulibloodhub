@@ -3,405 +3,466 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>রক্তদান —জীবন বাঁচাই </title>
+  <title>কর্ণফুলী ব্লাড হাব — জীবন বাঁচাই</title>
   <meta name="description" content="ব্লাড ডোনার ওয়েবসাইট – ডোনার খুঁজুন, রিকোয়েস্ট দিন, রেজিস্ট্রেশন করুন।" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script defer src="https://unpkg.com/lucide@latest"></script>
   <style>
     :root { --brand:#e11d48; }
     html { scroll-behavior:smooth; }
-    body { font-family:'Hind Siliguri', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Segoe UI Emoji"; }
-    .glass { background:rgba(255,255,255,.7); backdrop-filter:saturate(160%) blur(6px); }
-    .container-max { max-width: 1100px; }
+    body { font-family:'Hind Siliguri', sans-serif; overflow-x: hidden; }
+    .glass { background:rgba(255,255,255,0.8); backdrop-filter: saturate(180%) blur(12px); }
+    .container-max { max-width: 1200px; }
     .heading-gradient{ background:linear-gradient(90deg,#e11d48, #ef4444); -webkit-background-clip:text; background-clip:text; color:transparent; }
+    .card-hover { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+    .card-hover:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1); }
+    
+    /* Mobile Drawer */
+    #mobile-menu { transition: transform 0.3s ease-in-out; }
+    .drawer-open #mobile-menu { transform: translateX(0); }
+    
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #f1f1f1; }
+    ::-webkit-scrollbar-thumb { background: #e11d48; border-radius: 10px; }
   </style>
 </head>
 <body class="bg-slate-50 text-slate-800">
-  <!-- Header -->
-  <header class="sticky top-0 z-40 glass border-b border-white/60">
-    <div class="mx-auto container-max px-4 py-3 flex items-center justify-between">
-      <a href="#home" class="flex items-center gap-2 font-bold text-lg">
-        <span class="inline-flex items-center justify-center w-9 h-9 rounded-xl bg-rose-600 text-white"><i data-lucide="heart-pulse" class="w-5 h-5"></i></span>
-        <span>কর্ণফুলী ব্লাড হাব </span>
-      </a>
-      <nav class="hidden md:flex items-center gap-6 text-sm font-semibold">
-        <a href="#search" class="hover:text-rose-600">ডোনার খুঁজুন</a>
-        <a href="#request" class="hover:text-rose-600">রক্তের প্রয়োজন</a>
-        <a href="#register" class="hover:text-rose-600">ডোনার রেজিস্ট্রেশন</a>
-        <a href="#stats" class="hover:text-rose-600">পরিসংখ্যান</a>
-        <a href="#faq" class="hover:text-rose-600">সচরাচর জিজ্ঞাসা </a>
-        <a href="#contact" class="hover:text-rose-600">যোগাযোগ</a>
+
+  <div id="mobile-menu" class="fixed inset-y-0 right-0 z-50 w-64 bg-white shadow-2xl transform translate-x-full lg:hidden">
+    <div class="p-6">
+      <button onclick="toggleMenu()" class="mb-8 text-slate-500"><i data-lucide="x" class="w-8 h-8"></i></button>
+      <nav class="flex flex-col gap-5 text-lg font-bold">
+        <a href="#search" onclick="toggleMenu()" class="hover:text-rose-600">ডোনার খুঁজুন</a>
+        <a href="#request" onclick="toggleMenu()" class="hover:text-rose-600">রক্তের প্রয়োজন</a>
+        <a href="#register" onclick="toggleMenu()" class="hover:text-rose-600">রেজিস্ট্রেশন</a>
+        <a href="#stats" onclick="toggleMenu()" class="hover:text-rose-600">পরিসংখ্যান</a>
+        <a href="#faq" onclick="toggleMenu()" class="hover:text-rose-600">সচরাচর জিজ্ঞাসা</a>
+        <a href="#contact" onclick="toggleMenu()" class="hover:text-rose-600">যোগাযোগ</a>
       </nav>
-      <a href="#register" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-rose-600 text-white text-sm font-bold shadow hover:bg-rose-700">
-        <i data-lucide="plus" class="w-4 h-4"></i> ডোনার হোন
+    </div>
+  </div>
+
+  <header class="sticky top-0 z-40 glass border-b border-slate-200">
+    <div class="mx-auto container-max px-4 py-3 flex items-center justify-between">
+      <a href="#home" class="flex items-center gap-2 font-bold text-xl tracking-tight">
+        <span class="inline-flex items-center justify-center w-10 h-10 rounded-2xl bg-rose-600 text-white shadow-lg shadow-rose-200"><i data-lucide="heart-pulse" class="w-6 h-6"></i></span>
+        <span class="hidden sm:block">কর্ণফুলী <span class="text-rose-600">ব্লাড হাব</span></span>
       </a>
+      <nav class="hidden lg:flex items-center gap-8 text-[15px] font-bold uppercase tracking-wide">
+        <a href="#search" class="hover:text-rose-600 transition-colors">ডোনার খুঁজুন</a>
+        <a href="#request" class="hover:text-rose-600 transition-colors">রক্তের প্রয়োজন</a>
+        <a href="#register" class="hover:text-rose-600 transition-colors">রেজিস্ট্রেশন</a>
+        <a href="#contact" class="hover:text-rose-600 transition-colors">যোগাযোগ</a>
+      </nav>
+      <div class="flex items-center gap-3">
+        <a href="#register" class="hidden md:flex items-center gap-2 px-5 py-2.5 rounded-xl bg-rose-600 text-white text-sm font-bold shadow-lg shadow-rose-200 hover:scale-105 transition-transform">
+          <i data-lucide="plus" class="w-4 h-4"></i> ডোনার হোন
+        </a>
+        <button onclick="toggleMenu()" class="lg:hidden p-2 rounded-xl bg-slate-100"><i data-lucide="menu" class="w-6 h-6"></i></button>
+      </div>
     </div>
   </header>
 
-  <!-- Hero -->
-  <section id="home" class="relative overflow-hidden">
-    <div class="absolute inset-0 bg-gradient-to-b from-rose-50 via-white to-slate-50"></div>
-    <div class="mx-auto container-max px-4 pt-12 pb-10 relative">
-      <div class="grid md:grid-cols-2 gap-8 items-center">
-        <div>
-          <h1 class="text-3xl md:text-5xl font-extrabold leading-tight">
-            <span class="heading-gradient">এক ফোঁটা রক্ত—একটি জীবন</span><br>
-            আপনার কাছেই আছেন উপযুক্ত ডোনার
+  <section id="home" class="relative pt-12 pb-20 overflow-hidden">
+    <div class="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top_right,_#fff1f2_0%,_#f8fafc_50%)]"></div>
+    <div class="mx-auto container-max px-4 relative">
+      <div class="grid lg:grid-cols-2 gap-12 items-center">
+        <div class="text-center lg:text-left">
+          <span class="inline-block px-4 py-1.5 rounded-full bg-rose-100 text-rose-600 text-sm font-bold mb-6">স্বেচ্ছায় রক্তদান একটি মহৎ কাজ</span>
+          <h1 class="text-4xl md:text-6xl font-black leading-[1.15] text-slate-900">
+            <span class="heading-gradient">এক ফোঁটা রক্ত—</span><br>
+            একটি হাসিমাখা জীবন
           </h1>
-          <p class="mt-4 text-slate-600 text-lg">জরুরী মুহূর্তে দ্রুত ডোনার খুঁজে পান, রক্তের রিকোয়েস্ট পোস্ট করুন, আর মাত্র এক ক্লিকেই সাহায্যের হাত বাড়ান ।</p>
-          <div class="mt-6 flex flex-wrap gap-3">
-            <a href="#search" class="px-5 py-3 rounded-xl bg-slate-900 text-white font-semibold hover:bg-slate-800">ডোনার খুঁজুন</a>
-            <a href="#request" class="px-5 py-3 rounded-xl border border-slate-300 font-semibold hover:border-slate-400">রক্ত প্রয়োজন</a>
+          <p class="mt-6 text-slate-600 text-lg md:text-xl max-w-xl mx-auto lg:mx-0 leading-relaxed">জরুরী মুহূর্তে দ্রুত ডোনার খুঁজে পেতে আমরা আছি আপনার পাশে। আপনার এক ব্যাগ রক্ত বাঁচাতে পারে একটি প্রাণ।</p>
+          
+          <div class="mt-10 flex flex-wrap justify-center lg:justify-start gap-4">
+            <a href="#search" class="px-8 py-4 rounded-2xl bg-slate-900 text-white font-bold shadow-xl hover:bg-slate-800 transition-all flex items-center gap-2">
+              <i data-lucide="search" class="w-5 h-5"></i> ডোনার খুঁজুন
+            </a>
+            <a href="#request" class="px-8 py-4 rounded-2xl bg-white text-slate-900 border-2 border-slate-200 font-bold hover:border-rose-600 hover:text-rose-600 transition-all">রক্তের প্রয়োজন</a>
           </div>
-          <dl class="mt-8 grid grid-cols-3 gap-4">
-            <div class="p-4 rounded-2xl bg-white shadow-sm border"><dt class="text-2xl font-extrabold" id="stat-donors">0</dt><dd class="text-slate-500">নিবন্ধিত ডোনার</dd></div>
-            <div class="p-4 rounded-2xl bg-white shadow-sm border"><dt class="text-2xl font-extrabold" id="stat-requests">0</dt><dd class="text-slate-500">চলমান রিকোয়েস্ট</dd></div>
-            <div class="p-4 rounded-2xl bg-white shadow-sm border"><dt class="text-2xl font-extrabold" id="stat-fulfilled">0</dt><dd class="text-slate-500">পূর্ণ হয়েছে</dd></div>
-          </dl>
-        </div>
-        <div class="relative">
-          <div class="absolute -inset-6 -z-10 blur-3xl opacity-60" style="background: radial-gradient(600px circle at 20% 10%, #fecaca, transparent 40%), radial-gradient(600px circle at 80% 20%, #ffe4e6, transparent 42%), radial-gradient(600px circle at 50% 80%, #e5e7eb, transparent 45%);"></div>
-          <div class="p-5 bg-white rounded-3xl shadow-xl border">
-            <div class="flex items-center gap-3">
-              <span class="inline-flex w-10 h-10 rounded-xl bg-rose-600 text-white items-center justify-center"><i data-lucide="droplets" class="w-5 h-5"></i></span>
-              <div>
-                <h3 class="font-bold">দ্রুত সার্চ</h3>
-                <p class="text-sm text-slate-500">ব্লাড গ্রুপ, জেলা ও এলাকা দিয়ে ফিল্টার করুন</p>
-              </div>
+
+          <div class="mt-12 grid grid-cols-3 gap-4 max-w-md mx-auto lg:mx-0">
+            <div class="text-center p-4 rounded-3xl bg-white shadow-sm border border-slate-100">
+              <div class="text-2xl font-black text-rose-600" id="stat-donors">0</div>
+              <div class="text-xs font-bold text-slate-400 uppercase tracking-tighter">নিবন্ধিত ডোনার</div>
             </div>
-            <form id="quickSearch" class="mt-6 grid grid-cols-2 md:grid-cols-4 gap-3">
-              <select id="qGroup" class="px-3 py-2 rounded-xl border focus:outline-none focus:ring-2 focus:ring-rose-200">
-                <option value="">ব্লাড গ্রুপ</option>
-              </select>
-              <input id="qDistrict" placeholder="জেলা" class="px-3 py-2 rounded-xl border focus:outline-none focus:ring-2 focus:ring-rose-200" />
-              <input id="qArea" placeholder="এলাকা/থানা" class="px-3 py-2 rounded-xl border focus:outline-none focus:ring-2 focus:ring-rose-200" />
-              <button class="px-4 py-2 rounded-xl bg-rose-600 text-white font-semibold hover:bg-rose-700">সার্চ</button>
+            <div class="text-center p-4 rounded-3xl bg-white shadow-sm border border-slate-100">
+              <div class="text-2xl font-black text-blue-600" id="stat-requests">0</div>
+              <div class="text-xs font-bold text-slate-400 uppercase tracking-tighter">চলমান রিকোয়েস্ট</div>
+            </div>
+            <div class="text-center p-4 rounded-3xl bg-white shadow-sm border border-slate-100">
+              <div class="text-2xl font-black text-green-600" id="stat-fulfilled">0</div>
+              <div class="text-xs font-bold text-slate-400 uppercase tracking-tighter">সফল দান</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="relative group">
+          <div class="absolute -inset-1 bg-gradient-to-r from-rose-500 to-orange-500 rounded-[2.5rem] blur opacity-20 group-hover:opacity-40 transition duration-1000"></div>
+          <div class="relative bg-white p-8 rounded-[2.5rem] shadow-2xl border border-rose-50">
+            <div class="flex items-center gap-4 mb-8">
+              <div class="w-12 h-12 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center"><i data-lucide="zap" class="fill-current"></i></div>
+              <h3 class="text-xl font-black italic">দ্রুত ডোনার সার্চ</h3>
+            </div>
+            <form id="quickSearch" class="space-y-4">
+              <select id="qGroup" class="w-full px-5 py-4 rounded-2xl bg-slate-50 border-none focus:ring-2 focus:ring-rose-500 font-bold text-lg cursor-pointer"></select>
+              <input id="qDistrict" placeholder="জেলার নাম" class="w-full px-5 py-4 rounded-2xl bg-slate-50 border-none focus:ring-2 focus:ring-rose-500 font-medium" />
+              <input id="qArea" placeholder="এলাকা বা থানা" class="w-full px-5 py-4 rounded-2xl bg-slate-50 border-none focus:ring-2 focus:ring-rose-500 font-medium" />
+              <button class="w-full py-4 rounded-2xl bg-rose-600 text-white font-black text-xl shadow-lg shadow-rose-200 hover:bg-rose-700 transition-all uppercase tracking-widest">সার্চ করুন</button>
             </form>
-            <p class="mt-3 text-xs text-slate-500">নিরাপত্তা টিপস: কখনোই এমপিএস/চার্জ আগে পাঠাবেন না। সরকারী/স্বীকৃত হাসপাতালে মিলিত হোন।</p>
+            <p class="mt-4 text-[11px] text-slate-400 text-center font-medium">নিরাপত্তা টিপস: কখনোই টাকা আগে পাঠাবেন না। স্বীকৃত হাসপাতালে মিলিত হোন।</p>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Search Donors -->
-  <section id="search" class="py-12">
+  <section class="py-16 bg-white border-y border-slate-100">
     <div class="mx-auto container-max px-4">
-      <div class="flex items-center justify-between gap-3">
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
         <div>
-          <h2 class="text-2xl md:text-3xl font-extrabold">ডোনার খুঁজুন</h2>
-          <p class="text-slate-600">রক্ত গ্রুপ, জেলা/এলাকা, লাস্ট ডোনেশন তারিখ অনুযায়ী ফিল্টার করুন।</p>
+          <h2 class="text-3xl font-black text-slate-900 italic">সাম্প্রতিক ডোনার</h2>
+          <p class="text-slate-500 font-medium">নতুন নিবন্ধিত সাহসী রক্তদাতারা</p>
         </div>
-        <div class="flex gap-2">
-          <button id="exportCSV" class="px-3 py-2 rounded-xl border hover:bg-slate-50 text-sm">CSV এক্সপোর্ট</button>
-          <button id="printList" class="px-3 py-2 rounded-xl border hover:bg-slate-50 text-sm">প্রিন্ট</button>
+        <a href="all-donors.html" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-slate-100 text-slate-900 font-bold hover:bg-rose-600 hover:text-white transition-all group">
+          আরো ডোনার দেখুন <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+        </a>
+      </div>
+      <div id="recentDonors" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        </div>
+    </div>
+  </section>
+
+  <div class="sticky top-[68px] z-30">
+    <div class="bg-rose-600 text-white py-3 shadow-xl overflow-hidden">
+      <div class="whitespace-nowrap animate-marquee flex items-center gap-12 font-black text-lg">
+        <span>🚨 জরুরি রক্তের প্রয়োজন! হটলাইন: ০১৮৭১৫৩৬৪৬৮</span>
+        <span>🚨 জরুরি রক্তের প্রয়োজন! হটলাইন: ০১৮৭১৫৩৬৪৬৮</span>
+        <span>🚨 জরুরি রক্তের প্রয়োজন! হটলাইন: ০১৮৭১৫৩৬৪৬৮</span>
+      </div>
+    </div>
+  </div>
+
+  <section id="search" class="py-20 bg-slate-50">
+    <div class="mx-auto container-max px-4">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-6 mb-12">
+        <div>
+          <h2 class="text-3xl font-black italic">ডোনার ফিল্টার করুন</h2>
+          <p class="text-slate-500 font-medium mt-1">সঠিক ডোনার খুঁজে পেতে নিচের অপশনগুলো ব্যবহার করুন</p>
+        </div>
+        <div class="flex gap-3">
+          <button id="exportCSV" class="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white border border-slate-200 font-bold text-sm shadow-sm hover:text-rose-600 transition-all"><i data-lucide="download" class="w-4 h-4"></i> CSV এক্সপোর্ট</button>
+          <button id="printList" class="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white border border-slate-200 font-bold text-sm shadow-sm hover:text-rose-600 transition-all"><i data-lucide="printer" class="w-4 h-4"></i> প্রিন্ট</button>
         </div>
       </div>
 
-      <div class="mt-5 grid md:grid-cols-5 gap-3">
-        <select id="fGroup" class="px-3 py-2 rounded-xl border"><option value="">সব গ্রুপ</option></select>
-        <input id="fDistrict" placeholder="জেলা" class="px-3 py-2 rounded-xl border" />
-        <input id="fArea" placeholder="এলাকা/থানা" class="px-3 py-2 rounded-xl border" />
-        <select id="fReady" class="px-3 py-2 rounded-xl border">
+      <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-12">
+        <select id="fGroup" class="px-5 py-4 rounded-2xl bg-white border-none shadow-sm focus:ring-2 focus:ring-rose-500 font-bold"></select>
+        <input id="fDistrict" placeholder="জেলা" class="px-5 py-4 rounded-2xl bg-white border-none shadow-sm focus:ring-2 focus:ring-rose-500" />
+        <input id="fArea" placeholder="থানা/এলাকা" class="px-5 py-4 rounded-2xl bg-white border-none shadow-sm focus:ring-2 focus:ring-rose-500" />
+        <select id="fReady" class="px-5 py-4 rounded-2xl bg-white border-none shadow-sm focus:ring-2 focus:ring-rose-500 font-bold">
           <option value="">উপস্থিতি</option>
-          <option value="ready"> রক্ত দিতে প্রস্তুত</option>
+          <option value="ready">রক্ত দিতে প্রস্তুত</option>
           <option value="rest">বিরতিতে</option>
         </select>
-        <button id="applyFilters" class="px-4 py-2 rounded-xl bg-slate-900 text-white font-semibold">ফিল্টার</button>
+        <button id="applyFilters" class="col-span-2 md:col-span-1 py-4 rounded-2xl bg-slate-900 text-white font-black shadow-lg hover:bg-black transition-all">ফিল্টার করুন</button>
       </div>
 
-      <div id="donorList" class="mt-6 grid sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+      <div id="donorList" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 min-h-[200px]"></div>
     </div>
   </section>
 
-  <!-- Request Blood -->
-  <section id="request" class="py-12 bg-white">
+  <section id="request" class="py-20 bg-white">
     <div class="mx-auto container-max px-4">
-      <div class="grid md:grid-cols-2 gap-8 items-start">
+      <div class="grid lg:grid-cols-2 gap-20 items-start">
         <div>
-          <h2 class="text-2xl md:text-3xl font-extrabold">রক্তের প্রয়োজন</h2>
-          <p class="text-slate-600">প্রয়োজনে পোস্ট করুন—ডোনাররা নোটিফিকেশন দেখবে।</p>
-          <form id="requestForm" class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <select id="rqGroup" class="px-3 py-2 rounded-xl border" required></select>
-            <input id="rqUnits" type="number" min="1" value="1" class="px-3 py-2 rounded-xl border" placeholder="ইউনিট" required />
-            <input id="rqPatient" class="px-3 py-2 rounded-xl border" placeholder="রোগীর নাম" required />
-            <input id="rqHospital" class="px-3 py-2 rounded-xl border" placeholder="হাসপাতাল/ঠিকানা" required />
-            <input id="rqDistrict" class="px-3 py-2 rounded-xl border" placeholder="জেলা" required />
-            <input id="rqArea" class="px-3 py-2 rounded-xl border" placeholder="এলাকা/থানা" />
-            <input id="rqContact" class="px-3 py-2 rounded-xl border" placeholder="যোগাযোগ নম্বর" required />
-            <input id="rqDate" type="date" class="px-3 py-2 rounded-xl border" required />
-            <textarea id="rqNotes" class="sm:col-span-2 px-3 py-2 rounded-xl border" placeholder="অতিরিক্ত তথ্য (ঐচ্ছিক)"></textarea>
-            <button class="sm:col-span-2 px-5 py-3 rounded-xl bg-rose-600 text-white font-semibold hover:bg-rose-700">রিকোয়েস্ট সাবমিট</button>
+          <h2 class="text-4xl font-black italic mb-6">রক্তের রিকোয়েস্ট <span class="text-rose-600">দিন</span></h2>
+          <p class="mb-10 text-slate-600 text-lg leading-relaxed">জরুরি রক্তের প্রয়োজনে নিচে ফরমটি নির্ভুলভাবে পূরণ করুন। আপনার তথ্য সরাসরি ডোনারদের কাছে পৌঁছে যাবে।</p>
+          <form id="requestForm" class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <select id="rqGroup" class="px-5 py-4 rounded-2xl bg-slate-50 border-none ring-1 ring-slate-200 focus:ring-2 focus:ring-rose-500 font-bold" required></select>
+            <input id="rqUnits" type="number" min="1" value="1" class="px-5 py-4 rounded-2xl bg-slate-50 border-none ring-1 ring-slate-200 focus:ring-2 focus:ring-rose-500" placeholder="ইউনিট" required />
+            <input id="rqPatient" class="px-5 py-4 rounded-2xl bg-slate-50 border-none ring-1 ring-slate-200 focus:ring-2 focus:ring-rose-500" placeholder="রোগীর নাম" required />
+            <input id="rqHospital" class="px-5 py-4 rounded-2xl bg-slate-50 border-none ring-1 ring-slate-200 focus:ring-2 focus:ring-rose-500" placeholder="হাসপাতালের নাম" required />
+            <input id="rqDistrict" class="px-5 py-4 rounded-2xl bg-slate-50 border-none ring-1 ring-slate-200 focus:ring-2 focus:ring-rose-500" placeholder="জেলা" required />
+            <input id="rqArea" class="px-5 py-4 rounded-2xl bg-slate-50 border-none ring-1 ring-slate-200 focus:ring-2 focus:ring-rose-500" placeholder="থানা/এলাকা" />
+            <input id="rqContact" class="px-5 py-4 rounded-2xl bg-slate-50 border-none ring-1 ring-slate-200 focus:ring-2 focus:ring-rose-500" placeholder="যোগাযোগ নম্বর" required />
+            <input id="rqDate" type="date" class="px-5 py-4 rounded-2xl bg-slate-50 border-none ring-1 ring-slate-200 focus:ring-2 focus:ring-rose-500" required />
+            <textarea id="rqNotes" class="sm:col-span-2 px-5 py-4 rounded-2xl bg-slate-50 border-none ring-1 ring-slate-200 focus:ring-2 focus:ring-rose-500" rows="3" placeholder="অতিরিক্ত কোনো তথ্য থাকলে দিন (ঐচ্ছিক)"></textarea>
+            <button class="sm:col-span-2 py-5 rounded-2xl bg-rose-600 text-white font-black text-xl shadow-xl shadow-rose-100 hover:bg-rose-700 transition-all uppercase tracking-widest">সাবমিট করুন</button>
           </form>
-          <p class="mt-2 text-xs text-slate-500">আপনার তথ্য আমাদের ডাটাবেজ এ সেভ হবে </p>
         </div>
         <div>
-          <h3 class="text-xl font-bold">চলমান রিকোয়েস্ট</h3>
-          <div id="requestList" class="mt-3 space-y-3"></div>
+          <div class="flex items-center justify-between mb-8">
+            <h3 class="text-2xl font-black italic">চলমান রিকোয়েস্ট</h3>
+            <span class="px-3 py-1 bg-rose-100 text-rose-600 rounded-lg text-xs font-bold uppercase">Live Updates</span>
+          </div>
+          <div id="requestList" class="space-y-5 max-h-[700px] overflow-y-auto pr-2 custom-scroll"></div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Register Donor -->
-  <section id="register" class="py-12 bg-rose-50/50">
-    <div class="mx-auto container-max px-4">
-      <h2 class="text-2xl md:text-3xl font-extrabold">ডোনার রেজিস্ট্রেশন</h2>
-      <p class="text-slate-600">নিজের তথ্য যুক্ত করুন—সবার আগে আপনি পৌঁছে যেতে পারেন মানুষের প্রাণ বাঁচাতে।</p>
-      <form id="registerForm" class="mt-4 grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-3">
-        <input id="fullName" class="px-3 py-2 rounded-xl border" placeholder="পুরো নাম" required />
-        <select id="bloodGroup" class="px-3 py-2 rounded-xl border" required></select>
-        <input id="district" class="px-3 py-2 rounded-xl border" placeholder="জেলা" required />
-        <input id="area" class="px-3 py-2 rounded-xl border" placeholder="এলাকা/থানা" required />
-        <input id="phone" class="px-3 py-2 rounded-xl border" placeholder="মোবাইল" required />
-        <input id="lastDonation" type="date" class="px-3 py-2 rounded-xl border" />
-        <select id="availability" class="px-3 py-2 rounded-xl border">
-          <option value="ready"> রক্ত দিতে প্রস্তুত </option>
-          <option value="rest">বিরতিতে</option>
+  <section id="register" class="py-24 bg-rose-600 relative overflow-hidden">
+    <div class="absolute inset-0 opacity-10 pointer-events-none">
+       <div class="absolute top-0 left-0 w-64 h-64 bg-white rounded-full -translate-x-1/2 -translate-y-1/2"></div>
+       <div class="absolute bottom-0 right-0 w-96 h-96 bg-white rounded-full translate-x-1/3 translate-y-1/3"></div>
+    </div>
+    <div class="mx-auto container-max px-4 relative z-10 text-center">
+      <h2 class="text-4xl md:text-5xl font-black text-white mb-6 italic">রক্তদাতা হিসেবে নিবন্ধন করুন</h2>
+      <p class="text-rose-100 text-lg md:text-xl mb-12 max-w-2xl mx-auto font-medium">আপনার একটি ছোট্ট সিদ্ধান্ত বাঁচাতে পারে একটি পরিবার। আজই আমাদের ডোনার নেটওয়ার্কে যুক্ত হোন।</p>
+      
+      <form id="registerForm" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 bg-white p-10 rounded-[2.5rem] shadow-2xl">
+        <input id="fullName" class="px-5 py-4 rounded-2xl bg-slate-50 border-none ring-1 ring-slate-200 focus:ring-2 focus:ring-rose-500" placeholder="পুরো নাম" required />
+        <select id="bloodGroup" class="px-5 py-4 rounded-2xl bg-slate-50 border-none ring-1 ring-slate-200 focus:ring-2 focus:ring-rose-500 font-bold" required></select>
+        <input id="district" class="px-5 py-4 rounded-2xl bg-slate-50 border-none ring-1 ring-slate-200 focus:ring-2 focus:ring-rose-500" placeholder="জেলা" required />
+        <input id="area" class="px-5 py-4 rounded-2xl bg-slate-50 border-none ring-1 ring-slate-200 focus:ring-2 focus:ring-rose-500" placeholder="থানা/এলাকা" required />
+        <input id="phone" class="px-5 py-4 rounded-2xl bg-slate-50 border-none ring-1 ring-slate-200 focus:ring-2 focus:ring-rose-500" placeholder="মোবাইল নম্বর" required />
+        <input id="lastDonation" type="date" class="px-5 py-4 rounded-2xl bg-slate-50 border-none ring-1 ring-slate-200 focus:ring-2 focus:ring-rose-500" title="সর্বশেষ রক্তদানের তারিখ" />
+        <select id="availability" class="px-5 py-4 rounded-2xl bg-slate-50 border-none ring-1 ring-slate-200 focus:ring-2 focus:ring-rose-500 font-bold">
+          <option value="ready">রক্ত দিতে প্রস্তুত</option>
+          <option value="rest">এখন বিরতিতে আছেন</option>
         </select>
-        <input id="email" type="email" class="px-3 py-2 rounded-xl border" placeholder="ইমেইল (ঐচ্ছিক)" />
-        <textarea id="notes" class="sm:col-span-2 lg:col-span-4 px-3 py-2 rounded-xl border" placeholder="নোট (ঐচ্ছিক)"></textarea>
-        <button class="sm:col-span-2 lg:col-span-4 px-5 py-3 rounded-xl bg-slate-900 text-white font-semibold">রেজিস্টার করুন</button>
+        <input id="email" type="email" class="px-5 py-4 rounded-2xl bg-slate-50 border-none ring-1 ring-slate-200 focus:ring-2 focus:ring-rose-500" placeholder="ইমেইল (ঐচ্ছিক)" />
+        <textarea id="notes" class="sm:col-span-2 lg:col-span-4 px-5 py-4 rounded-2xl bg-slate-50 border-none ring-1 ring-slate-200 focus:ring-2 focus:ring-rose-500" placeholder="আপনার সম্পর্কে কিছু বলুন বা অতিরিক্ত নোট (ঐচ্ছিক)"></textarea>
+        <button class="sm:col-span-2 lg:col-span-4 py-5 rounded-2xl bg-slate-900 text-white font-black text-xl hover:bg-black transition-all shadow-xl hover:scale-[1.01]">নিবন্ধন সম্পন্ন করুন</button>
       </form>
     </div>
   </section>
 
-  <!-- Stats & How it Works -->
-  <section id="stats" class="py-12">
+  <section id="stats" class="py-20">
     <div class="mx-auto container-max px-4">
-      <div class="grid md:grid-cols-2 gap-8 items-start">
+      <div class="grid lg:grid-cols-2 gap-16 items-start">
         <div>
-          <h2 class="text-2xl md:text-3xl font-extrabold">কীভাবে কাজ করে</h2>
-          <ol class="mt-3 space-y-3">
-            <li class="flex gap-3"><span class="inline-flex w-8 h-8 rounded-lg bg-slate-900 text-white items-center justify-center font-bold">1</span><p><b>ডোনার রেজিস্ট্রেশন:</b> নিজের তথ্য দিন, লাস্ট ডোনেশনের তারিখ উল্লেখ করুন।</p></li>
-            <li class="flex gap-3"><span class="inline-flex w-8 h-8 rounded-lg bg-slate-900 text-white items-center justify-center font-bold">2</span><p><b>রিকোয়েস্ট পোস্ট:</b> প্রয়োজনের তথ্য দিয়ে রিকোয়েস্ট তৈরি করুন।</p></li>
-            <li class="flex gap-3"><span class="inline-flex w-8 h-8 rounded-lg bg-slate-900 text-white items-center justify-center font-bold">3</span><p><b>দ্রুত সার্চ:</b> ব্লাড গ্রুপ/লোকেশন অনুসারে ডোনার ফিল্টার করুন এবং যোগাযোগ করুন।</p></li>
-          </ol>
+          <h2 class="text-3xl font-black italic mb-8">এটি যেভাবে কাজ করে</h2>
+          <div class="space-y-6">
+            <div class="flex gap-6 p-6 rounded-3xl bg-white border border-slate-100 shadow-sm card-hover">
+              <span class="flex-shrink-0 w-12 h-12 rounded-2xl bg-slate-900 text-white flex items-center justify-center font-black text-xl">১</span>
+              <div>
+                <h4 class="font-black text-lg mb-1">নিবন্ধন করুন</h4>
+                <p class="text-slate-500 font-medium">ডোনার হিসেবে আপনার তথ্য দিয়ে রেজিস্ট্রেশন করুন।</p>
+              </div>
+            </div>
+            <div class="flex gap-6 p-6 rounded-3xl bg-white border border-slate-100 shadow-sm card-hover">
+              <span class="flex-shrink-0 w-12 h-12 rounded-2xl bg-slate-900 text-white flex items-center justify-center font-black text-xl">২</span>
+              <div>
+                <h4 class="font-black text-lg mb-1">রিকোয়েস্ট দিন</h4>
+                <p class="text-slate-500 font-medium">রক্তের প্রয়োজন হলে তথ্য দিয়ে পোস্ট করুন।</p>
+              </div>
+            </div>
+            <div class="flex gap-6 p-6 rounded-3xl bg-white border border-slate-100 shadow-sm card-hover">
+              <span class="flex-shrink-0 w-12 h-12 rounded-2xl bg-slate-900 text-white flex items-center justify-center font-black text-xl">৩</span>
+              <div>
+                <h4 class="font-black text-lg mb-1">জীবন বাঁচান</h4>
+                <p class="text-slate-500 font-medium">ডোনারের সাথে যোগাযোগ করুন এবং সরাসরি হাসপাতালে পৌঁছে যান।</p>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="p-5 bg-white rounded-3xl shadow-xl border">
-          <h3 class="text-xl font-bold">লাইভ পরিসংখ্যান</h3>
-          <ul class="mt-3 space-y-2 text-slate-700" id="liveStats"></ul>
+        <div class="bg-white p-8 rounded-[2.5rem] shadow-xl border border-slate-100">
+          <h3 class="text-2xl font-black italic mb-6">লাইভ পরিসংখ্যান (গ্রুপ ভিত্তিক)</h3>
+          <div class="grid grid-cols-2 gap-4" id="liveStats">
+             </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- FAQ -->
-  <section id="faq" class="py-12 bg-white">
+  <section id="faq" class="py-20 bg-slate-900 text-white">
     <div class="mx-auto container-max px-4">
-      <h2 class="text-2xl md:text-3xl font-extrabold">সাধারণ জিজ্ঞাসা</h2>
-      <div class="mt-5 grid md:grid-cols-2 gap-5">
-
-        <details class="p-4 rounded-2xl border bg-slate-50">
-  <summary class="font-bold cursor-pointer">আমি প্রথমবার রক্ত দিতে চাই, কোনো ঝুঁকি আছে কি?</summary>
-  <p class="mt-2 text-slate-600">সুস্থ মানুষের জন্য রক্ত দেওয়া নিরাপদ। তবে রক্ত দেওয়ার আগে অবশ্যই ডাক্তার বা রক্ত সংগ্রহকারীর সাথে পরামর্শ করুন।</p>
-</details>
-
-<details class="p-4 rounded-2xl border bg-slate-50">
-  <summary class="font-bold cursor-pointer">রক্ত দেওয়ার আগে কী খাওয়া উচিত?</summary>
-  <p class="mt-2 text-slate-600">রক্ত দেওয়ার অন্তত ৩–৪ ঘণ্টা আগে হালকা খাবার ও পর্যাপ্ত পানি পান করা উচিত। চর্বিযুক্ত বা ভারী খাবার এড়িয়ে চলুন।</p>
-</details>
-
-<details class="p-4 rounded-2xl border bg-slate-50">
-  <summary class="font-bold cursor-pointer">কোন বয়সে রক্ত দেওয়া যায়?</summary>
-  <p class="mt-2 text-slate-600">১৮–৬০ বছর বয়সী সুস্থ মানুষ রক্ত দিতে পারেন।</p>
-</details>
-
-<details class="p-4 rounded-2xl border bg-slate-50">
-  <summary class="font-bold cursor-pointer">রক্ত দেওয়ার পর কী করবো?</summary>
-  <p class="mt-2 text-slate-600">রক্ত দেওয়ার পর অন্তত ১০–১৫ মিনিট বিশ্রাম নিন, হালকা খাবার ও পানি পান করুন এবং সেদিন ভারী কাজ বা ব্যায়াম এড়িয়ে চলুন।</p>
-</details>
-
-<details class="p-4 rounded-2xl border bg-slate-50">
-  <summary class="font-bold cursor-pointer">সর্বনিম্ন ওজন কত হলে রক্ত দেওয়া যায়?</summary>
-  <p class="mt-2 text-slate-600">সাধারণত ৫০ কেজি বা তার বেশি ওজন হলে নিরাপদে রক্ত দেওয়া যায়।</p>
-</details>
-
-<details class="p-4 rounded-2xl border bg-slate-50">
-  <summary class="font-bold cursor-pointer">আমি ডায়াবেটিস বা উচ্চ রক্তচাপের রোগী, আমি কি রক্ত দিতে পারবো?</summary>
-  <p class="mt-2 text-slate-600">কিছু ক্ষেত্রে ডায়াবেটিস বা উচ্চ রক্তচাপ নিয়ন্ত্রণে থাকলে রক্ত দেওয়া সম্ভব, তবে অবশ্যই ডাক্তারের পরামর্শ নিন।</p>
-</details>
-<details class="p-4 rounded-2xl border bg-slate-50">
-  <summary class="font-bold cursor-pointer">রক্ত দেওয়ার সময় কি ব্যথা হয়?</summary>
-  <p class="mt-2 text-slate-600">শুধুমাত্র সূচ ফোটানোর সময় হালকা ব্যথা হয়, কিন্তু কয়েক সেকেন্ডের মধ্যেই সেটা কেটে যায়।</p>
-</details>
-
-<details class="p-4 rounded-2xl border bg-slate-50">
-  <summary class="font-bold cursor-pointer">একজন মানুষ বছরে কয়বার রক্ত দিতে পারেন?</summary>
-  <p class="mt-2 text-slate-600">পুরুষরা সাধারণত বছরে ৩–৪ বার এবং মহিলারা ২–৩ বার নিরাপদে রক্ত দিতে পারেন, তবে প্রতিবার দানের মধ্যে অন্তত ৩–৪ মাস বিরতি রাখা উচিত।</p>
-</details>
-
-        <details class="p-4 rounded-2xl border bg-slate-50">
-          <summary class="font-bold cursor-pointer">কতদিন পরপর রক্ত দেওয়া যায়?</summary>
-          <p class="mt-2 text-slate-600">সাধারণত ১১০–১২০ দিন পর (পুরুষ) এবং ১২০–১৩০ দিন পর (মহিলা)। সন্দেহ হলে চিকিৎসকের পরামর্শ নিন।</p>
+      <div class="text-center mb-16">
+        <h2 class="text-4xl font-black italic mb-4">সচরাচর জিজ্ঞাসা</h2>
+        <p class="text-slate-400 font-medium">রক্তদান সম্পর্কিত আপনার সাধারণ কিছু প্রশ্নের উত্তর</p>
+      </div>
+      <div class="grid md:grid-cols-2 gap-4 max-w-5xl mx-auto">
+        <details class="group bg-slate-800 p-6 rounded-3xl cursor-pointer border border-slate-700 transition-all">
+          <summary class="font-bold list-none flex justify-between items-center text-lg">
+            আমি প্রথমবার রক্ত দিতে চাই, কোনো ঝুঁকি আছে কি?
+            <i data-lucide="chevron-down" class="group-open:rotate-180 transition-transform"></i>
+          </summary>
+          <p class="mt-4 text-slate-400 leading-relaxed">সুস্থ মানুষের জন্য রক্ত দেওয়া সম্পূর্ণ নিরাপদ। তবে রক্ত দেওয়ার আগে অবশ্যই ডাক্তার বা রক্ত সংগ্রহকারীর সাথে পরামর্শ করুন।</p>
         </details>
-        <details class="p-4 rounded-2xl border bg-slate-50">
-          <summary class="font-bold cursor-pointer">কোনো চার্জ আছে?</summary>
-          <p class="mt-2 text-slate-600">না, এই প্ল্যাটফর্ম সম্পূর্ণ স্বেচ্ছাসেবী উদ্যোগ।</p>
+
+        <details class="group bg-slate-800 p-6 rounded-3xl cursor-pointer border border-slate-700 transition-all">
+          <summary class="font-bold list-none flex justify-between items-center text-lg">
+            রক্ত দেওয়ার আগে কী খাওয়া উচিত?
+            <i data-lucide="chevron-down" class="group-open:rotate-180 transition-transform"></i>
+          </summary>
+          <p class="mt-4 text-slate-400 leading-relaxed">রক্ত দেওয়ার অন্তত ৩–৪ ঘণ্টা আগে হালকা খাবার ও পর্যাপ্ত পানি পান করা উচিত। চর্বিযুক্ত বা ভারী খাবার এড়িয়ে চলুন।</p>
         </details>
-        <details class="p-4 rounded-2xl border bg-slate-50">
-          <summary class="font-bold cursor-pointer">ডাটা নিরাপত্তা</summary>
-          <p class="mt-2 text-slate-600">তথ্য আপনার ব্রাউজার শো হবে। </p>
+
+        <details class="group bg-slate-800 p-6 rounded-3xl cursor-pointer border border-slate-700 transition-all">
+          <summary class="font-bold list-none flex justify-between items-center text-lg">
+            কোন বয়সে রক্ত দেওয়া যায়?
+            <i data-lucide="chevron-down" class="group-open:rotate-180 transition-transform"></i>
+          </summary>
+          <p class="mt-4 text-slate-400 leading-relaxed">১৮–৬০ বছর বয়সী সুস্থ মানুষ রক্ত দিতে পারেন।</p>
         </details>
-        <details class="p-4 rounded-2xl border bg-slate-50">
-          <summary class="font-bold cursor-pointer">কিভাবে টিমের সাথে যোগাযোগ করবো?</summary>
-          <p class="mt-2 text-slate-600">নীচের যোগাযোগ সেকশনে ফর্ম/লিংক দেওয়া আছে।</p>
+
+        <details class="group bg-slate-800 p-6 rounded-3xl cursor-pointer border border-slate-700 transition-all">
+          <summary class="font-bold list-none flex justify-between items-center text-lg">
+            রক্ত দেওয়ার পর কী করবো?
+            <i data-lucide="chevron-down" class="group-open:rotate-180 transition-transform"></i>
+          </summary>
+          <p class="mt-4 text-slate-400 leading-relaxed">রক্ত দেওয়ার পর অন্তত ১০–১৫ মিনিট বিশ্রাম নিন, হালকা খাবার ও পানি পান করুন এবং সেদিন ভারী কাজ বা ব্যায়াম এড়িয়ে চলুন।</p>
+        </details>
+
+        <details class="group bg-slate-800 p-6 rounded-3xl cursor-pointer border border-slate-700 transition-all">
+          <summary class="font-bold list-none flex justify-between items-center text-lg">
+            সর্বনিম্ন ওজন কত হলে রক্ত দেওয়া যায়?
+            <i data-lucide="chevron-down" class="group-open:rotate-180 transition-transform"></i>
+          </summary>
+          <p class="mt-4 text-slate-400 leading-relaxed">সাধারণত ৫০ কেজি বা তার বেশি ওজন হলে নিরাপদে রক্ত দেওয়া যায়।</p>
+        </details>
+
+        <details class="group bg-slate-800 p-6 rounded-3xl cursor-pointer border border-slate-700 transition-all">
+          <summary class="font-bold list-none flex justify-between items-center text-lg">
+            আমি ডায়াবেটিস বা উচ্চ রক্তচাপের রোগী, আমি কি পারবো?
+            <i data-lucide="chevron-down" class="group-open:rotate-180 transition-transform"></i>
+          </summary>
+          <p class="mt-4 text-slate-400 leading-relaxed">কিছু ক্ষেত্রে ডায়াবেটিস বা উচ্চ রক্তচাপ নিয়ন্ত্রণে থাকলে রক্ত দেওয়া সম্ভব, তবে অবশ্যই ডাক্তারের পরামর্শ নিন।</p>
+        </details>
+
+        <details class="group bg-slate-800 p-6 rounded-3xl cursor-pointer border border-slate-700 transition-all">
+          <summary class="font-bold list-none flex justify-between items-center text-lg">
+            রক্ত দেওয়ার সময় কি ব্যথা হয়?
+            <i data-lucide="chevron-down" class="group-open:rotate-180 transition-transform"></i>
+          </summary>
+          <p class="mt-4 text-slate-400 leading-relaxed">শুধুমাত্র সূচ ফোটানোর সময় হালকা ব্যথা হয়, কিন্তু কয়েক সেকেন্ডের মধ্যেই সেটা কেটে যায়।</p>
+        </details>
+
+        <details class="group bg-slate-800 p-6 rounded-3xl cursor-pointer border border-slate-700 transition-all">
+          <summary class="font-bold list-none flex justify-between items-center text-lg">
+            বছরে কয়বার রক্ত দেওয়া যায়?
+            <i data-lucide="chevron-down" class="group-open:rotate-180 transition-transform"></i>
+          </summary>
+          <p class="mt-4 text-slate-400 leading-relaxed">পুরুষরা বছরে ৪ বার এবং মহিলারা ৩ বার নিরাপদে রক্ত দিতে পারেন। ৪ মাস অন্তর রক্ত দেওয়া শরীরের জন্য ভালো।</p>
         </details>
       </div>
     </div>
   </section>
-<!-- Donor Heroes -->
-<section id="heroes" class="py-12 bg-rose-50/30">
-  <div class="mx-auto container-max px-4">
-    <h2 class="text-2xl md:text-3xl font-extrabold mb-6">আমাদের নায়করা</h2>
-    <div class="relative overflow-hidden">
-      <div class="flex gap-6 animate-scroll">
-        
-        <!-- Card 1 -->
-        <div class="hero-card p-4 rounded-2xl bg-white shadow border text-center">
-          <img src="donors/rahim-hospital.jpg" class="w-32 h-32 mx-auto rounded-xl object-cover border" alt="Rahim">
-          <h4 class="mt-3 font-bold">রহিম উদ্দিন</h4>
-          <p class="text-rose-600 font-semibold">O+</p>
-          <p class="text-xs text-slate-500">হাসপাতাল: ঢাকা মেডিকেল</p>
-          <p class="text-xs text-slate-500">সর্বশেষ দান: ২০২৫-০৬-১৫</p>
-        </div>
 
-        <!-- Card 2 -->
-        <div class="hero-card p-4 rounded-2xl bg-white shadow border text-center">
-          <img src="rsz_whatsapp_image_2025-06-24_at_121852_pm.jpg" class="w-32 h-32 mx-auto rounded-xl object-cover border" alt="Salim">
-          <h4 class="mt-3 font-bold">সালিম আহমেদ</h4>
-          <p class="text-rose-600 font-semibold">A+</p>
-          <p class="text-xs text-slate-500">হাসপাতাল: চট্টগ্রাম মেডিকেল</p>
-          <p class="text-xs text-slate-500">সর্বশেষ দান: ২০২৫-০৭-০৮</p>
-        </div>
-
-        <!-- Card 3 -->
-        <div class="hero-card p-4 rounded-2xl bg-white shadow border text-center">
-          <img src="donors/maruf-hospital.jpg" class="w-32 h-32 mx-auto rounded-xl object-cover border" alt="Maruf">
-          <h4 class="mt-3 font-bold">মারুফ হাসান</h4>
-          <p class="text-rose-600 font-semibold">B-</p>
-          <p class="text-xs text-slate-500">হাসপাতাল: রাজশাহী মেডিকেল</p>
-          <p class="text-xs text-slate-500">সর্বশেষ দান: ২০২৫-০৮-১০</p>
-        </div>
-
-      </div>
-    </div>
-  </div>
-</section>
-
-<style>
-  @keyframes scroll {
-    from { transform: translateX(100%); }
-    to { transform: translateX(-100%); }
-  }
-  .animate-scroll {
-    display: flex;
-    animation: scroll 35s linear infinite;
-  }
-  .hero-card {
-    min-width: 240px;
-    flex-shrink: 0;
-  }
-  .animate-scroll:hover { animation-play-state: paused; }
-</style>
-
-<!-- Emergency Alert Banner -->
-<div class="sticky top-0 z-50">
-  <div class="relative bg-transparent text-red-600 py-2 shadow-md overflow-hidden">
-    <div class="whitespace-nowrap animate-marquee text-lg font-extrabold relative z-10 flex items-center gap-6 px-4">
-      🚨 <span class="animate-blink">জরুরি রক্তের প্রয়োজন!</span> এখনই যোগাযোগ করুন ☎️ 017XXXXXXXX 
-      🚨 <span class="animate-blink">জরুরি রক্তের প্রয়োজন!</span> এখনই যোগাযোগ করুন ☎️ 018XXXXXXXX
-    </div>
-  </div>
-</div>
-
-<style>
-  /* marquee effect */
-  @keyframes marquee {
-    0%   { transform: translateX(100%); }
-    100% { transform: translateX(-100%); }
-  }
-  .animate-marquee {
-    display: inline-block;
-    animation: marquee 15s linear infinite;
-  }
-
-  /* blink effect */
-  @keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.2; }
-  }
-  .animate-blink {
-    animation: blink 1.2s infinite;
-    color: #dc2626; /* Tailwind Red-600 */
-    text-shadow: 0 0 8px rgba(220, 38, 38, 0.8);
-  }
-</style>
-
-
-  <!-- Contact -->
-  <section id="contact" class="py-12">
+  <section id="heroes" class="py-20 bg-white">
     <div class="mx-auto container-max px-4">
-      <div class="grid md:grid-cols-2 gap-8 items-start">
+       <div class="text-center mb-12">
+          <h2 class="text-3xl font-black italic">আমাদের নায়কগণ</h2>
+          <p class="text-slate-500 font-bold uppercase tracking-widest text-sm mt-2">যাঁদের অবদানে প্রাণ বাঁচে অসংখ্য মানুষের</p>
+       </div>
+       <div class="relative overflow-hidden py-4">
+         <div class="flex gap-6 animate-scroll">
+           <div class="hero-card p-6 rounded-[2.5rem] bg-slate-50 border border-slate-100 text-center shadow-sm">
+             <div class="w-24 h-24 mx-auto rounded-full bg-rose-100 border-4 border-white shadow-md flex items-center justify-center mb-4"><i data-lucide="user" class="text-rose-600 w-10 h-10"></i></div>
+             <h4 class="font-black text-lg">রহিম উদ্দিন</h4>
+             <span class="inline-block px-4 py-1.5 bg-rose-600 text-white rounded-xl font-black text-sm my-3 shadow-md">O+ (পজিটিভ)</span>
+             <p class="text-[11px] text-slate-400 font-bold uppercase tracking-tighter">শেষ দান: জুন ২০২৫</p>
+           </div>
+           <div class="hero-card p-6 rounded-[2.5rem] bg-slate-50 border border-slate-100 text-center shadow-sm">
+             <div class="w-24 h-24 mx-auto rounded-full bg-rose-100 border-4 border-white shadow-md flex items-center justify-center mb-4"><i data-lucide="user" class="text-rose-600 w-10 h-10"></i></div>
+             <h4 class="font-black text-lg">সালিম আহমেদ</h4>
+             <span class="inline-block px-4 py-1.5 bg-rose-600 text-white rounded-xl font-black text-sm my-3 shadow-md">A+ (পজিটিভ)</span>
+             <p class="text-[11px] text-slate-400 font-bold uppercase tracking-tighter">শেষ দান: জুলাই ২০২৫</p>
+           </div>
+           <div class="hero-card p-6 rounded-[2.5rem] bg-slate-50 border border-slate-100 text-center shadow-sm">
+             <div class="w-24 h-24 mx-auto rounded-full bg-rose-100 border-4 border-white shadow-md flex items-center justify-center mb-4"><i data-lucide="user" class="text-rose-600 w-10 h-10"></i></div>
+             <h4 class="font-black text-lg">মারুফ হাসান</h4>
+             <span class="inline-block px-4 py-1.5 bg-rose-600 text-white rounded-xl font-black text-sm my-3 shadow-md">B- (নেগেটিভ)</span>
+             <p class="text-[11px] text-slate-400 font-bold uppercase tracking-tighter">শেষ দান: আগস্ট ২০২৫</p>
+           </div>
+         </div>
+       </div>
+    </div>
+  </section>
+
+  <section id="contact" class="py-20 bg-slate-50">
+    <div class="mx-auto container-max px-4">
+      <div class="grid lg:grid-cols-2 gap-16 items-start">
         <div>
-          <h2 class="text-2xl md:text-3xl font-extrabold">যোগাযোগ</h2>
-          <p class="text-slate-600"> কর্ণফুলী ব্লাড হাব ।</p>
-          <p class="text-slate-600"> কর্ণফুলী ব্লাড ব্যাংক চট্টগ্রামে অবস্থিত একটি স্বেচ্ছাসেবী প্রতিষ্ঠান, যা নিরাপদ ও সময়মতো রক্ত সরবরাহ নিশ্চিত করে। এটি স্বেচ্ছায় রক্তদাতাদের মাধ্যমে রক্ত সংগ্রহ, পরীক্ষা ও সংরক্ষণ করে এবং জরুরি অবস্থায় রোগীদের কাছে সরবরাহ করে।
-মূল সেবা ও কার্যক্রম:
-রক্ত সংগ্রহ ও সংরক্ষণ
-রক্তদাতা নিবন্ধন
-রক্ত পরীক্ষা ও নিরাপত্তা
-জরুরি রক্ত সরবরাহ
-রক্তদান ক্যাম্প
-
-            মূল বৈশিষ্ট্য:
-স্বেচ্ছাসেবী ভিত্তিক
-নিরাপদ ও মানসম্মত রক্ত সরবরাহ
-জনসচেতনতা ও শিক্ষামূলক কার্যক্রম
-সমাজে প্রভাব:
-বিপদকালীন সময়ে রোগীর জীবন রক্ষা এবং সমাজে মানবিক মূল্যবোধ বৃদ্ধি।
-
-ভবিষ্যৎ লক্ষ্য:
-উন্নত প্রযুক্তি ব্যবহার, অনলাইন রক্তদাতা নেটওয়ার্ক, এবং সচেতনতা বৃদ্ধি। ।</p>
-          <ul class="mt-3 space-y-2 text-slate-700">
-            <li class="flex items-center gap-2"><i data-lucide="phone" class="w-4 h-4"></i> হটলাইন: <a href="tel:01871536468" class="text-rose-700 font-semibold">01871536468</a></li>
-            <li class="flex items-center gap-2"><i data-lucide="message-circle" class="w-4 h-4"></i> WhatsApp: <a href="https://wa.me/8801871536468" target="_blank" class="text-rose-700 font-semibold">বার্তা পাঠান</a></li>
-            <li class="flex items-center gap-2"><i data-lucide="facebook" class="w-4 h-4"></i> Facebook: <a href="https://www.facebook.com/mdsofian68" class="text-rose-700 font-semibold">পেজ লিংক</a></li>
-          </ul>
+          <h2 class="text-4xl font-black italic mb-6">আমাদের সাথে <span class="text-rose-600">যোগাযোগ</span></h2>
+          <p class="text-slate-600 text-lg mb-10 leading-relaxed">কর্ণফুলী ব্লাড হাব চট্টগ্রামের একটি সেবামূলক প্রতিষ্ঠান। আমাদের যেকোনো কার্যক্রম সম্পর্কে জানতে বা সরাসরি সহায়তা পেতে যোগাযোগ করুন।</p>
+          
+          <div class="space-y-6">
+            <div class="flex items-center gap-6 group">
+              <div class="w-14 h-14 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center shadow-sm group-hover:bg-rose-600 group-hover:text-white transition-all duration-300"><i data-lucide="phone-call" class="w-7 h-7"></i></div>
+              <div>
+                <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">হটলাইন কল করুন</p>
+                <a href="tel:01871536468" class="text-xl font-black text-slate-900 hover:text-rose-600">০১৮৭১৫৩৬৪৬৮</a>
+              </div>
+            </div>
+            <div class="flex items-center gap-6 group">
+              <div class="w-14 h-14 rounded-2xl bg-green-50 text-green-600 flex items-center justify-center shadow-sm group-hover:bg-green-600 group-hover:text-white transition-all duration-300"><i data-lucide="message-square" class="w-7 h-7"></i></div>
+              <div>
+                <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">WhatsApp মেসেজ</p>
+                <a href="https://wa.me/8801871536468" target="_blank" class="text-xl font-black text-slate-900 hover:text-green-600 italic">সরাসরি বার্তা পাঠান</a>
+              </div>
+            </div>
+            <div class="flex items-center gap-6 group">
+              <div class="w-14 h-14 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center shadow-sm group-hover:bg-blue-600 group-hover:text-white transition-all duration-300"><i data-lucide="facebook" class="w-7 h-7"></i></div>
+              <div>
+                <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">ফেসবুক পেজ</p>
+                <a href="https://www.facebook.com/mdsofian68" target="_blank" class="text-xl font-black text-slate-900 hover:text-blue-600 italic">ফেসবুক লিংক</a>
+              </div>
+            </div>
+          </div>
         </div>
-        <form id="contactForm" class="p-5 bg-white rounded-3xl shadow-xl border">
-          <h3 class="text-xl font-bold">বার্তা পাঠান</h3>
-          <input class="mt-3 w-full px-3 py-2 rounded-xl border" placeholder="আপনার নাম" required />
-          <input class="mt-3 w-full px-3 py-2 rounded-xl border" type="email" placeholder="ইমেইল" required />
-          <textarea class="mt-3 w-full px-3 py-2 rounded-xl border" rows="4" placeholder="বার্তা" required></textarea>
-          <button class="mt-4 px-5 py-3 rounded-xl bg-rose-600 text-white font-semibold w-full">সাবমিট</button>
+
+        <form id="contactForm" class="bg-white p-10 rounded-[3rem] shadow-xl border border-slate-100">
+          <h3 class="text-2xl font-black italic mb-6">একটি মেসেজ পাঠান</h3>
+          <div class="grid gap-5">
+            <input class="w-full px-6 py-4 rounded-2xl bg-slate-50 border-none ring-1 ring-slate-200 focus:ring-2 focus:ring-rose-500 font-medium" placeholder="আপনার পুরো নাম" required />
+            <input class="w-full px-6 py-4 rounded-2xl bg-slate-50 border-none ring-1 ring-slate-200 focus:ring-2 focus:ring-rose-500 font-medium" type="email" placeholder="আপনার ইমেইল ঠিকানা" required />
+            <textarea class="w-full px-6 py-4 rounded-2xl bg-slate-50 border-none ring-1 ring-slate-200 focus:ring-2 focus:ring-rose-500 font-medium" rows="4" placeholder="আপনার বার্তাটি এখানে লিখুন..." required></textarea>
+            <button class="w-full py-5 rounded-2xl bg-slate-900 text-white font-black text-lg hover:bg-black transition-all shadow-lg">বার্তা সাবমিট করুন</button>
+          </div>
         </form>
       </div>
     </div>
   </section>
 
-  <footer class="py-8 border-t bg-slate-50 text-center text-sm text-slate-600">
+  <footer class="py-16 bg-slate-950 text-white">
     <div class="mx-auto container-max px-4">
-      © <span id="year"></span> কর্ণফুলী ব্লাড হাব | ওয়েবসাইটটি তৈরি করেছেন মোঃ আবু সুফিয়ান ❤
+      <div class="flex flex-col md:flex-row justify-between items-center gap-10 mb-12">
+        <a href="#" class="flex items-center gap-3 font-bold text-2xl tracking-tighter">
+          <span class="w-12 h-12 rounded-2xl bg-rose-600 flex items-center justify-center shadow-lg shadow-rose-900/50"><i data-lucide="heart-pulse"></i></span>
+          কর্ণফুলী <span class="text-rose-500">ব্লাড হাব</span>
+        </a>
+        <div class="flex gap-8 text-sm font-bold uppercase tracking-widest text-slate-400">
+           <a href="#home" class="hover:text-white transition-colors">হোম</a>
+           <a href="#search" class="hover:text-white transition-colors">সার্চ</a>
+           <a href="#register" class="hover:text-white transition-colors">রেজিস্ট্রেশন</a>
+           <a href="#faq" class="hover:text-white transition-colors">FAQ</a>
+        </div>
+      </div>
+      <div class="h-[1px] bg-slate-800 w-full mb-10"></div>
+      <div class="text-center">
+        <p class="text-slate-500 text-sm font-medium">© <span id="year"></span> কর্ণফুলী ব্লাড হাব | সর্বস্বত্ব সংরক্ষিত</p>
+        <p class="mt-2 text-slate-400 text-xs font-bold uppercase tracking-tighter">ওয়েবসাইটটি তৈরি করেছেন <span class="text-rose-500 underline decoration-rose-500/30 underline-offset-4">মোঃ আবু সুফিয়ান</span> ❤</p>
+      </div>
     </div>
   </footer>
 
-  <!-- Toast -->
-  <div id="toast" class="hidden fixed bottom-4 left-1/2 -translate-x-1/2 z-50 px-4 py-2 rounded-xl bg-slate-900 text-white text-sm shadow"></div>
+  <div id="toast" class="hidden fixed bottom-8 left-1/2 -translate-x-1/2 z-[100] px-8 py-4 rounded-2xl bg-slate-900 text-white font-black shadow-2xl transition-all border border-slate-700"></div>
 
- <script>
-  // === তোমার Google Apps Script URL ===
+<script>
+  // Mobile Menu Toggle
+  function toggleMenu() {
+    document.body.classList.toggle('drawer-open');
+    const menu = document.getElementById('mobile-menu');
+    menu.classList.toggle('translate-x-full');
+  }
+
+  // API Config
   const DONOR_API = "https://script.google.com/macros/s/AKfycbyGguWgJdIpVgv0Sol7qF7gJOelhv-y47NoW6my1ZnlSjxHcj7ygwlMuDxffRezTW4wbA/exec?sheet=Donors";
   const REQUEST_API = "https://script.google.com/macros/s/AKfycbyGguWgJdIpVgv0Sol7qF7gJOelhv-y47NoW6my1ZnlSjxHcj7ygwlMuDxffRezTW4wbA/exec?sheet=Requests";
-
   const BG = ["A+","A-","B+","B-","AB+","AB-","O+","O-"];
+
   const els = {
     qGroup: id('qGroup'), qDistrict: id('qDistrict'), qArea: id('qArea'), quickSearch: id('quickSearch'),
     fGroup: id('fGroup'), fDistrict: id('fDistrict'), fArea: id('fArea'), fReady: id('fReady'), applyFilters: id('applyFilters'),
-    donorList: id('donorList'),
+    donorList: id('donorList'), recentDonors: id('recentDonors'),
     registerForm: id('registerForm'), bloodGroup: id('bloodGroup'), availability: id('availability'),
     requestForm: id('requestForm'), requestList: id('requestList'), rqGroup: id('rqGroup'),
     stats: { donors: id('stat-donors'), requests: id('stat-requests'), fulfilled: id('stat-fulfilled'), live: id('liveStats') },
@@ -409,68 +470,47 @@
   };
 
   function id(x){ return document.getElementById(x); }
-  function toast(msg){ const t=els.toast; t.textContent=msg; t.classList.remove('hidden'); setTimeout(()=>t.classList.add('hidden'), 2200); }
+  function toast(msg){ const t=els.toast; t.textContent=msg; t.classList.remove('hidden'); setTimeout(()=>t.classList.add('hidden'), 3000); }
   function val(id){ return document.getElementById(id).value.trim(); }
 
-  // === Dropdown এ ব্লাড গ্রুপ বসানো ===
   function fillGroups(){
     [els.qGroup, els.fGroup, els.bloodGroup, els.rqGroup].forEach(sel=>{
-      sel.innerHTML = '<option value="">'+(sel===els.bloodGroup?'ব্লাড গ্রুপ':'সব গ্রুপ')+'</option>' + BG.map(g=>`<option value="${g}">${g}</option>`).join('')
+      sel.innerHTML = '<option value="">ব্লাড গ্রুপ</option>' + BG.map(g=>`<option value="${g}">${g}</option>`).join('')
     });
   }
 
-  // === Donor ফর্ম সাবমিট → Google Sheet এ POST ===
+  // Handle Registration
   els.registerForm.addEventListener('submit', async e=>{
     e.preventDefault();
-    const d = {
-      name: val('fullName'),
-      group: val('bloodGroup'),
-      district: val('district'),
-      area: val('area'),
-      phone: val('phone'),
-      email: val('email'),
-      lastDonation: val('lastDonation'),
-      availability: val('availability'),
-      notes: val('notes')
-    };
-    if(!d.name || !d.group || !d.district || !d.area || !d.phone){ toast('সব আবশ্যক ঘর পূরণ করুন'); return; }
+    const d = { name: val('fullName'), group: val('bloodGroup'), district: val('district'), area: val('area'), phone: val('phone'), email: val('email'), lastDonation: val('lastDonation'), availability: val('availability'), notes: val('notes') };
+    if(!d.name || !d.group || !d.district || !d.phone){ toast('প্রয়োজনীয় তথ্য দিন'); return; }
+    toast("নিবন্ধন পাঠানো হচ্ছে...");
     await fetch(DONOR_API, { method:"POST", body: JSON.stringify(d) });
-    toast("ডোনার যুক্ত হয়েছে");
+    toast("সফলভাবে ডোনার যুক্ত হয়েছেন!");
     e.target.reset();
     loadDonors();
   });
 
-  // === Request ফর্ম সাবমিট → Google Sheet এ POST ===
+  // Handle Request
   els.requestForm.addEventListener('submit', async e=>{
     e.preventDefault();
-    const r = {
-      group: val('rqGroup'),
-      units: val('rqUnits'),
-      patient: val('rqPatient'),
-      hospital: val('rqHospital'),
-      district: val('rqDistrict'),
-      area: val('rqArea'),
-      contact: val('rqContact'),
-      date: val('rqDate'),
-      notes: val('rqNotes'),
-      status: "open"
-    };
-    if(!r.group || !r.patient || !r.hospital || !r.district || !r.contact || !r.date){ toast("আবশ্যক তথ্য দিন"); return; }
+    const r = { group: val('rqGroup'), units: val('rqUnits'), patient: val('rqPatient'), hospital: val('rqHospital'), district: val('rqDistrict'), area: val('rqArea'), contact: val('rqContact'), date: val('rqDate'), notes: val('rqNotes'), status: "open" };
+    toast("রিকোয়েস্ট পোস্ট হচ্ছে...");
     await fetch(REQUEST_API, { method:"POST", body: JSON.stringify(r) });
-    toast("রিকোয়েস্ট পোস্ট হয়েছে");
+    toast("রিকোয়েস্ট সাবমিট হয়েছে");
     e.target.reset();
     loadRequests();
   });
 
-  // === Donor List লোড ===
+  // Load Data
   async function loadDonors(){
     const res = await fetch(DONOR_API);
     const donors = await res.json();
-    renderDonors(donors);
+    renderDonors(donors, els.donorList); // Search List
+    renderRecentDonors(donors); // Home Recent List
     updateStats(donors, null);
   }
 
-  // === Request List লোড ===
   async function loadRequests(){
     const res = await fetch(REQUEST_API);
     const requests = await res.json();
@@ -478,110 +518,123 @@
     updateStats(null, requests);
   }
 
-  // === Donor লিস্ট রেন্ডার ===
-  function renderDonors(list){
-    els.donorList.innerHTML = list.map(d=>{
-      return `
-        <article class="p-4 rounded-2xl bg-white shadow-sm border">
-          <div class="flex items-start justify-between gap-3">
-            <div>
-              <h4 class="font-bold text-lg">${d[0]} <span class="ml-2 inline-flex text-xs px-2 py-0.5 rounded-full bg-slate-800 text-white">${d[1]}</span></h4>
-              <p class="text-slate-600 text-sm">${d[2]} · ${d[3]}</p>
-              <p class="text-slate-500 text-xs">সর্বশেষ দান: ${d[6]||'—'}</p>
-            </div>
-            <span class="text-xs px-2 py-1 rounded-full ${d[7]==='ready'?'bg-green-100 text-green-700':'bg-amber-100 text-amber-700'}">${d[7]==='ready'?'প্রস্তুত':'বিরতিতে'}</span>
-          </div>
-          <div class="mt-3 flex flex-wrap gap-2">
-            <a href="tel:${d[4]}" class="px-3 py-2 rounded-xl border text-sm inline-flex items-center gap-2">কল</a>
-            <a href="https://wa.me/88${d[4]}" target="_blank" class="px-3 py-2 rounded-xl border text-sm inline-flex items-center gap-2">হোয়াটসঅ্যাপ</a>
-          </div>
-          ${d[8]?`<p class="mt-2 text-slate-600 text-sm">নোট: ${d[8]}</p>`:''}
-        </article>`;
-    }).join('') || `<div class="text-center text-slate-500 p-8 border rounded-2xl bg-slate-50">কোনো ডোনার পাওয়া যায়নি</div>`;
+  // Render Functions
+  function renderRecentDonors(list){
+    const recent = list.slice(-3).reverse(); // শেষের ৩ জন
+    els.recentDonors.innerHTML = recent.map(d => donorCardTemplate(d)).join('');
   }
 
-  // === Request লিস্ট রেন্ডার ===
+  function renderDonors(list, container){
+    container.innerHTML = list.map(d => donorCardTemplate(d)).join('') || `<div class="col-span-full text-center p-16 bg-white rounded-[2.5rem] text-slate-400 font-bold border border-slate-100">কোনো ডোনার পাওয়া যায়নি</div>`;
+  }
+
+  function donorCardTemplate(d) {
+    return `
+      <article class="p-6 rounded-[2.5rem] bg-white border border-slate-100 shadow-sm card-hover flex flex-col justify-between">
+        <div>
+          <div class="flex items-start justify-between mb-4">
+            <div>
+              <h4 class="font-black text-xl text-slate-800 tracking-tight">${d[0]}</h4>
+              <p class="text-rose-600 font-bold text-sm italic">${d[2]} · ${d[3]}</p>
+            </div>
+            <div class="w-14 h-14 rounded-2xl bg-rose-600 text-white flex flex-col items-center justify-center shadow-lg shadow-rose-200">
+              <span class="text-xs font-bold leading-none uppercase">Group</span>
+              <span class="text-lg font-black">${d[1]}</span>
+            </div>
+          </div>
+          <div class="flex items-center gap-2 mb-6">
+            <span class="w-2.5 h-2.5 rounded-full ${d[7]==='ready'?'bg-green-500':'bg-amber-500'} animate-pulse"></span>
+            <span class="text-xs font-black uppercase tracking-widest ${d[7]==='ready'?'text-green-600':'text-amber-600'}">${d[7]==='ready'?'রক্ত দিতে প্রস্তুত':'এখন বিরতিতে'}</span>
+          </div>
+        </div>
+        <div class="space-y-3">
+          <div class="grid grid-cols-2 gap-3">
+            <a href="tel:${d[4]}" class="flex items-center justify-center gap-2 py-3.5 rounded-xl bg-slate-900 text-white font-bold text-sm hover:bg-black transition-all">কল দিন</a>
+            <a href="https://wa.me/88${d[4]}" target="_blank" class="flex items-center justify-center gap-2 py-3.5 rounded-xl bg-green-50 text-green-700 font-bold text-sm border border-green-100">WhatsApp</a>
+          </div>
+          <p class="text-[10px] text-slate-400 text-center font-bold uppercase tracking-widest pt-2 border-t">সর্বশেষ দান: ${d[6]||'অজানা'}</p>
+        </div>
+      </article>`;
+  }
+
   function renderRequests(list){
-    els.requestList.innerHTML = list.map(r=>{
-      return `
-        <div class="p-4 rounded-2xl border ${r[9]==='open'?'bg-rose-50/50':'bg-green-50/50'}">
-          <div class="flex items-start justify-between gap-3">
-            <div>
-              <h4 class="font-bold">${r[2]} — <span class="inline-flex text-xs px-2 py-0.5 rounded-full bg-slate-800 text-white">${r[0]}</span></h4>
-              <p class="text-slate-600 text-sm">${r[3]} • ${r[4]}${r[5]?(', '+r[5]):''}</p>
-              <p class="text-slate-500 text-xs">তারিখ: ${r[7]} • ইউনিট: ${r[1]}</p>
-              ${r[8]?`<p class="text-slate-600 text-sm mt-1">নোট: ${r[8]}</p>`:''}
-            </div>
-            <span class="text-xs px-2 py-1 rounded-full ${r[9]==='open'?'bg-amber-100 text-amber-700':'bg-green-100 text-green-700'}">${r[9]==='open'?'চলমান':'সম্পন্ন'}</span>
-          </div>
-          <div class="mt-3 flex flex-wrap gap-2">
-            <a href="tel:${r[6]}" class="px-3 py-2 rounded-xl border text-sm inline-flex items-center gap-2">কল</a>
-            <a href="https://wa.me/88${r[6]}" target="_blank" class="px-3 py-2 rounded-xl border text-sm inline-flex items-center gap-2">হোয়াটসঅ্যাপ</a>
-          </div>
-        </div>`;
-    }).join('') || `<div class="text-center text-slate-500 p-6 border rounded-2xl bg-slate-50">কোনো রিকোয়েস্ট নেই</div>`;
+    els.requestList.innerHTML = list.reverse().map(r => `
+      <div class="p-6 rounded-[2rem] border-2 ${r[9]==='open'?'border-rose-100 bg-rose-50/20':'border-slate-100 bg-slate-50'} relative group transition-all">
+        <div class="flex justify-between items-start mb-4">
+           <div>
+              <span class="inline-block px-2 py-1 rounded-lg bg-slate-900 text-white text-[10px] font-black uppercase tracking-widest mb-2">${r[0]} Group</span>
+              <h4 class="font-black text-lg text-slate-900 leading-tight">${r[2]} এর জন্য রক্ত প্রয়োজন</h4>
+           </div>
+           <span class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-tighter ${r[9]==='open'?'bg-rose-600 text-white':'bg-slate-300 text-slate-600'}">${r[9]==='open'?'জরুরি':'সম্পন্ন'}</span>
+        </div>
+        <div class="space-y-1 mb-6">
+          <p class="text-sm font-bold text-slate-600 flex items-center gap-2"><i data-lucide="map-pin" class="w-3 h-3"></i> ${r[3]} • ${r[4]}</p>
+          <p class="text-sm font-bold text-slate-500 flex items-center gap-2"><i data-lucide="calendar" class="w-3 h-3"></i> তারিখ: ${r[7]} • ইউনিট: ${r[1]}</p>
+        </div>
+        <div class="flex gap-3">
+          <a href="tel:${r[6]}" class="flex-1 py-3 bg-white rounded-xl shadow-sm text-center text-xs font-black border border-slate-200 hover:bg-rose-600 hover:text-white hover:border-rose-600 transition-all">কল করুন</a>
+          <a href="https://wa.me/88${r[6]}" target="_blank" class="flex-1 py-3 bg-green-600 text-white rounded-xl shadow-sm text-center text-xs font-black hover:bg-green-700 transition-all">WhatsApp</a>
+        </div>
+      </div>`).join('') || `<div class="text-center p-10 bg-slate-50 rounded-3xl text-slate-400 font-bold">কোনো রিকোয়েস্ট নেই</div>`;
+      lucide.createIcons();
   }
 
-  // === লাইভ স্ট্যাটস ===
   function updateStats(donors, requests){
-    if(donors) els.stats.donors.textContent = donors.length;
+    if(donors) {
+      els.stats.donors.textContent = donors.length;
+      const byGroup = BG.map(g => ({ g, n: donors.filter(d=>d[1]===g).length })).filter(x=>x.n>0);
+      els.stats.live.innerHTML = byGroup.map(x => `
+        <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-between">
+          <span class="font-black text-slate-700 text-lg">${x.g}</span>
+          <span class="px-3 py-1 bg-white rounded-lg shadow-sm font-black text-rose-600 text-sm">${x.n} জন</span>
+        </div>`).join('');
+    }
     if(requests) {
       els.stats.requests.textContent = requests.filter(r=>r[9]==='open').length;
       els.stats.fulfilled.textContent = requests.filter(r=>r[9]==='done').length;
     }
-    if(donors){
-      const byGroup = BG.map(g=>({g, n: donors.filter(d=>d[1]===g).length})).filter(x=>x.n>0);
-      els.stats.live.innerHTML = byGroup.map(x=>`<li>গ্রুপ <b>${x.g}</b>: ${x.n} জন</li>`).join('') || '<li>এখনো কোনো ডোনার নেই</li>';
-    }
   }
 
-  // === Export CSV ===
-  els.exportCSV.addEventListener('click', async ()=>{
-    const res = await fetch(DONOR_API);
-    const donors = await res.json();
-    const header = ['নাম','গ্রুপ','জেলা','এলাকা','মোবাইল','ইমেইল','সর্বশেষ দান','স্ট্যাটাস','নোট'];
-    const rows = donors.map(d=>[d[0],d[1],d[2],d[3],d[4],d[5],d[6],d[7],d[8]]);
-    const csv = [header, ...rows].map(r=>r.map(x=>`"${(x||'').toString().replace(/"/g,'""')}"`).join(',')).join('\n');
-    const blob = new Blob(["\ufeff"+csv], {type:'text/csv;charset=utf-8;'});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a'); a.href=url; a.download='donors.csv'; a.click(); URL.revokeObjectURL(url);
-  });
-
-  // === Print ===
-  els.printList.addEventListener('click', ()=>{ window.print(); });
-
-  // === Search / Filter ===
-  els.applyFilters.addEventListener('click', async e=>{
-    e.preventDefault();
+  // Filter Action
+  els.applyFilters.addEventListener('click', async () => {
     const res = await fetch(DONOR_API);
     let donors = await res.json();
-    const q = {
-      group: els.fGroup.value || els.qGroup.value,
-      district: (els.fDistrict.value||els.qDistrict.value||'').trim().toLowerCase(),
-      area: (els.fArea.value||els.qArea.value||'').trim().toLowerCase(),
-      ready: els.fReady.value
-    };
+    const q = { group: els.fGroup.value, district: (els.fDistrict.value||'').toLowerCase(), area: (els.fArea.value||'').toLowerCase(), ready: els.fReady.value };
     if(q.group) donors = donors.filter(d=>d[1]===q.group);
     if(q.district) donors = donors.filter(d=>d[2].toLowerCase().includes(q.district));
     if(q.area) donors = donors.filter(d=>d[3].toLowerCase().includes(q.area));
-    if(q.ready==='ready') donors = donors.filter(d=>d[7]==='ready');
-    if(q.ready==='rest') donors = donors.filter(d=>d[7]==='rest');
-    renderDonors(donors);
+    if(q.ready) donors = donors.filter(d=>d[7]===q.ready);
+    renderDonors(donors, els.donorList);
   });
 
-  els.quickSearch.addEventListener('submit', async e=>{
-    e.preventDefault();
-    els.applyFilters.click();
-    document.querySelector('a[href="#search"]').click();
-    window.location.hash = '#search';
+  // Export CSV
+  els.exportCSV.addEventListener('click', async () => {
+    const res = await fetch(DONOR_API);
+    const data = await res.json();
+    const csvContent = "data:text/csv;charset=utf-8,\ufeff" + ["নাম,গ্রুপ,জেলা,থানা,ফোন,ইমেইল,তারিখ,স্ট্যাটাস,নোট"].concat(data.map(e => e.join(","))).join("\n");
+    const link = document.createElement("a"); link.setAttribute("href", encodeURI(csvContent)); link.setAttribute("download", "donors_list.csv"); document.body.appendChild(link); link.click();
   });
 
-  // === Init ===
+  els.printList.addEventListener('click', () => window.print());
+
+  // Init
   fillGroups();
   loadDonors();
   loadRequests();
   els.year.textContent = new Date().getFullYear();
   lucide.createIcons();
 </script>
+
+<style>
+  @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+  .animate-marquee { display: flex; animation: marquee 25s linear infinite; width: max-content; }
+  @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+  .animate-scroll { display: flex; animation: scroll 35s linear infinite; }
+  .animate-scroll:hover { animation-play-state: paused; }
+  .hero-card { min-width: 260px; flex-shrink: 0; }
+  .custom-scroll::-webkit-scrollbar { width: 5px; }
+  .custom-scroll::-webkit-scrollbar-thumb { background: #fee2e2; border-radius: 10px; }
+</style>
+
 </body>
 </html>
