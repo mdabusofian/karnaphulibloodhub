@@ -52,8 +52,11 @@
       <nav class="flex flex-col gap-2 font-bold text-slate-700">
         <a href="#home" onclick="toggleMenu()" class="p-4 rounded-2xl hover:bg-rose-50 hover:text-rose-600 flex items-center gap-3"><i data-lucide="home"></i> হোম</a>
         <a href="#search" onclick="toggleMenu()" class="p-4 rounded-2xl hover:bg-rose-50 hover:text-rose-600 flex items-center gap-3"><i data-lucide="search"></i> ডোনার খুঁজুন</a>
+                <a href="#register" onclick="toggleMenu()" class="p-4 rounded-2xl hover:bg-rose-50 hover:text-rose-600 flex items-center gap-3"><i data-lucide="user-plus"></i> ডোনার হোন</a>
+        
         <a href="#request" onclick="toggleMenu()" class="p-4 rounded-2xl hover:bg-rose-50 hover:text-rose-600 flex items-center gap-3"><i data-lucide="droplets"></i> রক্তের প্রয়োজন</a>
-        <a href="#register" onclick="toggleMenu()" class="p-4 rounded-2xl hover:bg-rose-50 hover:text-rose-600 flex items-center gap-3"><i data-lucide="user-plus"></i> ডোনার হোন</a>
+        <a href="all-donors.html" class="hover:text-rose-600 transition-colors">ডোনার তালিকা</a>
+<a href="all-donors.html" onclick="toggleMenu()" class="p-4 rounded-2xl hover:bg-rose-50 hover:text-rose-600 flex items-center gap-3"> <i data-lucide="users"></i> ডোনার তালিকা</a>
         <a href="#stats" onclick="toggleMenu()" class="p-4 rounded-2xl hover:bg-rose-50 hover:text-rose-600 flex items-center gap-3"><i data-lucide="bar-chart-3"></i> পরিসংখ্যান</a>
         <a href="#faq" onclick="toggleMenu()" class="p-4 rounded-2xl hover:bg-rose-50 hover:text-rose-600 flex items-center gap-3"><i data-lucide="help-circle"></i> সচরাচর জিজ্ঞাসা</a>
         <a href="#contact" onclick="toggleMenu()" class="p-4 rounded-2xl hover:bg-rose-50 hover:text-rose-600 flex items-center gap-3"><i data-lucide="phone"></i> যোগাযোগ</a>
@@ -182,6 +185,25 @@
     </div>
   </section>
 
+
+
+  
+<section id="search" class="py-16 bg-white">
+  <div class="mx-auto container-max px-4">
+    <div id="donorList" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+
+    <div class="mt-12 text-center">
+      <a href="all-donors.html" class="inline-flex items-center gap-2 px-10 py-4 rounded-2xl bg-slate-900 text-white font-bold shadow-xl hover:bg-rose-600 transition-all group">
+        সকল ডোনার দেখুন 
+        <i data-lucide="arrow-right" class="w-5 h-5 group-hover:translate-x-1 transition-transform"></i>
+      </a>
+    </div>
+  </div>
+</section>
+
+
+  
+  
   <section id="request" class="py-16 bg-slate-50">
     <div class="mx-auto container-max px-4">
       <div class="grid lg:grid-cols-2 gap-16 items-start">
@@ -468,9 +490,14 @@
     updateStats(null, requests);
   }
 
+
+  
   // Render Functions
-  function renderDonors(list){
-    els.donorList.innerHTML = list.map(d => `
+function renderDonors(list) {
+    // হোমপেইজের জন্য শুধু প্রথম ৬ জন ডোনার দেখাবে
+    const limitedList = list.slice(0, 6);
+
+    els.donorList.innerHTML = limitedList.map(d => `
       <article class="p-6 rounded-[2rem] bg-white border border-slate-100 shadow-sm transition hover:scale-[1.02]">
         <div class="flex items-start justify-between mb-4">
           <div>
@@ -492,9 +519,11 @@
         </div>
         <p class="text-[10px] text-slate-400 font-bold text-center mt-4">শেষ দান: ${d[6]||'—'}</p>
       </article>`).join('') || `<div class="col-span-full text-center p-12 bg-slate-50 rounded-3xl text-slate-400 font-bold">ডোনার পাওয়া যায়নি</div>`;
-      lucide.createIcons();
-  }
+      
+      if(window.lucide) lucide.createIcons();
+}
 
+  
   function renderRequests(list){
     els.requestList.innerHTML = list.reverse().map(r => `
       <div class="p-5 rounded-[1.5rem] border-2 ${r[9]==='open'?'border-rose-100 bg-white':'border-slate-100 bg-slate-50'}">
