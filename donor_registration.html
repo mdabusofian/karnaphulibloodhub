@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="bn">
 <head>
@@ -15,7 +14,6 @@
         min-height: 100vh;
         color: #470a16;
     }
-
     .glass-morphism {
         background: rgba(255, 255, 255, 0.85);
         backdrop-filter: blur(15px);
@@ -23,7 +21,6 @@
         border-radius: 3rem;
         box-shadow: 0 25px 50px -12px rgba(225, 29, 72, 0.15);
     }
-
     .input-premium {
         width: 100%;
         padding: 1.2rem;
@@ -34,13 +31,11 @@
         transition: all 0.4s ease;
         font-size: 16px;
     }
-
     .input-premium:focus {
         border-color: #e11d48;
         transform: translateY(-2px);
         outline: none;
     }
-
     .red-glow-btn {
         background: linear-gradient(135deg, #f43f5e 0%, #be123c 100%);
         color: white;
@@ -51,7 +46,6 @@
         box-shadow: 0 15px 35px -10px rgba(190, 18, 60, 0.4);
         transition: 0.3s;
     }
-
     .list-btn {
         background: #ffffff;
         color: #e11d48;
@@ -63,19 +57,16 @@
         margin-top: 1rem;
         transition: 0.3s;
     }
-
     @keyframes scaleIn {
         from { transform: scale(0.9); opacity: 0; }
         to { transform: scale(1); opacity: 1; }
     }
     .animate-success { animation: scaleIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-    
     .heart-icon { animation: heartbeat 2s infinite; }
     @keyframes heartbeat {
         0%, 100% { transform: scale(1); }
         15% { transform: scale(1.15); }
     }
-
     .custom-checkbox {
         accent-color: #e11d48;
         width: 18px;
@@ -94,7 +85,7 @@
         </a>
         <div class="text-right">
           <h2 class="text-2xl font-black text-rose-600 leading-none">কর্ণফুলী</h2>
-          <p class="text-[9px] uppercase tracking-widest font-bold text-slate-400">ব্লাড হাব নেটওয়ার্ক</p>
+          <p class="text-[9px] uppercase tracking-widest font-bold text-slate-400">ব্লাড হাব নেটওয়ার্ক</p>
         </div>
       </div>
 
@@ -108,6 +99,8 @@
         </div>
 
         <form id="registerForm" class="space-y-6">
+          <input type="hidden" id="donorID">
+
           <div class="space-y-2">
             <label class="text-xs font-black uppercase text-slate-500 ml-2">আপনার নাম</label>
             <div class="relative">
@@ -133,19 +126,30 @@
           </div>
 
           <div class="space-y-2">
-            <label class="text-xs font-black uppercase text-slate-500 ml-2">শেষ রক্তদানের সময়</label>
+            <label class="text-xs font-black uppercase text-slate-500 ml-2">রক্তদানের সংখ্যা</label>
+            <select id="totalDonations" class="input-premium appearance-none" required>
+              <option value="০">প্রথমবার (নতুন)</option>
+              <option value="১-৩">১ - ৩ বার</option>
+              <option value="৪-১০">৪ - ১০ বার</option>
+              <option value="১০+">১০ বারের বেশি</option>
+            </select>
+          </div>
+
+          <div class="space-y-2">
+            <label class="text-xs font-black uppercase text-slate-500 ml-2">শেষ রক্তদানের সময়</label>
             <select id="lastDonation" class="input-premium appearance-none" required>
               <option value="">নির্বাচন করুন</option>
-              <option value="কখনো দেইনি">🩸 কখনো দেইনি</option>
-              <option value="৩ মাসের বেশি">📅 ৩ মাসের বেশি</option>
-              <option value="মনে নেই">❓ মনে নেই</option>
+              <option value="কখনো দেইনি" data-status="ready">🩸 কখনো দেইনি</option>
+              <option value="৩ মাসের বেশি" data-status="ready">📅 ৩ মাসের বেশি</option>
+              <option value="৩ মাসের কম" data-status="rest">⏳ ৩ মাসের কম (বিরতিতে)</option>
+              <option value="মনে নেই" data-status="rest">❓ মনে নেই</option>
             </select>
           </div>
 
           <div class="space-y-3 pt-2">
             <label class="flex items-center gap-3 cursor-pointer">
               <input type="checkbox" required class="custom-checkbox">
-              <span class="text-[12px] font-bold text-slate-600">আমি শারীরিকভাবে সুস্থ এবং স্বেচ্ছায় রক্তদানে আগ্রহী।</span>
+              <span class="text-[12px] font-bold text-slate-600">আমি শারীরিকভাবে সুস্থ এবং স্বেচ্ছায় রক্তদানে আগ্রহী।</span>
             </label>
           </div>
 
@@ -163,21 +167,20 @@
           <i data-lucide="check-circle-2" class="w-12 h-12"></i>
         </div>
         <h2 class="text-2xl font-black text-slate-800 mb-2">অভিনন্দন, <span id="donorNameDisplay" class="text-rose-600"></span>!</h2>
-        <div class="space-y-3 text-slate-600 font-medium mb-8">
-            <p>আপনি এখন কর্ণফুলী অনলাইন ব্লাড ব্যাংকের একজন ডোনার।</p>
-            <p class="text-rose-600 font-bold">আল্লাহ আপনার এই মানবিক নিয়ত কবুল করুন। ❤️</p>
+        <div class="space-y-3 text-slate-600 font-medium mb-4">
+            <p>আপনার ডোনার আইডি: <span id="idDisplay" class="font-black text-rose-600"></span></p>
+            <p>আপনি এখন কর্ণফুলী ব্লাড হাবের একজন গর্বিত সদস্য।</p>
         </div>
         
         <div class="space-y-4">
-          <a href="donors-list.html" class="red-glow-btn inline-flex items-center justify-center gap-2">
+          <a href="donors.html" class="red-glow-btn inline-flex items-center justify-center gap-2">
             <i data-lucide="users" class="w-5 h-5"></i>
-            রক্তদাতাদের তালিকা দেখুন
+            ডোনার তালিকা দেখুন
           </a>
-          <a href="index.html" class="list-btn inline-block">মূল পাতায় ফিরে যান</a>
+          <a href="index.html" class="list-btn inline-block">মূল পাতায় ফিরে যান</a>
         </div>
       </div>
     </div>
-
   </div>
 
   <script>
@@ -186,29 +189,44 @@
     const DONOR_API = "https://script.google.com/macros/s/AKfycbyGguWgJdIpVgv0Sol7qF7gJOelhv-y47NoW6my1ZnlSjxHcj7ygwlMuDxffRezTW4wbA/exec?sheet=Donors";
     const BG = ["A+","A-","B+","B-","AB+","AB-","O+","O-"];
 
+    // ব্লাড গ্রুপ ড্রপডাউন জেনারেশন
     const bgSelect = document.getElementById('bloodGroup');
-    bgSelect.innerHTML = '<option value="">নির্বাচন</option>' + 
+    bgSelect.innerHTML = '<option value="">রক্তের গ্রুপ</option>' + 
                          BG.map(g => `<option value="${g}">${g}</option>`).join('');
+
+    // অটো আইডি জেনারেশন ফাংশন (KH-1234 ফরম্যাট)
+    function generateID() {
+        return 'KH-' + Math.floor(1000 + Math.random() * 9000);
+    }
+    document.getElementById('donorID').value = generateID();
 
     document.getElementById('registerForm').addEventListener('submit', async (e) => {
         e.preventDefault();
         const btn = document.getElementById('submitBtn');
         const nameValue = document.getElementById('fullName').value.trim();
+        const donorId = document.getElementById('donorID').value;
         
+        // স্ট্যাটাস লজিক চেক (৩ মাসের কম হলে rest, না হলে ready)
+        const lastDonationEl = document.getElementById('lastDonation');
+        const selectedStatus = lastDonationEl.options[lastDonationEl.selectedIndex].getAttribute('data-status');
+
         const data = {
             name: nameValue,
             group: document.getElementById('bloodGroup').value,
             phone: document.getElementById('phone').value.trim(),
             area: document.getElementById('area').value.trim(),
-            lastDonation: document.getElementById('lastDonation').value,
-            status: 'ready'
+            totalDonations: document.getElementById('totalDonations').value,
+            lastDonation: lastDonationEl.value,
+            donorID: donorId,
+            status: selectedStatus // ready অথবা rest
         };
 
         btn.disabled = true;
-        btn.innerHTML = `<i data-lucide="loader" class="animate-spin w-6 h-6"></i> <span>অপেক্ষা করুন...</span>`;
+        btn.innerHTML = `<i data-lucide="loader" class="animate-spin w-6 h-6"></i> <span>প্রসেসিং হচ্ছে...</span>`;
         lucide.createIcons();
 
         try {
+            // Apps Script এর সাথে কানেক্ট করতে (JSON Stringify করে ডাটা পাঠানো)
             await fetch(DONOR_API, {
                 method: "POST",
                 mode: "no-cors",
@@ -218,12 +236,13 @@
             // Success Logic
             document.getElementById('formSection').classList.add('hidden');
             document.getElementById('donorNameDisplay').textContent = nameValue;
+            document.getElementById('idDisplay').textContent = donorId;
             document.getElementById('successSection').classList.remove('hidden');
             lucide.createIcons();
             window.scrollTo(0,0);
             
         } catch (error) {
-            alert("দুঃখিত, আবার চেষ্টা করুন");
+            alert("দুঃখিত, পুনরায় চেষ্টা করুন।");
             btn.disabled = false;
             btn.innerHTML = `<span>নিবন্ধন করুন</span> <i data-lucide="heart"></i>`;
             lucide.createIcons();
@@ -232,8 +251,3 @@
   </script>
 </body>
 </html>
-
-
-
-
-  
