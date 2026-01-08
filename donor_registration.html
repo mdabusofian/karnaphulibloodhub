@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="bn">
 <head>
@@ -15,7 +16,6 @@
         color: #470a16;
     }
 
-    /* Premium Blood Red Gradient Card */
     .glass-morphism {
         background: rgba(255, 255, 255, 0.85);
         backdrop-filter: blur(15px);
@@ -31,14 +31,12 @@
         background: #ffffff;
         border: 2px solid transparent;
         box-shadow: inset 2px 2px 5px rgba(0,0,0,0.02), 5px 5px 15px rgba(225, 29, 72, 0.05);
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: all 0.4s ease;
         font-size: 16px;
     }
 
     .input-premium:focus {
         border-color: #e11d48;
-        background: #fff;
-        box-shadow: 0 10px 20px -5px rgba(225, 29, 72, 0.2);
         transform: translateY(-2px);
         outline: none;
     }
@@ -50,121 +48,134 @@
         padding: 1.3rem;
         border-radius: 1.8rem;
         font-weight: 800;
-        font-size: 1.1rem;
-        box-shadow: 0 15px 35px -10px rgba(190, 18, 60, 0.5);
-        transition: all 0.3s ease;
+        box-shadow: 0 15px 35px -10px rgba(190, 18, 60, 0.4);
+        transition: 0.3s;
     }
 
-    .red-glow-btn:active {
-        transform: scale(0.95);
+    .list-btn {
+        background: #ffffff;
+        color: #e11d48;
+        border: 2px solid #e11d48;
+        width: 100%;
+        padding: 1rem;
+        border-radius: 1.5rem;
+        font-weight: 700;
+        margin-top: 1rem;
+        transition: 0.3s;
     }
 
-    /* Success Section Style */
-    #successSection {
-        display: none;
-        animation: slideUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    @keyframes scaleIn {
+        from { transform: scale(0.9); opacity: 0; }
+        to { transform: scale(1); opacity: 1; }
     }
-
-    @keyframes slideUp {
-        from { opacity: 0; transform: translateY(30px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-
+    .animate-success { animation: scaleIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+    
+    .heart-icon { animation: heartbeat 2s infinite; }
     @keyframes heartbeat {
         0%, 100% { transform: scale(1); }
         15% { transform: scale(1.15); }
     }
-    .heart-icon { animation: heartbeat 2s infinite; }
+
+    .custom-checkbox {
+        accent-color: #e11d48;
+        width: 18px;
+        height: 18px;
+        cursor: pointer;
+    }
   </style>
 </head>
 <body class="flex items-center justify-center p-4">
 
   <div class="max-w-lg w-full py-6">
-    
-    <div id="formContainer">
-        <div class="flex items-center justify-between mb-8 px-6">
-          <a href="index.html" class="w-12 h-12 flex items-center justify-center bg-white rounded-2xl shadow-lg shadow-rose-100 text-rose-500">
-            <i data-lucide="chevron-left" class="w-6 h-6"></i>
-          </a>
-          <div class="text-right">
-            <h2 class="text-2xl font-black text-rose-600 leading-none">কর্ণফুলী</h2>
-            <p class="text-[9px] uppercase tracking-widest font-bold text-slate-400">ব্লাড হাব নেটওয়ার্ক</p>
+    <div id="formSection">
+      <div class="flex items-center justify-between mb-8 px-6">
+        <a href="index.html" class="w-12 h-12 flex items-center justify-center bg-white rounded-2xl shadow-lg text-rose-500">
+          <i data-lucide="chevron-left"></i>
+        </a>
+        <div class="text-right">
+          <h2 class="text-2xl font-black text-rose-600 leading-none">কর্ণফুলী</h2>
+          <p class="text-[9px] uppercase tracking-widest font-bold text-slate-400">ব্লাড হাব নেটওয়ার্ক</p>
+        </div>
+      </div>
+
+      <div class="glass-morphism p-8 md:p-12 relative overflow-hidden">
+        <div class="text-center mb-10">
+          <div class="inline-flex items-center justify-center w-20 h-20 bg-rose-50 rounded-[2rem] mb-5">
+            <i data-lucide="heart-pulse" class="w-10 h-10 text-rose-600 heart-icon"></i>
           </div>
+          <h1 class="text-3xl font-black text-slate-800">ডোনার নিবন্ধন</h1>
+          <p class="text-rose-500 font-semibold text-sm">আপনার রক্তে বাঁচবে একটি প্রাণ</p>
         </div>
 
-        <div class="glass-morphism p-8 md:p-12 relative overflow-hidden">
-          <div class="text-center mb-10">
-            <div class="inline-flex items-center justify-center w-20 h-20 bg-rose-50 rounded-[2rem] mb-5">
-              <i data-lucide="heart-pulse" class="w-10 h-10 text-rose-600 heart-icon"></i>
+        <form id="registerForm" class="space-y-6">
+          <div class="space-y-2">
+            <label class="text-xs font-black uppercase text-slate-500 ml-2">আপনার নাম</label>
+            <div class="relative">
+              <span class="absolute left-5 top-1/2 -translate-y-1/2 text-rose-400"><i data-lucide="user" class="w-5 h-5"></i></span>
+              <input type="text" id="fullName" placeholder="পূর্ণ নাম লিখুন" class="input-premium pl-14" required>
             </div>
-            <h1 class="text-3xl font-black text-slate-800 tracking-tight">ডোনার নিবন্ধন</h1>
-            <p class="text-rose-500 font-semibold text-sm mt-1">আপনার এক ব্যাগ রক্তে বাঁচবে একটি প্রাণ</p>
           </div>
 
-          <form id="registerForm" class="space-y-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div class="space-y-2">
-              <label class="text-xs font-black uppercase tracking-wider text-slate-500 ml-2">আপনার নাম</label>
-              <input type="text" id="fullName" placeholder="পূর্ণ নাম লিখুন" class="input-premium" required>
+              <label class="text-xs font-black uppercase text-slate-500 ml-2">মোবাইল</label>
+              <input type="tel" id="phone" placeholder="01XXXXXXXXX" class="input-premium" required pattern="[0-9]{11}">
             </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div class="space-y-2">
-                <label class="text-xs font-black uppercase tracking-wider text-slate-500 ml-2">মোবাইল নাম্বার</label>
-                <input type="tel" id="phone" placeholder="01XXXXXXXXX" class="input-premium" required pattern="[0-9]{11}">
-              </div>
-              <div class="space-y-2 relative">
-                <label class="text-xs font-black uppercase tracking-wider text-slate-500 ml-2">রক্তের গ্রুপ</label>
-                <select id="bloodGroup" class="input-premium appearance-none cursor-pointer" required></select>
-                <span class="absolute right-5 bottom-4 pointer-events-none text-rose-300"><i data-lucide="chevron-down" class="w-5 h-5"></i></span>
-              </div>
-            </div>
-
-            <div class="space-y-2">
-                <label class="text-xs font-black uppercase tracking-wider text-slate-500 ml-2">আপনার বর্তমান এলাকা</label>
-                <input type="text" id="area" placeholder="উপজেলা বা গ্রাম" class="input-premium" required>
-            </div>
-
             <div class="space-y-2 relative">
-              <label class="text-xs font-black uppercase tracking-wider text-slate-500 ml-2">শেষ রক্তদানের সময়</label>
-              <select id="lastDonation" class="input-premium appearance-none cursor-pointer" required>
-                <option value="">নির্বাচন করুন</option>
-                <option value="কখনো দেইনি">🩸 কখনো দেইনি</option>
-                <option value="৩ মাসের বেশি">📅 ৩ মাসের বেশি</option>
-                <option value="মনে নেই">❓ মনে নেই</option>
-              </select>
-              <span class="absolute right-5 bottom-4 pointer-events-none text-rose-300"><i data-lucide="chevron-down" class="w-5 h-5"></i></span>
+              <label class="text-xs font-black uppercase text-slate-500 ml-2">রক্তের গ্রুপ</label>
+              <select id="bloodGroup" class="input-premium appearance-none" required></select>
             </div>
+          </div>
 
-            <button type="submit" id="submitBtn" class="red-glow-btn flex items-center justify-center gap-3">
-                 <span>ডোনার হিসেবে যুক্ত হোন</span>
-                 <i data-lucide="heart" class="w-6 h-6 fill-white"></i>
-            </button>
-          </form>
-        </div>
+          <div class="space-y-2">
+            <label class="text-xs font-black uppercase text-slate-500 ml-2">বর্তমান এলাকা</label>
+            <input type="text" id="area" placeholder="উপজেলা বা গ্রাম" class="input-premium" required>
+          </div>
+
+          <div class="space-y-2">
+            <label class="text-xs font-black uppercase text-slate-500 ml-2">শেষ রক্তদানের সময়</label>
+            <select id="lastDonation" class="input-premium appearance-none" required>
+              <option value="">নির্বাচন করুন</option>
+              <option value="কখনো দেইনি">🩸 কখনো দেইনি</option>
+              <option value="৩ মাসের বেশি">📅 ৩ মাসের বেশি</option>
+              <option value="মনে নেই">❓ মনে নেই</option>
+            </select>
+          </div>
+
+          <div class="space-y-3 pt-2">
+            <label class="flex items-center gap-3 cursor-pointer">
+              <input type="checkbox" required class="custom-checkbox">
+              <span class="text-[12px] font-bold text-slate-600">আমি শারীরিকভাবে সুস্থ এবং স্বেচ্ছায় রক্তদানে আগ্রহী।</span>
+            </label>
+          </div>
+
+          <button type="submit" id="submitBtn" class="red-glow-btn flex items-center justify-center gap-3">
+               <span>নিবন্ধন করুন</span>
+               <i data-lucide="heart" class="w-6 h-6 fill-white"></i>
+          </button>
+        </form>
+      </div>
     </div>
 
-    <div id="successSection">
-        <div class="glass-morphism p-10 text-center border-t-8 border-rose-500">
-            <div class="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg shadow-green-100">
-                <i data-lucide="check-circle" class="w-10 h-10"></i>
-            </div>
-            <h2 class="text-3xl font-black text-slate-800 mb-2">অভিনন্দন!</h2>
-            <h3 id="donorNameDisplay" class="text-xl font-bold text-rose-600 mb-4"></h3>
-            <p class="text-slate-600 font-semibold mb-8 leading-relaxed">
-                আপনি সফলভাবে নিবন্ধিত হয়েছেন। এখন থেকে আপনি জরুরি প্রয়োজনে রক্ত দিতে প্রস্তুত।
-            </p>
-            
-            <div class="space-y-4">
-                <a href="donors-list.html" class="red-glow-btn inline-flex items-center justify-center gap-2">
-                    <i data-lucide="users" class="w-5 h-5"></i>
-                    সকল রক্তদাতার তালিকা
-                </a>
-                <br>
-                <a href="index.html" class="inline-block mt-4 text-rose-500 font-bold border-b-2 border-rose-200 hover:border-rose-500 transition-all">
-                    মূল পাতায় ফিরে যান
-                </a>
-            </div>
+    <div id="successSection" class="hidden animate-success">
+      <div class="glass-morphism p-10 text-center border-t-8 border-rose-500">
+        <div class="w-24 h-24 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner">
+          <i data-lucide="check-circle-2" class="w-12 h-12"></i>
         </div>
+        <h2 class="text-2xl font-black text-slate-800 mb-2">অভিনন্দন, <span id="donorNameDisplay" class="text-rose-600"></span>!</h2>
+        <div class="space-y-3 text-slate-600 font-medium mb-8">
+            <p>আপনি এখন কর্ণফুলী অনলাইন ব্লাড ব্যাংকের একজন ডোনার।</p>
+            <p class="text-rose-600 font-bold">আল্লাহ আপনার এই মানবিক নিয়ত কবুল করুন। ❤️</p>
+        </div>
+        
+        <div class="space-y-4">
+          <a href="donors-list.html" class="red-glow-btn inline-flex items-center justify-center gap-2">
+            <i data-lucide="users" class="w-5 h-5"></i>
+            রক্তদাতাদের তালিকা দেখুন
+          </a>
+          <a href="index.html" class="list-btn inline-block">মূল পাতায় ফিরে যান</a>
+        </div>
+      </div>
     </div>
 
   </div>
@@ -182,10 +193,10 @@
     document.getElementById('registerForm').addEventListener('submit', async (e) => {
         e.preventDefault();
         const btn = document.getElementById('submitBtn');
-        const donorName = document.getElementById('fullName').value.trim();
+        const nameValue = document.getElementById('fullName').value.trim();
         
         const data = {
-            name: donorName,
+            name: nameValue,
             group: document.getElementById('bloodGroup').value,
             phone: document.getElementById('phone').value.trim(),
             area: document.getElementById('area').value.trim(),
@@ -194,7 +205,7 @@
         };
 
         btn.disabled = true;
-        btn.innerHTML = `<i data-lucide="loader" class="animate-spin w-5 h-5"></i> <span>প্রসেসিং...</span>`;
+        btn.innerHTML = `<i data-lucide="loader" class="animate-spin w-6 h-6"></i> <span>অপেক্ষা করুন...</span>`;
         lucide.createIcons();
 
         try {
@@ -205,22 +216,22 @@
             });
             
             // Success Logic
-            document.getElementById('formContainer').style.display = 'none';
-            document.getElementById('donorNameDisplay').textContent = donorName;
-            document.getElementById('successSection').style.display = 'block';
+            document.getElementById('formSection').classList.add('hidden');
+            document.getElementById('donorNameDisplay').textContent = nameValue;
+            document.getElementById('successSection').classList.remove('hidden');
             lucide.createIcons();
             window.scrollTo(0,0);
             
         } catch (error) {
-            alert("দুঃখিত, কোনো সমস্যা হয়েছে। আবার চেষ্টা করুন।");
+            alert("দুঃখিত, আবার চেষ্টা করুন");
             btn.disabled = false;
-            btn.innerHTML = `<span>ডোনার হিসেবে যুক্ত হোন</span> <i data-lucide="heart" class="w-6 h-6 fill-white"></i>`;
+            btn.innerHTML = `<span>নিবন্ধন করুন</span> <i data-lucide="heart"></i>`;
             lucide.createIcons();
         }
     });
   </script>
 </body>
-                </html>
+</html>
 
 
 
