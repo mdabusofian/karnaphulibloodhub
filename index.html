@@ -35,6 +35,17 @@
     @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
     .animate-blink { animation: blink 1s infinite; }
   </style>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#e11d48">
+<link rel="apple-touch-icon" href="icon-512.png">
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js')
+      .then(() => console.log("PWA Service Worker Registered"));
+  }
+</script>
+  
 </head>
 <body class="bg-slate-50 text-slate-900 pb-20 md:pb-0">
 
