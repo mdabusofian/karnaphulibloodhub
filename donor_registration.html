@@ -7,6 +7,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  
   <style>
     body { 
         font-family: 'Hind Siliguri', sans-serif; 
@@ -57,6 +60,32 @@
         margin-top: 1rem;
         transition: 0.3s;
     }
+    .id-card {
+        background: linear-gradient(135deg, #be123c 0%, #881337 100%);
+        border-radius: 24px;
+        padding: 24px;
+        color: white;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 20px 40px rgba(153, 27, 27, 0.3);
+        max-width: 380px;
+        margin: 20px auto;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .card-pattern {
+        position: absolute;
+        top: 0; right: 0;
+        width: 100%; height: 100%;
+        background-image: radial-gradient(circle at 100% 0%, rgba(255,255,255,0.08) 0%, transparent 50%);
+        pointer-events: none;
+    }
+    .watermark-icon {
+        position: absolute;
+        bottom: -20px;
+        right: -10px;
+        opacity: 0.1;
+        transform: rotate(-15deg);
+    }
     @keyframes scaleIn {
         from { transform: scale(0.9); opacity: 0; }
         to { transform: scale(1); opacity: 1; }
@@ -102,7 +131,7 @@
           <input type="hidden" id="donorID">
 
           <div class="space-y-2">
-            <label class="text-xs font-black uppercase text-slate-500 ml-2">আপনার নাম</label>
+            <label class="text-xs font-black uppercase text-slate-500 ml-2">আপনার পুরো নাম</label>
             <div class="relative">
               <span class="absolute left-5 top-1/2 -translate-y-1/2 text-rose-400"><i data-lucide="user" class="w-5 h-5"></i></span>
               <input type="text" id="fullName" placeholder="পূর্ণ নাম লিখুন" class="input-premium pl-14" required>
@@ -114,15 +143,41 @@
               <label class="text-xs font-black uppercase text-slate-500 ml-2">মোবাইল</label>
               <input type="tel" id="phone" placeholder="01XXXXXXXXX" class="input-premium" required pattern="[0-9]{11}">
             </div>
-            <div class="space-y-2 relative">
+            <div class="space-y-2">
               <label class="text-xs font-black uppercase text-slate-500 ml-2">রক্তের গ্রুপ</label>
               <select id="bloodGroup" class="input-premium appearance-none" required></select>
             </div>
           </div>
 
-          <div class="space-y-2">
-            <label class="text-xs font-black uppercase text-slate-500 ml-2">বর্তমান ঠিকানা (বিস্তারিত) </label>
-            <input type="text" id="area" placeholder="গ্রাম/ইউনিয়ন/উপজেলা " class="input-premium" required>
+          <div class="grid grid-cols-2 gap-4">
+             <div class="space-y-2">
+                <label class="text-xs font-black uppercase text-slate-500 ml-2">লিঙ্গ</label>
+                <select id="gender" class="input-premium appearance-none" required>
+                    <option value="">নির্বাচন</option>
+                    <option value="Male">পুরুষ</option>
+                    <option value="Female">মহিলা</option>
+                </select>
+             </div>
+             <div class="space-y-2">
+                <label class="text-xs font-black uppercase text-slate-500 ml-2">জেলা</label>
+                <select id="district" class="input-premium appearance-none" required onchange="loadUpazilas()">
+                    <option value="">নির্বাচন</option>
+                    <option value="Chattogram">চট্টগ্রাম</option>
+                </select>
+             </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="space-y-2">
+                <label class="text-xs font-black uppercase text-slate-500 ml-2">উপজেলা/থানা</label>
+                <select id="upazila" class="input-premium appearance-none" required>
+                    <option value="">প্রথমে জেলা সিলেক্ট করুন</option>
+                </select>
+              </div>
+              <div class="space-y-2">
+                <label class="text-xs font-black uppercase text-slate-500 ml-2">ইউনিয়ন/এলাকা</label>
+                <input type="text" id="area" placeholder="ইউনিয়ন বা গ্রাম" class="input-premium" required>
+              </div>
           </div>
 
           <div class="space-y-2">
@@ -139,10 +194,10 @@
             <label class="text-xs font-black uppercase text-slate-500 ml-2">শেষ রক্তদানের সময়</label>
             <select id="lastDonation" class="input-premium appearance-none" required>
               <option value="">নির্বাচন করুন</option>
-              <option value="কখনো দেইনি" data-status="ready">🩸 কখনো দেইনি</option>
-              <option value="৩ মাসের বেশি" data-status="ready">📅 ৩ মাসের বেশি</option>
-              <option value="৩ মাসের কম" data-status="rest">⏳ ৩ মাসের কম (বিরতিতে)</option>
-              <option value="মনে নেই" data-status="rest">❓ মনে নেই</option>
+              <option value="কখনো দেইনি" data-status="ready">  কখনো দেইনি</option>
+              <option value="৩ মাসের বেশি" data-status="ready">  ৩ মাসের বেশি</option>
+              <option value="৩ মাসের কম" data-status="rest">  ৩ মাসের কম (বিরতিতে)</option>
+              <option value="মনে নেই" data-status="rest">  মনে নেই</option>
             </select>
           </div>
 
@@ -162,24 +217,83 @@
     </div>
 
     <div id="successSection" class="hidden animate-success">
-      <div class="glass-morphism p-10 text-center border-t-8 border-rose-500">
-        <div class="w-24 h-24 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner">
-          <i data-lucide="check-circle-2" class="w-12 h-12"></i>
-        </div>
-        <h2 class="text-2xl font-black text-slate-800 mb-2">অভিনন্দন, <span id="donorNameDisplay" class="text-rose-600"></span>!</h2>
-        <div class="space-y-3 text-slate-600 font-medium mb-4">
-            <p>আপনার ডোনার আইডি: <span id="idDisplay" class="font-black text-rose-600"></span></p>
-            <p>আপনি এখন কর্ণফুলী ব্লাড হাবের একজন গর্বিত সদস্য। </p>
-                      <p>"মানবসেবায় আপনার এই অংশগ্রহণ ইনশাআল্লাহ আপনার জন্য নাজাতের উসিলা হবে। কর্ণফুলী ব্লাড হাবের পক্ষ থেকে আপনাকে জানাই আন্তরিক মোবারকবাদ।"</p>
-
+      <div class="glass-morphism p-8 text-center border-t-8 border-rose-500">
+        <div class="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-inner">
+          <i data-lucide="check-circle-2" class="w-10 h-10"></i>
         </div>
         
-        <div class="space-y-4">
-          <a href="all-donors.html" class="red-glow-btn inline-flex items-center justify-center gap-2">
-            <i data-lucide="users" class="w-5 h-5"></i>
-            ডোনার তালিকা দেখুন
-          </a>
-          <a href="index.html" class="list-btn inline-block">মূল পাতায় ফিরে যান</a>
+        <h2 class="text-2xl font-black text-slate-800 mb-1">অভিনন্দন, <span id="donorNameDisplay" class="text-rose-600"></span>!</h2>
+        <div class="space-y-2 text-slate-600 font-medium mb-6">
+            <p>আপনার ডোনার আইডি: <span id="idDisplay" class="font-black text-rose-600"></span></p>
+            <p>আপনি এখন কর্ণফুলী ব্লাড হাবের একজন গর্বিত সদস্য।</p>
+            <p class="text-xs px-4 italic leading-relaxed">"মানবসেবায় আপনার এই অংশগ্রহণ ইনশাআল্লাহ আপনার জন্য নাজাতের উসিলা হবে।"</p>
+        </div>
+
+        <div id="captureArea" class="py-2">
+            <div class="id-card" id="idCard">
+                <div class="card-pattern"></div>
+                <i data-lucide="droplet" class="watermark-icon w-32 h-32 text-white"></i>
+                
+                <div class="flex justify-between items-start mb-8 relative z-10">
+                    <div class="flex gap-3 items-center">
+                        <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-md border border-white/30">
+                            <i data-lucide="heart" class="w-6 h-6 text-white fill-white"></i>
+                        </div>
+                        <div class="text-left">
+                            <h2 class="text-lg font-black leading-none tracking-tight">কর্ণফুলী ব্লাড হাব</h2>
+                            <p class="text-[8px] uppercase tracking-[0.2em] font-bold text-rose-200">আপনার রক্তে বাঁচবে প্রাণ</p>
+                        </div>
+                    </div>
+                    <div class="bg-white text-rose-600 px-3 py-1 rounded-xl font-black text-xl shadow-lg ring-4 ring-rose-500/20" id="cardBG">O+</div>
+                </div>
+                
+                <div class="flex items-center justify-between mb-6 relative z-10 text-left">
+                    <div class="flex items-center gap-3">
+                        <div class="w-14 h-14 bg-white/10 rounded-full border-2 border-white/30 flex items-center justify-center overflow-hidden" id="avatarBox">
+                            </div>
+                        <div>
+                            <div class="flex items-center gap-1">
+                                <p class="text-lg font-black tracking-wide" id="cardName">Donor Name</p>
+                                <i data-lucide="badge-check" class="w-4 h-4 text-sky-400 fill-sky-400"></i>
+                            </div>
+                            <span id="donorBadge" class="inline-block mt-1 text-[8px] bg-rose-400/30 border border-rose-300/40 text-white px-2 py-0.5 rounded-full font-bold uppercase">Member</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex items-end justify-between relative z-10 text-left border-t border-white/10 pt-4">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <p class="text-[7px] uppercase opacity-70 font-black tracking-widest text-white">Donor ID</p>
+                            <p class="font-mono text-xs font-bold" id="cardID">KH-0000</p>
+                        </div>
+                        <div>
+                            <p class="text-[7px] uppercase opacity-70 font-black tracking-widest text-white">Phone</p>
+                            <p class="text-xs font-bold" id="cardPhone">01700000000</p>
+                        </div>
+                    </div>
+                    <div class="bg-white p-1 rounded-lg shadow-xl" id="qrcode"></div>
+                </div>
+
+                <div class="mt-4 flex justify-between items-center opacity-60 relative z-10">
+                   <p class="text-[7px] font-bold tracking-widest uppercase">Hotline: 01825-714080</p>
+                   <p class="text-[7px] font-bold uppercase tracking-tighter">Verified Digital Member</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="space-y-4 mt-8 px-4">
+          <button id="downloadBtn" class="red-glow-btn flex items-center justify-center gap-2">
+            <i data-lucide="download" class="w-5 h-5"></i> ডোনার কার্ড ডাউনলোড করুন
+          </button>
+          <div class="grid grid-cols-2 gap-3">
+            <a href="all-donors.html" class="list-btn !mt-0 flex items-center justify-center gap-2 text-sm">
+                <i data-lucide="users" class="w-4 h-4"></i> ডোনার তালিকা
+            </a>
+            <a href="index.html" class="list-btn !mt-0 flex items-center justify-center gap-2 text-sm">
+                <i data-lucide="home" class="w-4 h-4"></i> হোমপেইজ
+            </a>
+          </div>
         </div>
       </div>
     </div>
@@ -190,13 +304,24 @@
 
     const DONOR_API = "https://script.google.com/macros/s/AKfycbyGguWgJdIpVgv0Sol7qF7gJOelhv-y47NoW6my1ZnlSjxHcj7ygwlMuDxffRezTW4wbA/exec?sheet=Donors";
     const BG = ["A+","A-","B+","B-","AB+","AB-","O+","O-"];
+    
+    // Upazila Data
+    const ctgUpazilas = [
+        "কর্ণফুলী", "পটিয়া", "বাঁশখালী", "আনোয়ারা", "চন্দনাইশ", "সাতকানিয়া", "লোহাগাড়া", 
+        "বোয়ালখালী", "রাঙ্গুনিয়া", "রাউজান", "ফটিকছড়ি", "হাটহাজারী", "সীতাকুণ্ড", "মীরসরাই", "সন্দ্বীপ",
+        "কোতোয়ালী", "চকবাজার", "পাঁচলাইশ", "বায়েজিদ", "খুলশী", "চানদগাঁও", "বাকলিয়া", 
+        "সদরঘাট", "ডবলমুরিং", "হালিশহর", "পাহাড়তলী", "আকবরশাহ", "বন্দর", "ইপিজেড", "পতেঙ্গা"
+    ];
 
-    // ব্লাড গ্রুপ ড্রপডাউন জেনারেশন
     const bgSelect = document.getElementById('bloodGroup');
     bgSelect.innerHTML = '<option value="">রক্তের গ্রুপ</option>' + 
                          BG.map(g => `<option value="${g}">${g}</option>`).join('');
 
-    // অটো আইডি জেনারেশন ফাংশন (KH-1234 ফরম্যাট)
+    function loadUpazilas() {
+        const upSelect = document.getElementById('upazila');
+        upSelect.innerHTML = ctgUpazilas.map(u => `<option value="${u}">${u}</option>`).join('');
+    }
+
     function generateID() {
         return 'KH-' + Math.floor(1000 + Math.random() * 9000);
     }
@@ -207,48 +332,83 @@
         const btn = document.getElementById('submitBtn');
         const nameValue = document.getElementById('fullName').value.trim();
         const donorId = document.getElementById('donorID').value;
+        const phoneValue = document.getElementById('phone').value.trim();
+        const gender = document.getElementById('gender').value;
+        const upazila = document.getElementById('upazila').value;
+        const area = document.getElementById('area').value.trim();
+        const bloodGroup = document.getElementById('bloodGroup').value;
+        const totalDonationsValue = document.getElementById('totalDonations').value;
         
-        // স্ট্যাটাস লজিক চেক (৩ মাসের কম হলে rest, না হলে ready)
         const lastDonationEl = document.getElementById('lastDonation');
         const selectedStatus = lastDonationEl.options[lastDonationEl.selectedIndex].getAttribute('data-status');
 
         const data = {
             name: nameValue,
-            group: document.getElementById('bloodGroup').value,
-            phone: document.getElementById('phone').value.trim(),
-            area: document.getElementById('area').value.trim(),
-            totalDonations: document.getElementById('totalDonations').value,
+            group: bloodGroup,
+            phone: phoneValue,
+            area: `${upazila}, ${area}`,
+            totalDonations: totalDonationsValue,
             lastDonation: lastDonationEl.value,
             donorID: donorId,
-            status: selectedStatus // ready অথবা rest
+            status: selectedStatus,
+            gender: gender
         };
 
         btn.disabled = true;
-        btn.innerHTML = `<i data-lucide="loader" class="animate-spin w-6 h-6"></i> <span>প্রসেসিং হচ্ছে...</span>`;
+        btn.innerHTML = `<i data-lucide="loader" class="animate-spin w-6 h-6"></i> <span>প্রসেসিং...</span>`;
         lucide.createIcons();
 
         try {
-            // Apps Script এর সাথে কানেক্ট করতে (JSON Stringify করে ডাটা পাঠানো)
-            await fetch(DONOR_API, {
-                method: "POST",
-                mode: "no-cors",
-                body: JSON.stringify(data)
-            });
+            await fetch(DONOR_API, { method: "POST", mode: "no-cors", body: JSON.stringify(data) });
             
-            // Success Logic
-            document.getElementById('formSection').classList.add('hidden');
+            // UI Update
             document.getElementById('donorNameDisplay').textContent = nameValue;
             document.getElementById('idDisplay').textContent = donorId;
+            document.getElementById('cardName').textContent = nameValue;
+            document.getElementById('cardBG').textContent = bloodGroup;
+            document.getElementById('cardID').textContent = donorId;
+            document.getElementById('cardPhone').textContent = phoneValue;
+
+            // Set Avatar based on Gender (Neutral Icons)
+            const avatarBox = document.getElementById('avatarBox');
+            if(gender === "Female") {
+                avatarBox.innerHTML = `<i data-lucide="user-round" class="w-10 h-10 text-pink-200"></i>`;
+            } else {
+                avatarBox.innerHTML = `<i data-lucide="user-round" class="w-10 h-10 text-blue-200"></i>`;
+            }
+
+            const badge = document.getElementById('donorBadge');
+            if(totalDonationsValue === "০") badge.textContent = "New Donor";
+            else if(totalDonationsValue === "১-৩") badge.textContent = "Bronze Donor";
+            else if(totalDonationsValue === "৪-১০") badge.textContent = "Silver Donor";
+            else badge.textContent = "Gold Donor";
+
+            document.getElementById('qrcode').innerHTML = ""; 
+            new QRCode(document.getElementById("qrcode"), {
+                text: `KBH-ID: ${donorId}\nBlood: ${bloodGroup}`,
+                width: 50, height: 50, colorDark : "#470a16", colorLight : "#ffffff"
+            });
+
+            document.getElementById('formSection').classList.add('hidden');
             document.getElementById('successSection').classList.remove('hidden');
             lucide.createIcons();
             window.scrollTo(0,0);
             
         } catch (error) {
-            alert("দুঃখিত, পুনরায় চেষ্টা করুন।");
+            alert("দুঃখিত, পুনরায় চেষ্টা করুন।");
             btn.disabled = false;
             btn.innerHTML = `<span>নিবন্ধন করুন</span> <i data-lucide="heart"></i>`;
             lucide.createIcons();
         }
+    });
+
+    document.getElementById('downloadBtn').addEventListener('click', function() {
+        html2canvas(document.getElementById('captureArea'), { scale: 4, backgroundColor: null, useCORS: true }).then(canvas => {
+            const link = document.createElement('a');
+            link.download = `KBH_Card_${document.getElementById('cardID').textContent}.png`;
+            link.href = canvas.toDataURL("image/png");
+            link.click();
+        });
     });
   </script>
 </body>
