@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover" />
-  <title>রক্তের আবেদন - কর্ণফুলী ব্লাড হাব</title>
+  <title>ব্লাড রিকোয়েস্ট - কর্ণফুলী ব্লাড হাব</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,78 +14,125 @@
   <style>
     :root { --brand: #e11d48; }
     body { font-family: 'Hind Siliguri', sans-serif; -webkit-tap-highlight-color: transparent; }
-    .app-bar { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+    
+    .app-bar { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+    
+    /* Tab Switching Logic */
+    .tab-content { display: none; }
+    .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    .tab-btn.active { color: #e11d48; border-bottom: 3px solid #e11d48; }
+
     #mobile-drawer { transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1); border-radius: 32px 32px 0 0; }
     .drawer-open #mobile-drawer { transform: translateY(0); }
     .drawer-open .drawer-overlay { opacity: 1; pointer-events: auto; }
-    .loading-spinner { border: 3px solid #f3f3f3; border-top: 3px solid #e11d48; border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; display: inline-block; }
-    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+    .loading-shimmer { background: linear-gradient(90deg, #f0f0f0 25%, #f8f8f8 50%, #f0f0f0 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
+    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
   </style>
 </head>
 
-<body class="bg-[#F8F9FE] text-slate-900 pb-28">
+<body class="bg-[#F8F9FE] text-slate-900 pb-32">
 
   <div class="drawer-overlay fixed inset-0 bg-black/60 z-[60] opacity-0 pointer-events-none transition-opacity duration-300" onclick="toggleMenu()"></div>
 
   <header class="sticky top-0 z-50 app-bar border-b border-slate-100 px-4 py-3">
     <div class="max-w-md mx-auto flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <a href="index.html" class="w-10 h-10 rounded-2xl bg-rose-600 flex items-center justify-center text-white shadow-lg">
-          <i data-lucide="arrow-left" class="w-6 h-6"></i>
+        <a href="index.html" class="w-10 h-10 rounded-2xl bg-rose-600 flex items-center justify-center text-white shadow-lg active:scale-90 transition-transform">
+          <i data-lucide="chevron-left" class="w-6 h-6"></i>
         </a>
-        <h1 class="font-bold text-lg">রক্তের <span class="text-rose-600">আবেদন</span></h1>
+        <h1 class="font-bold text-lg tracking-tight">ব্লাড <span class="text-rose-600">রিকোয়েস্ট</span></h1>
       </div>
       <button onclick="toggleMenu()" class="p-2.5 rounded-2xl bg-slate-100 text-slate-600">
-          <i data-lucide="align-right"></i>
+          <i data-lucide="menu"></i>
       </button>
     </div>
   </header>
 
+  <div class="sticky top-[65px] z-40 bg-white border-b border-slate-100 flex">
+    <button onclick="switchTab('list')" id="tab-list" class="tab-btn active flex-1 py-4 text-sm font-bold flex items-center justify-center gap-2">
+        <i data-lucide="list" class="w-4 h-4"></i> রিকোয়েস্ট তালিকা
+    </button>
+    <button onclick="switchTab('form')" id="tab-form" class="tab-btn flex-1 py-4 text-sm font-bold flex items-center justify-center gap-2 text-slate-400">
+        <i data-lucide="plus-circle" class="w-4 h-4"></i> আবেদন করুন
+    </button>
+  </div>
+
   <main class="max-w-md mx-auto px-4 mt-6">
-    
-    <section class="mb-10">
+
+    <div id="content-list" class="tab-content active space-y-4">
+      <div class="flex items-center justify-between px-2 mb-2">
+        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">লাইভ ডাটা আপডেট</p>
+        <button onclick="loadRequests()" class="text-rose-600 active:rotate-180 transition-transform duration-500">
+            <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <div id="requestContainer" class="space-y-4">
+        <div class="bg-white p-5 rounded-[2rem] border border-slate-100 animate-pulse">
+            <div class="flex gap-4">
+                <div class="w-12 h-12 bg-slate-100 rounded-2xl"></div>
+                <div class="flex-1 space-y-2 py-1">
+                    <div class="h-3 bg-slate-100 rounded w-3/4"></div>
+                    <div class="h-2 bg-slate-100 rounded w-1/2"></div>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="content-form" class="tab-content">
       <div class="bg-white rounded-[2.5rem] p-6 shadow-sm border border-slate-100">
-        <h3 class="font-bold text-lg mb-4 flex items-center gap-2 text-rose-600">
-            <i data-lucide="plus-circle"></i> আবেদন ফরম
-        </h3>
+        <div class="mb-6">
+            <h3 class="font-bold text-xl text-slate-800">রক্তের জন্য আবেদন</h3>
+            <p class="text-xs text-slate-400">সঠিক তথ্য দিয়ে ফরমটি পূরণ করুন</p>
+        </div>
+        
         <form id="requestForm" class="space-y-4">
-          <div class="grid grid-cols-2 gap-3">
-            <select id="rGroup" required class="h-14 px-4 rounded-2xl bg-slate-50 border-none font-bold text-slate-700">
-                <option value="">গ্রুপ নির্বাচন</option>
-                <option>A+</option><option>A-</option><option>B+</option><option>B-</option>
-                <option>O+</option><option>O-</option><option>AB+</option><option>AB-</option>
-            </select>
-            <input type="number" id="rUnits" placeholder="ব্যাগ (উদাঃ ২)" required class="h-14 px-4 rounded-2xl bg-slate-50 border-none text-sm font-medium" />
+          <div class="flex gap-3">
+            <div class="flex-1">
+                <label class="text-[10px] font-bold text-slate-400 ml-2 uppercase">গ্রুপ</label>
+                <select id="rGroup" required class="w-full h-14 px-4 mt-1 rounded-2xl bg-slate-50 border-none font-bold text-rose-600 focus:ring-2 focus:ring-rose-500">
+                    <option value="">নির্বাচন</option>
+                    <option>A+</option><option>A-</option><option>B+</option><option>B-</option>
+                    <option>O+</option><option>O-</option><option>AB+</option><option>AB-</option>
+                </select>
+            </div>
+            <div class="flex-1">
+                <label class="text-[10px] font-bold text-slate-400 ml-2 uppercase">পরিমাণ (ব্যাগ)</label>
+                <input type="number" id="rUnits" placeholder="উদাঃ ২" required class="w-full h-14 px-4 mt-1 rounded-2xl bg-slate-50 border-none font-bold focus:ring-2 focus:ring-rose-500" />
+            </div>
           </div>
-          <input type="text" id="rPatient" placeholder="পেশেন্টের নাম" required class="w-full h-14 px-4 rounded-2xl bg-slate-50 border-none text-sm font-medium" />
-          <input type="text" id="rHospital" placeholder="হাসপাতাল ও ঠিকানা" required class="w-full h-14 px-4 rounded-2xl bg-slate-50 border-none text-sm font-medium" />
-          <div class="grid grid-cols-2 gap-3">
-            <input type="text" id="rArea" placeholder="এলাকা (উদাঃ আনোয়ারা)" required class="h-14 px-4 rounded-2xl bg-slate-50 border-none text-sm font-medium" />
-            <input type="date" id="rDate" required class="h-14 px-4 rounded-2xl bg-slate-50 border-none text-sm font-medium" />
+
+          <div>
+            <label class="text-[10px] font-bold text-slate-400 ml-2 uppercase">রোগীর নাম</label>
+            <input type="text" id="rPatient" placeholder="নাম লিখুন" required class="w-full h-14 px-4 mt-1 rounded-2xl bg-slate-50 border-none text-sm font-medium focus:ring-2 focus:ring-rose-500" />
           </div>
-          <input type="tel" id="rContact" placeholder="যোগাযোগের নম্বর" required class="w-full h-14 px-4 rounded-2xl bg-slate-50 border-none text-sm font-medium" />
-          
-          <button type="submit" id="submitBtn" class="w-full h-14 bg-rose-600 text-white rounded-2xl font-bold shadow-lg shadow-rose-100 flex items-center justify-center gap-2 transition-all">
-            <span id="btnText">সাবমিট করুন</span>
+
+          <div>
+            <label class="text-[10px] font-bold text-slate-400 ml-2 uppercase">হাসপাতাল ও এলাকা</label>
+            <input type="text" id="rHospital" placeholder="হাসপাতালের নাম ও এলাকা" required class="w-full h-14 px-4 mt-1 rounded-2xl bg-slate-50 border-none text-sm font-medium focus:ring-2 focus:ring-rose-500" />
+          </div>
+
+          <div class="flex gap-3">
+            <div class="flex-1">
+                <label class="text-[10px] font-bold text-slate-400 ml-2 uppercase">রক্তদানের তারিখ</label>
+                <input type="date" id="rDate" required class="w-full h-14 px-4 mt-1 rounded-2xl bg-slate-50 border-none text-sm font-medium focus:ring-2 focus:ring-rose-500" />
+            </div>
+            <div class="flex-1">
+                <label class="text-[10px] font-bold text-slate-400 ml-2 uppercase">মোবাইল নম্বর</label>
+                <input type="tel" id="rContact" placeholder="018..." required class="w-full h-14 px-4 mt-1 rounded-2xl bg-slate-50 border-none text-sm font-medium focus:ring-2 focus:ring-rose-500" />
+            </div>
+          </div>
+
+          <button type="submit" id="submitBtn" class="w-full h-16 bg-rose-600 text-white rounded-2xl font-black shadow-xl shadow-rose-200 flex items-center justify-center gap-3 active:scale-95 transition-all">
+            <i data-lucide="send" class="w-5 h-5"></i> আবেদন পোস্ট করুন
           </button>
         </form>
       </div>
-    </section>
-
-    <section>
-      <div class="flex items-center justify-between mb-4 px-2">
-        <h3 class="font-bold text-lg italic flex items-center gap-2">
-            <span class="w-2 h-2 bg-rose-600 rounded-full animate-ping"></span> সকল আবেদন (লাইভ)
-        </h3>
-        <button onclick="loadRequests()" class="text-rose-600 bg-rose-50 p-2 rounded-xl">
-            <i data-lucide="rotate-cw" class="w-4 h-4"></i>
-        </button>
-      </div>
-      
-      <div id="requestContainer" class="space-y-4">
-        <div class="text-center py-10 text-slate-400 text-sm">লোড হচ্ছে...</div>
-      </div>
-    </section>
+    </div>
 
   </main>
 
@@ -99,7 +146,7 @@
         <i data-lucide="users" class="w-6 h-6"></i>
         <span class="text-[10px] font-bold uppercase tracking-tighter">ডোনার</span>
       </a>
-      <a href="index.html" class="relative -mt-12 flex flex-col items-center">
+      <a href="index.html" class="relative -mt-12">
         <div class="w-16 h-16 bg-rose-600 rounded-[22px] flex items-center justify-center text-white shadow-2xl ring-8 ring-[#F8F9FE]">
           <i data-lucide="plus" class="w-8 h-8"></i>
         </div>
@@ -109,7 +156,7 @@
         <span class="text-[10px] font-bold uppercase tracking-tighter">রিকোয়েস্ট</span>
       </a>
       <button onclick="toggleMenu()" class="flex flex-col items-center gap-1 text-slate-400">
-        <i data-lucide="menu" class="w-6 h-6"></i>
+        <i data-lucide="align-justify" class="w-6 h-6"></i>
         <span class="text-[10px] font-bold uppercase tracking-tighter">মেনু</span>
       </button>
     </div>
@@ -118,59 +165,66 @@
   <script>
     const API_URL = "https://script.google.com/macros/s/AKfycbyGguWgJdIpVgv0Sol7qF7gJOelhv-y47NoW6my1ZnlSjxHcj7ygwlMuDxffRezTW4wbA/exec";
 
-    // Toggle Menu
     function toggleMenu() { document.body.classList.toggle('drawer-open'); }
 
-    // Load Live Requests from Google Sheet
+    // Tab Switching Function
+    function switchTab(tab) {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active', 'text-rose-600'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        
+        document.getElementById('tab-' + tab).classList.add('active', 'text-rose-600');
+        document.getElementById('content-' + tab).classList.add('active');
+        
+        if(tab === 'list') loadRequests();
+    }
+
+    // Load Requests from Sheet
     async function loadRequests() {
       const container = document.getElementById('requestContainer');
       try {
         const res = await fetch(`${API_URL}?sheet=Requests`);
         const data = await res.json();
         
-        if (data.length === 0) {
-          container.innerHTML = `<div class="bg-white p-8 rounded-3xl text-center text-slate-400 text-sm border border-dashed">এখনও কোনো রিকোয়েস্ট নেই</div>`;
+        if (!data || data.length === 0) {
+          container.innerHTML = `<div class="bg-white p-10 rounded-[2rem] text-center border-2 border-dashed border-slate-100 text-slate-400 text-sm">কোনো আবেদন পাওয়া যায়নি</div>`;
           return;
         }
 
-        // উল্টো দিক থেকে দেখানো (Newest First)
         container.innerHTML = data.reverse().map(req => `
-          <div class="bg-white rounded-[2rem] p-5 border border-slate-100 shadow-sm relative overflow-hidden">
-            <div class="flex items-center gap-4 mb-3">
-                <div class="w-12 h-12 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center font-black border border-rose-100">
-                    ${req[0]}
+          <div class="bg-white rounded-[2.5rem] p-5 border border-slate-100 shadow-sm relative overflow-hidden active:scale-[0.98] transition-all">
+            <div class="flex items-center gap-4 mb-4">
+                <div class="w-14 h-14 rounded-2xl bg-rose-50 text-rose-600 flex flex-col items-center justify-center border border-rose-100 flex-shrink-0">
+                    <span class="text-xl font-black">${req[0]}</span>
                 </div>
                 <div class="flex-1 min-w-0">
-                    <h4 class="font-bold text-slate-800 text-sm truncate">${req[2]} (পেশেন্ট)</h4>
-                    <p class="text-[10px] text-slate-500 truncate"><i data-lucide="map-pin" class="inline w-3 h-3"></i> ${req[5]}</p>
+                    <h4 class="font-bold text-slate-800 truncate">${req[2]}</h4>
+                    <p class="text-[11px] text-slate-400 font-medium"><i data-lucide="map-pin" class="inline w-3 h-3"></i> ${req[3]}</p>
                 </div>
-                <span class="text-[10px] font-bold text-rose-600 bg-rose-50 px-2 py-1 rounded-lg">${req[1]} ব্যাগ</span>
-            </div>
-            <div class="text-xs text-slate-600 space-y-1 mb-4">
-                <p><b>হাসপাতাল:</b> ${req[3]}</p>
-                <p><b>তারিখ:</b> ${new Date(req[7]).toLocaleDateString('bn-BD')}</p>
+                <div class="text-right">
+                    <span class="block text-rose-600 font-black text-sm">${req[1]} ব্যাগ</span>
+                    <span class="text-[9px] font-bold text-slate-300 uppercase">${new Date(req[7]).toLocaleDateString('bn-BD')}</span>
+                </div>
             </div>
             <div class="flex gap-2">
-                <a href="tel:${req[6]}" class="flex-1 h-10 bg-slate-900 text-white rounded-xl flex items-center justify-center gap-2 text-[10px] font-bold">
-                    <i data-lucide="phone" class="w-3 h-3"></i> কল করুন
+                <a href="tel:${req[6]}" class="flex-1 h-12 bg-slate-900 text-white rounded-2xl flex items-center justify-center gap-2 text-xs font-bold shadow-lg shadow-slate-100">
+                    <i data-lucide="phone" class="w-4 h-4"></i> কল করুন
                 </a>
-                <button onclick="shareRequest('${req[0]}', '${req[3]}', '${req[6]}')" class="w-10 h-10 bg-slate-50 text-slate-600 rounded-xl flex items-center justify-center border border-slate-100">
-                    <i data-lucide="share-2" class="w-4 h-4"></i>
+                <button onclick="shareRequest('${req[0]}', '${req[3]}', '${req[6]}')" class="w-12 h-12 bg-rose-50 text-rose-600 rounded-2xl flex items-center justify-center border border-rose-100">
+                    <i data-lucide="share-2" class="w-5 h-5"></i>
                 </button>
             </div>
           </div>
         `).join('');
         lucide.createIcons();
       } catch (e) {
-        container.innerHTML = `<div class="text-center text-rose-500 text-xs">ডাটা লোড করতে সমস্যা হচ্ছে</div>`;
+        container.innerHTML = `<p class="text-center text-rose-500 text-xs py-10">ডাটা লোড করতে সমস্যা হয়েছে</p>`;
       }
     }
 
-    // Handle Form Submission
+    // Form Submit
     document.getElementById('requestForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const btn = document.getElementById('submitBtn');
-      const btnText = document.getElementById('btnText');
       
       const payload = {
         group: document.getElementById('rGroup').value,
@@ -178,43 +232,44 @@
         patient: document.getElementById('rPatient').value,
         hospital: document.getElementById('rHospital').value,
         district: "চট্টগ্রাম",
-        area: document.getElementById('rArea').value,
+        area: document.getElementById('rHospital').value,
         contact: document.getElementById('rContact').value,
         date: document.getElementById('rDate').value,
-        notes: "জরুরি রক্তের প্রয়োজন",
-        status: "Pending"
+        notes: "জরুরি প্রয়োজন",
+        status: "Live"
       };
 
       try {
         btn.disabled = true;
-        btnText.innerHTML = `<span class="loading-spinner"></span> প্রসেসিং...`;
+        btn.innerHTML = `<i data-lucide="loader" class="w-5 h-5 animate-spin"></i> প্রসেসিং...`;
+        lucide.createIcons();
 
         await fetch(`${API_URL}?sheet=Requests`, {
           method: 'POST',
           body: JSON.stringify(payload)
         });
 
-        alert("আপনার আবেদনটি সফলভাবে জমা হয়েছে!");
+        alert("আপনার আবেদনটি সফলভাবে পোস্ট হয়েছে!");
         document.getElementById('requestForm').reset();
-        loadRequests(); // লাইভ আপডেট
+        switchTab('list');
       } catch (err) {
         alert("দুঃখিত, আবার চেষ্টা করুন।");
       } finally {
         btn.disabled = false;
-        btnText.innerHTML = "সাবমিট করুন";
+        btn.innerHTML = `<i data-lucide="send" class="w-5 h-5"></i> আবেদন পোস্ট করুন`;
+        lucide.createIcons();
       }
     });
 
     function shareRequest(group, hospital, phone) {
-        const text = `জরুরি রক্তের প্রয়োজন!\nগ্রুপ: ${group}\nহাসপাতাল: ${hospital}\nযোগাযোগ: ${phone}\n\nধন্যবাদ: কর্ণফুলী ব্লাড হাব`;
+        const text = `🚨 জরুরি রক্ত প্রয়োজন!\n🩸 গ্রুপ: ${group}\n🏥 স্থান: ${hospital}\n📞 যোগাযোগ: ${phone}\n📌 কর্ণফুলী ব্লাড হাব`;
         if (navigator.share) {
-            navigator.share({ title: 'Blood Need', text: text });
+            navigator.share({ title: 'Blood Help', text: text });
         } else {
-            alert("কপি করা হয়েছে: " + text);
+            prompt("এই তথ্যটি কপি করে শেয়ার করুন:", text);
         }
     }
 
-    // Initial Load
     window.onload = () => {
         loadRequests();
         lucide.createIcons();
