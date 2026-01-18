@@ -114,24 +114,17 @@
       </div>
     </section>
 
-    <section class="mb-8">
-      <div class="flex items-center justify-between mb-4 px-2">
-        <h3 class="font-bold text-lg italic flex items-center gap-2"><span class="w-2 h-2 bg-rose-600 rounded-full animate-ping"></span> জরুরি রিকোয়েস্ট</h3>
-        <a href="blood_requests.html" class="text-rose-600 text-xs font-bold">সবগুলো</a>
-      </div>
-      <div class="request-card-scroll no-scrollbar">
-        <div class="w-[280px] bg-white p-5 rounded-3xl border border-rose-100 shadow-sm">
-          <div class="flex justify-between items-start mb-3">
-            <span class="px-3 py-1 bg-rose-600 text-white rounded-full font-black text-xs uppercase">B+ Positive</span>
-            <span class="text-[10px] font-bold text-rose-500 bg-rose-50 px-2 py-1 rounded-lg italic">জরুরি</span>
-          </div>
-          <h4 class="font-bold text-slate-800 text-sm">পেশেন্ট: শফিক আহমেদ</h4>
-          <p class="text-[11px] text-slate-500 mt-1"><i data-lucide="map-pin" class="inline w-3 h-3 mr-1"></i> কর্ণফুলী উপজেলা স্বাস্থ্য কমপ্লেক্স</p>
-          <div class="mt-4 flex gap-2">
-            <a href="tel:01871536468" class="flex-1 py-2.5 bg-slate-900 text-white rounded-xl text-center text-[10px] font-bold">কল করুন</a>
-          </div>
-        </div>
-        </div>
+<section class="mb-8">
+  <div class="flex items-center justify-between mb-4 px-2">
+    <h3 class="font-bold text-lg italic flex items-center gap-2">
+      <span class="w-2 h-2 bg-rose-600 rounded-full animate-ping"></span> জরুরি রিকোয়েস্ট
+    </h3>
+    <a href="blood_requests.html" class="text-rose-600 text-xs font-bold">সবগুলো</a>
+  </div>
+  <div id="requestList" class="request-card-scroll no-scrollbar">
+    <div class="animate-pulse bg-white p-5 rounded-3xl border border-rose-100 min-w-[280px] h-32"></div>
+  </div>
+</section>
     </section>
 
     <section id="search" class="mb-8">
@@ -266,26 +259,63 @@
     </div>
   </nav>
 
-  <script>
+<script>
     function toggleMenu() { document.body.classList.toggle('drawer-open'); }
+    
+    // API URLs
     const DONOR_API = "https://script.google.com/macros/s/AKfycbyGguWgJdIpVgv0Sol7qF7gJOelhv-y47NoW6my1ZnlSjxHcj7ygwlMuDxffRezTW4wbA/exec?sheet=Donors";
+    const REQUEST_API = "https://script.google.com/macros/s/AKfycbyGguWgJdIpVgv0Sol7qF7gJOelhv-y47NoW6my1ZnlSjxHcj7ygwlMuDxffRezTW4wbA/exec?sheet=Requests";
+    
     const BG = ["A+","A-","B+","B-","AB+","AB-","O+","O-"];
 
     async function loadData(){
       try {
-        const res = await fetch(DONOR_API);
-        const donors = await res.json();
-        // Sort donors by newest or specific criteria if needed
+        // Fetch Donors and Requests simultaneously
+        const [donorRes, requestRes] = await Promise.all([
+          fetch(DONOR_API),
+          fetch(REQUEST_API)
+        ]);
+        
+        const donors = await donorRes.json();
+        const requests = await requestRes.json();
+
         renderDonors(donors);
         renderStats(donors);
+        renderRequests(requests); // রিকোয়েস্ট লোড করার জন্য নতুন কল
       } catch (e) { 
         console.error("Error loading data"); 
-        document.getElementById('donorList').innerHTML = '<p class="text-center text-xs text-slate-400">ডাটা লোড করতে ব্যর্থ হয়েছে।</p>';
+        document.getElementById('donorList').innerHTML = '<p class="text-center text-xs text-slate-400">ডাটা লোড করতে ব্যর্থ হয়েছে।</p>';
       }
     }
 
+    // নতুন রিকোয়েস্ট রেন্ডার ফাংশন
+    function renderRequests(list) {
+      const container = document.getElementById('requestList');
+      if (!list || list.length === 0) {
+        container.innerHTML = '<p class="text-xs text-slate-400 p-5">বর্তমানে কোনো জরুরি রিকোয়েস্ট নেই।</p>';
+        return;
+      }
+
+      // শেষ ৫টি রিকোয়েস্ট দেখানোর জন্য (শিটের কলাম: ০:নাম, ১:গ্রুপ, ২:হাসপাতাল, ৪:ফোন)
+      container.innerHTML = list.reverse().slice(0, 5).map(d => `
+        <div class="w-[280px] bg-white p-5 rounded-3xl border border-rose-100 shadow-sm flex-shrink-0">
+          <div class="flex justify-between items-start mb-3">
+            <span class="px-3 py-1 bg-rose-600 text-white rounded-full font-black text-xs uppercase">${d[1]}</span>
+            <span class="text-[10px] font-bold text-rose-500 bg-rose-50 px-2 py-1 rounded-lg italic">জরুরি</span>
+          </div>
+          <h4 class="font-bold text-slate-800 text-sm truncate">পেশেন্ট: ${d[0]}</h4>
+          <p class="text-[11px] text-slate-500 mt-1 truncate">
+            <i data-lucide="map-pin" class="inline w-3 h-3 mr-1"></i> ${d[2]}
+          </p>
+          <div class="mt-4 flex gap-2">
+            <a href="tel:${d[4]}" class="flex-1 py-2.5 bg-slate-900 text-white rounded-xl text-center text-[10px] font-bold active:scale-95 transition-transform">কল করুন</a>
+          </div>
+        </div>
+      `).join('');
+      lucide.createIcons();
+    }
+
     function renderDonors(list){
-      // Limit to first 5 donors for home page
       const displayList = list.slice(0, 5);
       document.getElementById('donorList').innerHTML = displayList.map(d => `
         <div class="bg-white p-5 rounded-[1.8rem] border border-slate-100 flex items-center gap-4 shadow-sm active:scale-[0.98] transition-all">
