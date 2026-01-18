@@ -13,56 +13,64 @@
   
   <style>
     :root { --brand: #e11d48; }
-    body { 
-      font-family: 'Hind Siliguri', sans-serif; 
-      -webkit-tap-highlight-color: transparent;
-      user-select: none;
-    }
+    body { font-family: 'Hind Siliguri', sans-serif; -webkit-tap-highlight-color: transparent; user-select: none; scroll-behavior: smooth; }
     
-    .app-card { transition: transform 0.2s active; }
-    .app-card:active { transform: scale(0.97); }
-
-    .app-bar {
-      background: rgba(255, 255, 255, 0.8);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-    }
-
+    .app-bar { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-    #mobile-drawer {
-      transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1);
-      border-radius: 32px 32px 0 0;
-    }
+    #mobile-drawer { transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1); border-radius: 32px 32px 0 0; }
     .drawer-open #mobile-drawer { transform: translateY(0); }
     .drawer-open .drawer-overlay { opacity: 1; pointer-events: auto; }
 
     @keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
     .animate-marquee { display: inline-block; animation: marquee 15s linear infinite; }
+    
+    .request-card-scroll { display: flex; overflow-x: auto; gap: 12px; scroll-snap-type: x mandatory; padding-bottom: 10px; }
+    .request-card-scroll div { scroll-snap-align: start; flex-shrink: 0; }
+
+    .app-card-shadow { shadow-sm border border-slate-100; transition: all 0.3s ease; }
+    .app-card-shadow:active { transform: scale(0.98); }
   </style>
 </head>
 
-<body class="bg-[#F8F9FE] text-slate-900 pb-24">
+<body class="bg-[#F8F9FE] text-slate-900 pb-28">
 
   <div class="drawer-overlay fixed inset-0 bg-black/60 z-[60] opacity-0 pointer-events-none transition-opacity duration-300" onclick="toggleMenu()"></div>
 
-  <div id="mobile-drawer" class="fixed bottom-0 left-0 right-0 z-[70] bg-white h-[60vh] transform translate-y-full shadow-2xl overflow-hidden">
+  <div id="mobile-drawer" class="fixed bottom-0 left-0 right-0 z-[70] bg-white h-[80vh] transform translate-y-full shadow-2xl overflow-y-auto no-scrollbar">
     <div class="w-12 h-1.5 bg-slate-200 rounded-full mx-auto mt-4 mb-6"></div>
-    <div class="px-6">
-      <h3 class="text-xl font-bold mb-6 flex items-center gap-2">
-        <i data-lucide="layout-grid" class="text-rose-600"></i> আরও অপশন
-      </h3>
-      <div class="grid grid-cols-2 gap-4">
-        <a href="tel:01871536468" class="p-4 rounded-3xl bg-slate-50 flex flex-col items-center gap-2 border border-slate-100">
-          <div class="w-12 h-12 rounded-2xl bg-orange-100 text-orange-600 flex items-center justify-center"><i data-lucide="phone"></i></div>
-          <span class="font-bold text-sm">যোগাযোগ</span>
-        </a>
-        <a href="#faq" onclick="toggleMenu()" class="p-4 rounded-3xl bg-slate-50 flex flex-col items-center gap-2 border border-slate-100">
-          <div class="w-12 h-12 rounded-2xl bg-blue-100 text-blue-600 flex items-center justify-center"><i data-lucide="help-circle"></i></div>
-          <span class="font-bold text-sm">জিজ্ঞাসা</span>
-        </a>
+    <div class="px-6 pb-10">
+      <h3 class="text-xl font-bold mb-6 flex items-center gap-2 text-rose-600"><i data-lucide="info"></i> ডিরেক্টরি ও টিম</h3>
+      
+      <div class="space-y-6">
+        <div>
+          <h4 class="font-bold text-sm mb-3 text-slate-400 uppercase tracking-widest">জরুরি সেবা</h4>
+          <div class="grid grid-cols-1 gap-3">
+            <div class="p-4 bg-slate-50 rounded-2xl flex justify-between items-center border border-slate-100">
+              <div><p class="font-bold text-sm">সঞ্চয় ব্লাড ব্যাংক</p><p class="text-xs text-slate-500">চট্টগ্রাম</p></div>
+              <a href="tel:018XXXXXXXX" class="w-10 h-10 bg-green-100 text-green-600 rounded-full flex items-center justify-center"><i data-lucide="phone" class="w-4 h-4"></i></a>
+            </div>
+            <div class="p-4 bg-slate-50 rounded-2xl flex justify-between items-center border border-slate-100">
+              <div><p class="font-bold text-sm">আনোয়ারা অ্যাম্বুলেন্স</p><p class="text-xs text-slate-500">২৪ ঘণ্টা সার্ভিস</p></div>
+              <a href="tel:018XXXXXXXX" class="w-10 h-10 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center"><i data-lucide="truck" class="w-4 h-4"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="font-bold text-sm mb-3 text-slate-400 uppercase tracking-widest">আমাদের টিম</h4>
+          <div class="flex gap-4 overflow-x-auto no-scrollbar pb-2">
+            <div class="text-center min-w-[80px]">
+              <div class="w-16 h-16 bg-slate-200 rounded-2xl mx-auto mb-2 overflow-hidden border-2 border-rose-100">
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Admin" alt="Team">
+              </div>
+              <p class="text-[10px] font-bold">অ্যাডমিন</p>
+            </div>
+          </div>
+        </div>
       </div>
+      <button onclick="toggleMenu()" class="w-full py-4 mt-8 bg-slate-900 text-white rounded-2xl font-bold">বন্ধ করুন</button>
     </div>
   </div>
 
@@ -74,15 +82,17 @@
         </div>
         <h1 class="font-bold text-lg tracking-tight">কর্ণফুলী <span class="text-rose-600">ব্লাড হাব</span></h1>
       </div>
-      <button onclick="toggleMenu()" class="p-2.5 rounded-2xl bg-slate-100 text-slate-600 active:scale-90 transition-transform">
-        <i data-lucide="align-right"></i>
-      </button>
+      <div class="flex gap-2">
+        <button onclick="toggleMenu()" class="p-2.5 rounded-2xl bg-slate-100 text-slate-600 active:scale-90 transition-transform">
+            <i data-lucide="align-right"></i>
+        </button>
+      </div>
     </div>
   </header>
 
   <div class="bg-rose-50 text-rose-600 py-2 border-b border-rose-100">
     <div class="animate-marquee whitespace-nowrap font-bold text-sm">
-      🚨 জরুরি প্রয়োজনে কল করুন: ০১৮৭১৫৩৬৪৬৮ &nbsp;&nbsp;&nbsp; 🩸 আপনার রক্তে বাঁচবে প্রাণ
+      🚨 জরুরি প্রয়োজনে কল করুন: ০১৮৭১৫৩৬৪৬৮ &nbsp;&nbsp;&nbsp; 🩸 আপনার রক্তে বাঁচবে প্রাণ &nbsp;&nbsp;&nbsp; 🚨 রক্তদান মহৎ দান
     </div>
   </div>
 
@@ -91,69 +101,140 @@
     <section class="mb-8">
       <div class="bg-gradient-to-br from-rose-500 to-rose-600 rounded-[2.5rem] p-8 text-white shadow-2xl shadow-rose-200 relative overflow-hidden">
         <div class="relative z-10">
-          <h2 class="text-3xl font-black leading-tight mb-3">রক্ত দিয়ে প্রাণ <br>বাঁচান আপনিও</h2>
-          <p class="text-rose-100 text-sm font-medium mb-6">সহজেই ডোনার খুঁজুন আপনার এলাকায়</p>
+          <h2 class="text-3xl font-black leading-tight mb-3 italic">রক্তের হিরো <br>হোন আপনিও</h2>
+          <p class="text-rose-100 text-sm font-medium mb-6">আপনার এক ব্যাগ রক্তে একজনের হাসি ফুটবে</p>
           <div class="flex gap-3">
-            <a href="donor_registration.html" class="px-6 py-3 bg-white text-rose-600 rounded-2xl font-bold text-sm shadow-xl">ডোনার হোন</a>
-            <a href="#search" class="px-6 py-3 bg-rose-700/30 backdrop-blur-md text-white rounded-2xl font-bold text-sm">খুঁজুন</a>
+            <a href="donor_registration.html" class="px-6 py-3 bg-white text-rose-600 rounded-2xl font-bold text-sm shadow-xl">রেজিস্ট্রেশন</a>
+            <button onclick="alert('আপনার ডিজিটাল ডোনার কার্ড শীঘ্রই আসছে!')" class="px-6 py-3 bg-rose-700/30 backdrop-blur-md text-white rounded-2xl font-bold text-sm flex items-center gap-2"><i data-lucide="credit-card" class="w-4 h-4"></i> কার্ড</button>
           </div>
         </div>
         <i data-lucide="heart" class="absolute -right-6 -bottom-6 w-40 h-40 text-rose-400 opacity-20"></i>
       </div>
     </section>
 
+    <section class="mb-8">
+      <div class="flex items-center justify-between mb-4 px-2">
+        <h3 class="font-bold text-lg italic flex items-center gap-2"><span class="w-2 h-2 bg-rose-600 rounded-full animate-ping"></span> জরুরি রিকোয়েস্ট</h3>
+        <a href="blood_requests.html" class="text-rose-600 text-xs font-bold">সবগুলো</a>
+      </div>
+      <div class="request-card-scroll no-scrollbar">
+        <div class="w-[280px] bg-white p-5 rounded-3xl border border-rose-100 shadow-sm">
+          <div class="flex justify-between items-start mb-3">
+            <span class="px-3 py-1 bg-rose-600 text-white rounded-full font-black text-xs uppercase">B+ Positive</span>
+            <span class="text-[10px] font-bold text-rose-500 bg-rose-50 px-2 py-1 rounded-lg italic">জরুরি</span>
+          </div>
+          <h4 class="font-bold text-slate-800 text-sm">পেশেন্ট: শফিক আহমেদ</h4>
+          <p class="text-[11px] text-slate-500 mt-1"><i data-lucide="map-pin" class="inline w-3 h-3 mr-1"></i> কর্ণফুলী উপজেলা স্বাস্থ্য কমপ্লেক্স</p>
+          <div class="mt-4 flex gap-2">
+            <a href="tel:01871536468" class="flex-1 py-2.5 bg-slate-900 text-white rounded-xl text-center text-[10px] font-bold">কল করুন</a>
+          </div>
+        </div>
+        </div>
+    </section>
+
     <section id="search" class="mb-8">
       <div class="bg-white rounded-[2rem] p-6 shadow-sm border border-slate-100">
         <div class="flex items-center gap-3 mb-5">
           <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center"><i data-lucide="search" class="w-5 h-5"></i></div>
-          <h3 class="font-bold text-lg">দ্রুত সার্চ করুন</h3>
+          <h3 class="font-bold text-lg">ডোনার খুঁজুন</h3>
         </div>
         <form class="space-y-3">
-          <select id="qGroup" class="w-full h-14 px-5 rounded-2xl bg-slate-50 border-none font-bold text-slate-700"></select>
-          <div class="grid grid-cols-2 gap-3">
-            <input placeholder="জেলা" class="h-14 px-5 rounded-2xl bg-slate-50 border-none text-sm font-medium" />
-            <input placeholder="উপজেলা" class="h-14 px-5 rounded-2xl bg-slate-50 border-none text-sm font-medium" />
-          </div>
-          <button class="w-full h-14 bg-slate-900 text-white rounded-2xl font-bold shadow-lg active:scale-[0.98] transition-all">সার্চ রেজাল্ট দেখুন</button>
+          <select id="qGroup" class="w-full h-14 px-5 rounded-2xl bg-slate-50 border-none font-bold text-slate-700 focus:ring-2 focus:ring-rose-500 transition-all"></select>
+          <input placeholder="এলাকার নাম লিখুন" class="w-full h-14 px-5 rounded-2xl bg-slate-50 border-none text-sm font-medium focus:ring-2 focus:ring-rose-500 transition-all" />
+          <button class="w-full h-14 bg-rose-600 text-white rounded-2xl font-bold shadow-lg shadow-rose-100 active:scale-95 transition-transform">সার্চ রেজাল্ট দেখুন</button>
         </form>
       </div>
     </section>
 
     <section class="mb-8">
-      <h3 class="font-bold text-slate-500 text-sm mb-4 px-2 uppercase tracking-widest">লাইভ পরিসংখ্যান</h3>
+      <h3 class="font-bold text-slate-400 text-[10px] mb-4 px-2 uppercase tracking-widest text-center">লাইভ ডোনার পরিসংখ্যান</h3>
       <div id="liveStats" class="flex gap-3 overflow-x-auto no-scrollbar pb-2"></div>
     </section>
 
     <section class="mb-8">
       <div class="flex items-center justify-between mb-4 px-2">
-        <h3 class="font-bold text-lg italic">ডোনার <span class="text-rose-600">তালিকা</span></h3>
-        <a href="all-donors.html" class="text-rose-600 text-sm font-bold">সব দেখুন</a>
+        <h3 class="font-bold text-lg italic">রক্তদাতাদের <span class="text-rose-600">তালিকা</span></h3>
+        <a href="all-donors.html" class="text-rose-600 text-sm font-bold flex items-center gap-1">সব দেখুন <i data-lucide="arrow-right" class="w-3 h-3"></i></a>
       </div>
-      <div id="donorList" class="space-y-4"></div>
+      <div id="donorList" class="space-y-4">
+        </div>
     </section>
 
-    <section id="faq" class="mb-8">
-      <h3 class="font-bold text-lg mb-4 px-2 italic">জেনে রাখা ভালো</h3>
+    <section class="mb-8">
+        <div class="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm">
+          <h3 class="font-bold text-sm mb-4 flex items-center gap-2"><i data-lucide="refresh-cw" class="w-4 h-4 text-rose-600"></i> রক্ত আদান-প্রদান গাইড</h3>
+          
+          
+
+[Image of blood type compatibility chart]
+
+
+          <div class="space-y-3 mt-4">
+            <div class="flex items-center justify-between p-3 bg-rose-50 rounded-2xl border border-rose-100">
+                <div class="text-[10px] font-bold text-rose-600 uppercase">গ্রুপ</div>
+                <div class="text-[10px] font-bold text-rose-600 uppercase">রক্ত দিতে পারবে</div>
+                <div class="text-[10px] font-bold text-rose-600 uppercase">রক্ত নিতে পারবে</div>
+            </div>
+            <div class="grid grid-cols-1 gap-1">
+                <div class="grid grid-cols-3 gap-2 text-center text-[10px] font-bold text-slate-600 py-1">
+                    <div class="text-rose-600 bg-slate-50 py-2 rounded-lg">A+</div>
+                    <div class="bg-slate-50 py-2 rounded-lg">A+, AB+</div>
+                    <div class="bg-slate-50 py-2 rounded-lg">A+, A-, O+, O-</div>
+                </div>
+                <div class="grid grid-cols-3 gap-2 text-center text-[10px] font-bold text-slate-600 py-1">
+                    <div class="text-rose-600 bg-slate-50 py-2 rounded-lg">B+</div>
+                    <div class="bg-slate-50 py-2 rounded-lg">B+, AB+</div>
+                    <div class="bg-slate-50 py-2 rounded-lg">B+, B-, O+, O-</div>
+                </div>
+                <div class="grid grid-cols-3 gap-2 text-center text-[10px] font-bold text-slate-600 py-1">
+                    <div class="text-rose-600 bg-slate-50 py-2 rounded-lg">O+</div>
+                    <div class="bg-slate-50 py-2 rounded-lg">সব পজিটিভ</div>
+                    <div class="bg-slate-50 py-2 rounded-lg">O+, O-</div>
+                </div>
+                <div class="grid grid-cols-3 gap-2 text-center text-[10px] font-bold text-slate-600 py-1">
+                    <div class="text-rose-600 bg-slate-50 py-2 rounded-lg">O-</div>
+                    <div class="bg-slate-50 py-2 rounded-lg">সবাইকে</div>
+                    <div class="bg-slate-50 py-2 rounded-lg">O-</div>
+                </div>
+            </div>
+          </div>
+          <p class="text-[9px] text-center text-slate-400 mt-4 italic">* ও-নেগেটিভ হলো সর্বজনীন দাতা।</p>
+        </div>
+    </section>
+
+    <section class="mb-8">
+        <div class="bg-slate-900 rounded-[2.5rem] p-6 text-white flex items-center justify-between shadow-xl shadow-slate-200">
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center text-rose-400">
+                    <i data-lucide="phone-call" class="w-6 h-6 animate-pulse"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-sm leading-tight">সরাসরি এডমিন</h3>
+                    <p class="text-[10px] text-slate-400">যেকোনো জরুরি প্রয়োজনে</p>
+                </div>
+            </div>
+            <a href="tel:01871536468" class="px-5 py-2.5 bg-rose-600 rounded-xl font-bold text-xs shadow-lg active:scale-90 transition-all">কল করুন</a>
+        </div>
+    </section>
+
+    <section id="faq" class="mb-12">
+      <h3 class="font-bold text-lg mb-4 px-2 italic text-center">সচরাচর জিজ্ঞাসা (FAQ)</h3>
       <div class="space-y-3">
-        <details class="group bg-white p-5 rounded-2xl border border-slate-100 shadow-sm">
-          <summary class="list-none font-bold text-sm flex justify-between items-center">১. রক্তদান কি নিরাপদ? <i data-lucide="chevron-down" class="w-4 h-4 text-rose-600"></i></summary>
-          <p class="mt-3 text-xs text-slate-500 leading-relaxed">হ্যাঁ, এটি সম্পূর্ণ নিরাপদ এবং স্বাস্থ্যকর। একজন সুস্থ মানুষ প্রতি ৪ মাস অন্তর রক্ত দিতে পারেন।</p>
+        <details class="group bg-white p-5 rounded-3xl border border-slate-100 shadow-sm">
+          <summary class="list-none font-bold text-sm flex justify-between items-center cursor-pointer">১. কতদিন পর পর রক্ত দেওয়া যায়? <i data-lucide="chevron-down" class="w-4 h-4 text-rose-600 transition-transform group-open:rotate-180"></i></summary>
+          <p class="mt-3 text-xs text-slate-500 leading-relaxed border-t border-slate-50 pt-3">একজন সুস্থ পুরুষ প্রতি ৩ মাস এবং নারী প্রতি ৪ মাস অন্তর রক্ত দিতে পারেন।</p>
         </details>
-        <details class="group bg-white p-5 rounded-2xl border border-slate-100 shadow-sm">
-          <summary class="list-none font-bold text-sm flex justify-between items-center">২. রক্তদানে কি টাকা লাগে? <i data-lucide="chevron-down" class="w-4 h-4 text-rose-600"></i></summary>
-          <p class="mt-3 text-xs text-slate-500 leading-relaxed">না, এটি সম্পূর্ণ ফ্রি এবং মানবিক সেবা। কোনো আর্থিক লেনদেন করবেন না।</p>
+        <details class="group bg-white p-5 rounded-3xl border border-slate-100 shadow-sm">
+          <summary class="list-none font-bold text-sm flex justify-between items-center cursor-pointer">২. রক্তের জন্য কি টাকা লাগে? <i data-lucide="alert-circle" class="w-4 h-4 text-rose-600 transition-transform group-open:rotate-180"></i></summary>
+          <p class="mt-3 text-xs text-rose-600 font-bold leading-relaxed border-t border-slate-50 pt-3 italic">না! রক্তের বিনিময়ে টাকা নেওয়া বা দেওয়া আইনত দণ্ডনীয় অপরাধ এবং মানবতার পরিপন্থী।</p>
         </details>
-        <details class="group bg-white p-5 rounded-2xl border border-slate-100 shadow-sm">
-          <summary class="list-none font-bold text-sm flex justify-between items-center">৩. রক্তদাতার বয়স ও ওজন কত হওয়া প্রয়োজন? <i data-lucide="chevron-down" class="w-4 h-4 text-rose-600"></i></summary>
-          <p class="mt-3 text-xs text-slate-500 leading-relaxed">বয়স ১৮-৬০ এবং ওজন সর্বনিম্ন ৫০ কেজি হওয়া প্রয়োজন।</p>
+        <details class="group bg-white p-5 rounded-3xl border border-slate-100 shadow-sm">
+          <summary class="list-none font-bold text-sm flex justify-between items-center cursor-pointer">৩. রক্তদানের কি কোনো স্বাস্থ্যঝুঁকি আছে? <i data-lucide="chevron-down" class="w-4 h-4 text-rose-600 transition-transform group-open:rotate-180"></i></summary>
+          <p class="mt-3 text-xs text-slate-500 leading-relaxed border-t border-slate-50 pt-3">একদমই না। বরং রক্ত দিলে উচ্চ রক্তচাপের ঝুঁকি কমে এবং শরীরে নতুন রক্তকণিকা তৈরি হয়।</p>
         </details>
-        <details class="group bg-white p-5 rounded-2xl border border-slate-100 shadow-sm">
-          <summary class="list-none font-bold text-sm flex justify-between items-center">৪. ব্লাড রিকোয়েস্ট কিভাবে দিব? <i data-lucide="chevron-down" class="w-4 h-4 text-rose-600"></i></summary>
-          <p class="mt-3 text-xs text-slate-500 leading-relaxed">নিচের মেনু থেকে 'রিকোয়েস্ট' বাটনে ক্লিক করে ফরমটি পূরণ করলেই তা পোস্ট হয়ে যাবে।</p>
-        </details>
-        <details class="group bg-white p-5 rounded-2xl border border-slate-100 shadow-sm">
-          <summary class="list-none font-bold text-sm flex justify-between items-center">৫. ডোনার হওয়ার সুবিধা কি? <i data-lucide="chevron-down" class="w-4 h-4 text-rose-600"></i></summary>
-          <p class="mt-3 text-xs text-slate-500 leading-relaxed">রক্তদানে হার্ট অ্যাটাকের ঝুঁকি কমে এবং শরীরে নতুন রক্ত কোষ তৈরি হয়। সর্বোপরি একজনের জীবন বাঁচে।</p>
+        <details class="group bg-white p-5 rounded-3xl border border-slate-100 shadow-sm">
+          <summary class="list-none font-bold text-sm flex justify-between items-center cursor-pointer">৪. অ্যান্টিবায়োটিক খেলে কি রক্ত দেওয়া যায়? <i data-lucide="chevron-down" class="w-4 h-4 text-rose-600 transition-transform group-open:rotate-180"></i></summary>
+          <p class="mt-3 text-xs text-slate-500 leading-relaxed border-t border-slate-50 pt-3">অ্যান্টিবায়োটিক বা কোনো ভারী ওষুধ চলাকালীন রক্ত দেওয়া উচিত নয়। কোর্স শেষ করার কমপক্ষে ৭ দিন পর দেওয়া নিরাপদ।</p>
         </details>
       </div>
     </section>
@@ -162,30 +243,26 @@
 
   <nav class="fixed bottom-0 left-0 right-0 z-[100] bg-white/80 backdrop-blur-xl border-t border-slate-100 px-6 py-3">
     <div class="max-w-md mx-auto flex justify-between items-center">
-      <a href="#home" class="flex flex-col items-center gap-1 text-rose-600">
+      <a href="index.html" class="flex flex-col items-center gap-1 text-rose-600">
         <i data-lucide="home" class="w-6 h-6"></i>
-        <span class="text-[10px] font-bold uppercase">হোম</span>
+        <span class="text-[10px] font-bold uppercase tracking-tighter">হোম</span>
       </a>
-      
       <a href="all-donors.html" class="flex flex-col items-center gap-1 text-slate-400">
         <i data-lucide="users" class="w-6 h-6"></i>
-        <span class="text-[10px] font-bold uppercase">ডোনার</span>
+        <span class="text-[10px] font-bold uppercase tracking-tighter">ডোনার</span>
       </a>
-      
       <a href="donor_registration.html" class="relative -mt-12 flex flex-col items-center">
         <div class="w-16 h-16 bg-rose-600 rounded-[22px] flex items-center justify-center text-white shadow-2xl shadow-rose-300 ring-8 ring-[#F8F9FE] active:scale-90 transition-transform">
           <i data-lucide="plus" class="w-8 h-8"></i>
         </div>
       </a>
-
       <a href="blood_requests.html" class="flex flex-col items-center gap-1 text-slate-400">
         <i data-lucide="clipboard-list" class="w-6 h-6"></i>
-        <span class="text-[10px] font-bold uppercase">রিকোয়েস্ট</span>
+        <span class="text-[10px] font-bold uppercase tracking-tighter">রিকোয়েস্ট</span>
       </a>
-
       <button onclick="toggleMenu()" class="flex flex-col items-center gap-1 text-slate-400">
-        <i data-lucide="more-horizontal" class="w-6 h-6"></i>
-        <span class="text-[10px] font-bold uppercase">আরও</span>
+        <i data-lucide="menu" class="w-6 h-6"></i>
+        <span class="text-[10px] font-bold uppercase tracking-tighter">মেনু</span>
       </button>
     </div>
   </nav>
@@ -199,22 +276,28 @@
       try {
         const res = await fetch(DONOR_API);
         const donors = await res.json();
+        // Sort donors by newest or specific criteria if needed
         renderDonors(donors);
         renderStats(donors);
-      } catch (e) { console.error("Error loading data"); }
+      } catch (e) { 
+        console.error("Error loading data"); 
+        document.getElementById('donorList').innerHTML = '<p class="text-center text-xs text-slate-400">ডাটা লোড করতে ব্যর্থ হয়েছে।</p>';
+      }
     }
 
     function renderDonors(list){
-      document.getElementById('donorList').innerHTML = list.slice(0, 5).map(d => `
-        <div class="bg-white p-5 rounded-[1.8rem] border border-slate-100 flex items-center gap-4 shadow-sm app-card">
-          <div class="w-14 h-14 rounded-2xl bg-rose-50 text-rose-600 flex flex-col items-center justify-center border border-rose-100">
+      // Limit to first 5 donors for home page
+      const displayList = list.slice(0, 5);
+      document.getElementById('donorList').innerHTML = displayList.map(d => `
+        <div class="bg-white p-5 rounded-[1.8rem] border border-slate-100 flex items-center gap-4 shadow-sm active:scale-[0.98] transition-all">
+          <div class="w-14 h-14 rounded-2xl bg-rose-50 text-rose-600 flex flex-col items-center justify-center border border-rose-100 flex-shrink-0">
             <span class="text-lg font-black leading-none">${d[1]}</span>
           </div>
-          <div class="flex-1">
-            <h4 class="font-bold text-slate-800 leading-tight">${d[0]}</h4>
-            <p class="text-[11px] text-slate-500 font-medium mt-0.5">${d[2]} · ${d[3]}</p>
+          <div class="flex-1 min-w-0">
+            <h4 class="font-bold text-slate-800 leading-tight truncate">${d[0]}</h4>
+            <p class="text-[11px] text-slate-500 font-medium mt-0.5 truncate">${d[2]} · ${d[3]}</p>
           </div>
-          <a href="tel:${d[4]}" class="w-10 h-10 rounded-full bg-slate-900 text-white flex items-center justify-center shadow-lg active:scale-90 transition-transform">
+          <a href="tel:${d[4]}" class="w-11 h-11 rounded-full bg-slate-900 text-white flex items-center justify-center shadow-lg active:scale-90 transition-transform flex-shrink-0">
             <i data-lucide="phone" class="w-4 h-4"></i>
           </a>
         </div>`).join('');
@@ -224,13 +307,14 @@
     function renderStats(donors){
       const stats = BG.map(g => ({ g, n: donors.filter(d=>d[1]===g).length }));
       document.getElementById('liveStats').innerHTML = stats.filter(s=>s.n>0).map(s => `
-        <div class="flex-shrink-0 min-w-[100px] p-4 rounded-[1.5rem] bg-white border border-slate-100 shadow-sm text-center">
+        <div class="flex-shrink-0 min-w-[100px] p-4 rounded-[1.8rem] bg-white border border-slate-100 shadow-sm text-center">
           <div class="text-rose-600 font-black text-xl mb-1">${s.g}</div>
           <div class="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">${s.n} ডোনার</div>
         </div>`).join('');
     }
 
-    document.getElementById('qGroup').innerHTML = '<option value="">গ্রুপ নির্বাচন করুন</option>' + BG.map(g=>`<option value="${g}">${g}</option>`).join('');
+    // Initialize Page
+    document.getElementById('qGroup').innerHTML = '<option value="">ব্লাড গ্রুপ নির্বাচন</option>' + BG.map(g=>`<option value="${g}">${g}</option>`).join('');
     loadData();
     lucide.createIcons();
   </script>
