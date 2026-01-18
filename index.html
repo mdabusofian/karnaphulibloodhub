@@ -2,228 +2,198 @@
 <html lang="bn">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
-  <title>কর্ণফুলী ব্লাড হাব — জীবন বাঁচাই</title>
-  <meta name="description" content="ব্লাড ডোনার ওয়েবসাইট – ডোনার খুঁজুন, রিকোয়েস্ট দিন, রেজিস্ট্রেশন করুন।" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover" />
+  <title>কর্ণফুলী ব্লাড হাব</title>
+  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script defer src="https://unpkg.com/lucide@latest"></script>
+  
   <style>
-    :root { --brand:#e11d48; }
-    html { scroll-behavior:smooth; }
-    body { font-family:'Hind Siliguri', sans-serif; overflow-x: hidden; -webkit-tap-highlight-color: transparent; }
-    .glass { background:rgba(255,255,255,0.85); backdrop-filter: saturate(180%) blur(15px); }
-    .container-max { max-width: 1200px; }
-    .heading-gradient{ background:linear-gradient(90deg,#e11d48, #ef4444); -webkit-background-clip:text; background-clip:text; color:transparent; }
-    .mobile-bottom-nav { border-radius: 24px 24px 0 0; box-shadow: 0 -5px 20px rgba(0,0,0,0.05); }
-    #mobile-drawer { transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
-    .drawer-open #mobile-drawer { transform: translateX(0); }
-    .drawer-overlay { opacity: 0; pointer-events: none; transition: 0.3s; }
+    :root { --brand: #e11d48; }
+    body { 
+      font-family: 'Hind Siliguri', sans-serif; 
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+    
+    .app-card { transition: transform 0.2s active; }
+    .app-card:active { transform: scale(0.97); }
+
+    .app-bar {
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+    #mobile-drawer {
+      transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+      border-radius: 32px 32px 0 0;
+    }
+    .drawer-open #mobile-drawer { transform: translateY(0); }
     .drawer-open .drawer-overlay { opacity: 1; pointer-events: auto; }
+
     @keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
-    .animate-marquee { display: inline-block; animation: marquee 20s linear infinite; }
+    .animate-marquee { display: inline-block; animation: marquee 15s linear infinite; }
   </style>
 </head>
-<body class="bg-slate-50 text-slate-900 pb-20 md:pb-0">
 
-  <div class="drawer-overlay fixed inset-0 bg-black/40 z-[55]" onclick="toggleMenu()"></div>
+<body class="bg-[#F8F9FE] text-slate-900 pb-24">
 
-  <div id="mobile-drawer" class="fixed inset-y-0 left-0 z-[60] w-[80%] max-w-sm bg-white shadow-2xl transform -translate-x-full">
-    <div class="p-6 h-full flex flex-col">
-      <div class="flex items-center justify-between mb-8">
-        <div class="flex items-center gap-2 font-bold text-xl">
-          <span class="w-10 h-10 rounded-xl bg-rose-600 text-white flex items-center justify-center"><i data-lucide="heart-pulse"></i></span>
-          <span>মেনু</span>
-        </div>
-        <button onclick="toggleMenu()" class="p-2 bg-slate-100 rounded-full"><i data-lucide="x"></i></button>
-      </div>
-      <nav class="flex flex-col gap-2 font-bold text-slate-700">
-        <a href="#home" onclick="toggleMenu()" class="p-4 rounded-2xl hover:bg-rose-50 hover:text-rose-600 flex items-center gap-3"><i data-lucide="home"></i> হোম</a>
-        <a href="#search" onclick="toggleMenu()" class="p-4 rounded-2xl hover:bg-rose-50 hover:text-rose-600 flex items-center gap-3"><i data-lucide="search"></i> ডোনার খুঁজুন</a>
-        <a href="donor_registration.html" class="p-4 rounded-2xl hover:bg-rose-50 hover:text-rose-600 flex items-center gap-3"><i data-lucide="user-plus"></i> ডোনার হোন</a>
-        <a href="all-donors.html" class="p-4 rounded-2xl hover:bg-rose-50 hover:text-rose-600 flex items-center gap-3"><i data-lucide="users"></i> ডোনার লিস্ট</a>
-        <a href="#faq" onclick="toggleMenu()" class="p-4 rounded-2xl hover:bg-rose-50 hover:text-rose-600 flex items-center gap-3"><i data-lucide="help-circle"></i> সচরাচর জিজ্ঞাসা</a>
-        <a href="#contact" onclick="toggleMenu()" class="p-4 rounded-2xl hover:bg-rose-50 hover:text-rose-600 flex items-center gap-3"><i data-lucide="phone"></i> যোগাযোগ</a>
-      </nav>
-    </div>
-  </div>
+  <div class="drawer-overlay fixed inset-0 bg-black/60 z-[60] opacity-0 pointer-events-none transition-opacity duration-300" onclick="toggleMenu()"></div>
 
-  <header class="sticky top-0 z-50 glass border-b border-slate-200">
-    <div class="mx-auto container-max px-4 py-4 flex items-center justify-between">
-      <a href="#home" class="flex items-center gap-2 font-bold text-xl tracking-tight group">
-        <span class="inline-flex items-center justify-center w-10 h-10 rounded-2xl bg-rose-600 text-white shadow-lg group-hover:scale-110 transition-transform"><i data-lucide="heart-pulse"></i></span>
-        <span>কর্ণফুলী <span class="text-rose-600">ব্লাড হাব</span></span>
-      </a>
-      <nav class="hidden lg:flex items-center gap-8 text-[15px] font-bold">
-        <a href="#search" class="hover:text-rose-600 transition-colors">ডোনার খুঁজুন</a>
-        <a href="donor_registration.html" class="hover:text-rose-600 transition-colors">রেজিস্ট্রেশন</a>
-        <a href="#faq" class="hover:text-rose-600 transition-colors">FAQ</a>
-        <a href="#contact" class="hover:text-rose-600 transition-colors">যোগাযোগ</a>
-      </nav>
-      <div class="flex items-center gap-2">
-        <button onclick="toggleMenu()" class="lg:hidden p-2 rounded-xl bg-slate-100"><i data-lucide="menu"></i></button>
-        <a href="donor_registration.html" class="hidden md:flex items-center gap-2 px-5 py-2.5 rounded-xl bg-rose-600 text-white text-sm font-bold shadow-lg">
-          <i data-lucide="plus" class="w-4 h-4"></i> ডোনার হোন
+  <div id="mobile-drawer" class="fixed bottom-0 left-0 right-0 z-[70] bg-white h-[60vh] transform translate-y-full shadow-2xl overflow-hidden">
+    <div class="w-12 h-1.5 bg-slate-200 rounded-full mx-auto mt-4 mb-6"></div>
+    <div class="px-6">
+      <h3 class="text-xl font-bold mb-6 flex items-center gap-2">
+        <i data-lucide="layout-grid" class="text-rose-600"></i> আরও অপশন
+      </h3>
+      <div class="grid grid-cols-2 gap-4">
+        <a href="tel:01871536468" class="p-4 rounded-3xl bg-slate-50 flex flex-col items-center gap-2 border border-slate-100">
+          <div class="w-12 h-12 rounded-2xl bg-orange-100 text-orange-600 flex items-center justify-center"><i data-lucide="phone"></i></div>
+          <span class="font-bold text-sm">যোগাযোগ</span>
+        </a>
+        <a href="#faq" onclick="toggleMenu()" class="p-4 rounded-3xl bg-slate-50 flex flex-col items-center gap-2 border border-slate-100">
+          <div class="w-12 h-12 rounded-2xl bg-blue-100 text-blue-600 flex items-center justify-center"><i data-lucide="help-circle"></i></div>
+          <span class="font-bold text-sm">জিজ্ঞাসা</span>
         </a>
       </div>
     </div>
+  </div>
+
+  <header class="sticky top-0 z-50 app-bar border-b border-slate-100 px-4 py-3">
+    <div class="max-w-md mx-auto flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-2xl bg-rose-600 flex items-center justify-center text-white shadow-lg shadow-rose-200">
+          <i data-lucide="heart-pulse" class="w-6 h-6"></i>
+        </div>
+        <h1 class="font-bold text-lg tracking-tight">কর্ণফুলী <span class="text-rose-600">ব্লাড হাব</span></h1>
+      </div>
+      <button onclick="toggleMenu()" class="p-2.5 rounded-2xl bg-slate-100 text-slate-600 active:scale-90 transition-transform">
+        <i data-lucide="align-right"></i>
+      </button>
+    </div>
   </header>
 
-  <div class="bg-rose-600 text-white py-2 overflow-hidden shadow-lg">
-    <div class="animate-marquee whitespace-nowrap flex items-center gap-12 font-black italic">
-      <span>🚨 জরুরি রক্তের প্রয়োজন! এখনই যোগাযোগ করুন: ০১৮৭১৫৩৬৪৬৮</span>
-      <span>🚨 জরুরি রক্তের প্রয়োজন! এখনই যোগাযোগ করুন: ০১৮৭১৫৩৬৪৬৮</span>
+  <div class="bg-rose-50 text-rose-600 py-2 border-b border-rose-100">
+    <div class="animate-marquee whitespace-nowrap font-bold text-sm">
+      🚨 জরুরি প্রয়োজনে কল করুন: ০১৮৭১৫৩৬৪৬৮ &nbsp;&nbsp;&nbsp; 🩸 আপনার রক্তে বাঁচবে প্রাণ
     </div>
   </div>
 
-  <section id="home" class="relative pt-12 pb-16 overflow-hidden">
-    <div class="mx-auto container-max px-4">
-      <div class="grid lg:grid-cols-2 gap-12 items-center">
-        <div class="text-center lg:text-left">
-          <h1 class="text-4xl md:text-6xl font-black leading-[1.1] text-slate-900">
-            <span class="heading-gradient italic">এক ফোঁটা রক্ত—</span><br>একটি হাসিমাখা জীবন
-          </h1>
-          <p class="mt-6 text-slate-600 text-lg leading-relaxed max-w-xl mx-auto lg:mx-0">জরুরী মুহূর্তে দ্রুত ডোনার খুঁজে পেতে আমরা আছি আপনার পাশে। আপনার এক ব্যাগ রক্ত বাঁচাতে পারে একটি প্রাণ।</p>
-          <div class="mt-10 flex flex-wrap justify-center lg:justify-start gap-4">
-            <a href="#search" class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-slate-900 text-white font-bold shadow-xl flex items-center justify-center gap-2">
-              <i data-lucide="search"></i> ডোনার খুঁজুন
-            </a>
-            <a href="donor_registration.html" class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-white text-rose-600 border-2 border-rose-100 font-bold hover:bg-rose-50 transition-all text-center">ডোনার হতে চাই</a>
-          </div>
-        </div>
-
-        <div class="relative bg-white p-6 md:p-8 rounded-[2.5rem] shadow-2xl border border-rose-50">
-          <div class="flex items-center gap-4 mb-6">
-            <div class="w-12 h-12 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center"><i data-lucide="zap"></i></div>
-            <h3 class="text-xl font-black italic">দ্রুত ডোনার সার্চ</h3>
-          </div>
-          <form id="quickSearch" class="space-y-4">
-            <select id="qGroup" class="w-full px-5 py-4 rounded-2xl bg-slate-50 border-none font-bold text-lg"></select>
-            <div class="grid grid-cols-2 gap-4">
-              <input id="qDistrict" placeholder="জেলা" class="px-5 py-4 rounded-2xl bg-slate-50 border-none" />
-              <input id="qArea" placeholder="এলাকা" class="px-5 py-4 rounded-2xl bg-slate-50 border-none" />
-            </div>
-            <button class="w-full py-4 rounded-2xl bg-rose-600 text-white font-black text-xl shadow-lg hover:bg-rose-700 transition-all">সার্চ করুন</button>
-          </form>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="search" class="py-16 bg-white">
-    <div class="mx-auto container-max px-4">
-      <h2 class="text-3xl font-black italic mb-8">ডোনার <span class="text-rose-600">তালিকা</span></h2>
-      <div id="donorList" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-    </div>
-  </section>
-
-  <section id="stats" class="py-12 bg-slate-50">
-    <div class="mx-auto container-max px-4">
-      <div class="bg-white p-8 rounded-[2.5rem] shadow-xl border border-slate-100 text-center">
-        <h3 class="text-2xl font-black italic mb-6">আমাদের ডোনার পরিসংখ্যান</h3>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="liveStats"></div>
-      </div>
-    </div>
-  </section>
-
-  <section class="py-12">
-    <div class="mx-auto container-max px-4">
-      <div class="p-8 md:p-12 rounded-[3rem] bg-rose-600 text-white text-center shadow-2xl relative overflow-hidden">
-        <div class="relative z-10">
-          <h2 class="text-3xl md:text-4xl font-black mb-4">জরুরি রক্ত প্রয়োজন?</h2>
-          <p class="text-rose-100 mb-8 text-lg font-medium">আমাদের স্বেচ্ছাসেবকদের সাথে সরাসরি কথা বলুন। আমরা ২৪/৭ প্রস্তুত।</p>
-          <a href="tel:01871536468" class="inline-flex items-center gap-4 px-10 py-5 bg-white text-rose-600 rounded-2xl font-black text-2xl shadow-xl hover:scale-105 transition-transform">
-            <i data-lucide="phone-call"></i> ০১৮৭১৫৩৬৪৬৮
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
-
- <section id="faq" class="py-16 bg-white">
-  <div class="mx-auto container-max px-4">
-    <div class="text-center mb-10">
-      <h2 class="text-3xl font-black italic">সচরাচর <span class="text-rose-600">জিজ্ঞাসা</span></h2>
-      <p class="text-slate-500 mt-2 font-medium italic">রক্তদানের আগে কিছু জরুরি তথ্য</p>
-    </div>
+  <main class="max-w-md mx-auto px-4 mt-6">
     
-    <div class="max-w-3xl mx-auto space-y-4">
-      
-      <details class="group bg-slate-50 p-6 rounded-3xl border border-slate-100 cursor-pointer transition-all hover:bg-rose-50/50">
-        <summary class="font-bold list-none flex justify-between items-center text-slate-800">
-          রক্তদানের যোগ্যতা ও সময়সীমা কী?
-          <i data-lucide="chevron-down" class="group-open:rotate-180 transition text-rose-600"></i>
-        </summary>
-        <p class="mt-4 text-slate-600 leading-relaxed border-t border-rose-100 pt-4">
-          ১৮-৬০ বছর বয়সী এবং অন্তত ৫০ কেজি ওজনের যেকোনো সুস্থ মানুষ রক্ত দিতে পারেন। পুরুষরা প্রতি ৩ মাস এবং নারীরা প্রতি ৪ মাস অন্তর রক্তদান করতে পারেন।
-        </p>
-      </details>
-
-      <details class="group bg-slate-50 p-6 rounded-3xl border border-slate-100 cursor-pointer transition-all hover:bg-rose-50/50">
-        <summary class="font-bold list-none flex justify-between items-center text-slate-800">
-          রক্তদান কি নিরাপদ? এতে কি কোনো উপকার হয়?
-          <i data-lucide="chevron-down" class="group-open:rotate-180 transition text-rose-600"></i>
-        </summary>
-        <p class="mt-4 text-slate-600 leading-relaxed border-t border-rose-100 pt-4">
-          রক্তদান সম্পূর্ণ নিরাপদ। এটি শরীরে নতুন রক্তকণিকা তৈরিতে সাহায্য করে, রক্তে কোলেস্টেরলের মাত্রা কমায় এবং হৃদরোগের ঝুঁকি হ্রাস করে।
-        </p>
-      </details>
-
-      <details class="group bg-slate-50 p-6 rounded-3xl border border-slate-100 cursor-pointer transition-all hover:bg-rose-50/50">
-        <summary class="font-bold list-none flex justify-between items-center text-slate-800">
-          রক্তের জন্য কি কোনো টাকা দিতে হয়?
-          <i data-lucide="chevron-down" class="group-open:rotate-180 transition text-rose-600"></i>
-        </summary>
-        <p class="mt-4 text-slate-600 leading-relaxed border-t border-rose-100 pt-4">
-          না, এটি সম্পূর্ণ একটি স্বেচ্ছাসেবী প্ল্যাটফর্ম। রক্তদান একটি মানবিক কাজ, এখানে কোনো প্রকার আর্থিক লেনদেন কঠোরভাবে নিষিদ্ধ।
-        </p>
-      </details>
-
-    </div>
-  </div>
-</section>
-
-  <div class="lg:hidden fixed bottom-0 left-0 right-0 z-50 glass border-t border-slate-200 mobile-bottom-nav px-4 py-2">
-    <div class="flex justify-around items-center max-w-md mx-auto">
-      <a href="#home" class="flex flex-col items-center p-2 text-rose-600">
-        <i data-lucide="home"></i>
-        <span class="text-[10px] font-bold mt-1">হোম</span>
-      </a>
-      <a href="#search" class="flex flex-col items-center p-2 text-slate-500">
-        <i data-lucide="search"></i>
-        <span class="text-[10px] font-bold mt-1">সার্চ</span>
-      </a>
-      <a href="donor_registration.html" class="flex flex-col items-center -mt-8">
-        <div class="w-14 h-14 bg-rose-600 rounded-full flex items-center justify-center text-white shadow-xl ring-4 ring-white">
-          <i data-lucide="plus"></i>
+    <section class="mb-8">
+      <div class="bg-gradient-to-br from-rose-500 to-rose-600 rounded-[2.5rem] p-8 text-white shadow-2xl shadow-rose-200 relative overflow-hidden">
+        <div class="relative z-10">
+          <h2 class="text-3xl font-black leading-tight mb-3">রক্ত দিয়ে প্রাণ <br>বাঁচান আপনিও</h2>
+          <p class="text-rose-100 text-sm font-medium mb-6">সহজেই ডোনার খুঁজুন আপনার এলাকায়</p>
+          <div class="flex gap-3">
+            <a href="donor_registration.html" class="px-6 py-3 bg-white text-rose-600 rounded-2xl font-bold text-sm shadow-xl">ডোনার হোন</a>
+            <a href="#search" class="px-6 py-3 bg-rose-700/30 backdrop-blur-md text-white rounded-2xl font-bold text-sm">খুঁজুন</a>
+          </div>
         </div>
-        <span class="text-[10px] font-bold mt-1 text-rose-600">ডোনার হোন</span>
-      </a>
-      <a href="tel:01871536468" class="flex flex-col items-center p-2 text-slate-500">
-        <i data-lucide="phone"></i>
-        <span class="text-[10px] font-bold mt-1">কল</span>
-      </a>
-      <a href="all-donors.html" class="flex flex-col items-center p-2 text-slate-500">
-        <i data-lucide="users"></i>
-        <span class="text-[10px] font-bold mt-1">লিস্ট</span>
-      </a>
-    </div>
-  </div>
+        <i data-lucide="heart" class="absolute -right-6 -bottom-6 w-40 h-40 text-rose-400 opacity-20"></i>
+      </div>
+    </section>
 
-  <footer class="py-10 bg-slate-900 text-white text-center">
-    <div class="mx-auto container-max px-4">
-      <p class="text-sm text-slate-400">© <span id="year"></span> কর্ণফুলী ব্লাড হাব | মোঃ আবু সুফিয়ান দ্বারা নির্মিত ❤</p>
+    <section id="search" class="mb-8">
+      <div class="bg-white rounded-[2rem] p-6 shadow-sm border border-slate-100">
+        <div class="flex items-center gap-3 mb-5">
+          <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center"><i data-lucide="search" class="w-5 h-5"></i></div>
+          <h3 class="font-bold text-lg">দ্রুত সার্চ করুন</h3>
+        </div>
+        <form class="space-y-3">
+          <select id="qGroup" class="w-full h-14 px-5 rounded-2xl bg-slate-50 border-none font-bold text-slate-700"></select>
+          <div class="grid grid-cols-2 gap-3">
+            <input placeholder="জেলা" class="h-14 px-5 rounded-2xl bg-slate-50 border-none text-sm font-medium" />
+            <input placeholder="উপজেলা" class="h-14 px-5 rounded-2xl bg-slate-50 border-none text-sm font-medium" />
+          </div>
+          <button class="w-full h-14 bg-slate-900 text-white rounded-2xl font-bold shadow-lg active:scale-[0.98] transition-all">সার্চ রেজাল্ট দেখুন</button>
+        </form>
+      </div>
+    </section>
+
+    <section class="mb-8">
+      <h3 class="font-bold text-slate-500 text-sm mb-4 px-2 uppercase tracking-widest">লাইভ পরিসংখ্যান</h3>
+      <div id="liveStats" class="flex gap-3 overflow-x-auto no-scrollbar pb-2"></div>
+    </section>
+
+    <section class="mb-8">
+      <div class="flex items-center justify-between mb-4 px-2">
+        <h3 class="font-bold text-lg italic">ডোনার <span class="text-rose-600">তালিকা</span></h3>
+        <a href="all-donors.html" class="text-rose-600 text-sm font-bold">সব দেখুন</a>
+      </div>
+      <div id="donorList" class="space-y-4"></div>
+    </section>
+
+    <section id="faq" class="mb-8">
+      <h3 class="font-bold text-lg mb-4 px-2 italic">জেনে রাখা ভালো</h3>
+      <div class="space-y-3">
+        <details class="group bg-white p-5 rounded-2xl border border-slate-100 shadow-sm">
+          <summary class="list-none font-bold text-sm flex justify-between items-center">১. রক্তদান কি নিরাপদ? <i data-lucide="chevron-down" class="w-4 h-4 text-rose-600"></i></summary>
+          <p class="mt-3 text-xs text-slate-500 leading-relaxed">হ্যাঁ, এটি সম্পূর্ণ নিরাপদ এবং স্বাস্থ্যকর। একজন সুস্থ মানুষ প্রতি ৪ মাস অন্তর রক্ত দিতে পারেন।</p>
+        </details>
+        <details class="group bg-white p-5 rounded-2xl border border-slate-100 shadow-sm">
+          <summary class="list-none font-bold text-sm flex justify-between items-center">২. রক্তদানে কি টাকা লাগে? <i data-lucide="chevron-down" class="w-4 h-4 text-rose-600"></i></summary>
+          <p class="mt-3 text-xs text-slate-500 leading-relaxed">না, এটি সম্পূর্ণ ফ্রি এবং মানবিক সেবা। কোনো আর্থিক লেনদেন করবেন না।</p>
+        </details>
+        <details class="group bg-white p-5 rounded-2xl border border-slate-100 shadow-sm">
+          <summary class="list-none font-bold text-sm flex justify-between items-center">৩. রক্তদাতার বয়স ও ওজন কত হওয়া প্রয়োজন? <i data-lucide="chevron-down" class="w-4 h-4 text-rose-600"></i></summary>
+          <p class="mt-3 text-xs text-slate-500 leading-relaxed">বয়স ১৮-৬০ এবং ওজন সর্বনিম্ন ৫০ কেজি হওয়া প্রয়োজন।</p>
+        </details>
+        <details class="group bg-white p-5 rounded-2xl border border-slate-100 shadow-sm">
+          <summary class="list-none font-bold text-sm flex justify-between items-center">৪. ব্লাড রিকোয়েস্ট কিভাবে দিব? <i data-lucide="chevron-down" class="w-4 h-4 text-rose-600"></i></summary>
+          <p class="mt-3 text-xs text-slate-500 leading-relaxed">নিচের মেনু থেকে 'রিকোয়েস্ট' বাটনে ক্লিক করে ফরমটি পূরণ করলেই তা পোস্ট হয়ে যাবে।</p>
+        </details>
+        <details class="group bg-white p-5 rounded-2xl border border-slate-100 shadow-sm">
+          <summary class="list-none font-bold text-sm flex justify-between items-center">৫. ডোনার হওয়ার সুবিধা কি? <i data-lucide="chevron-down" class="w-4 h-4 text-rose-600"></i></summary>
+          <p class="mt-3 text-xs text-slate-500 leading-relaxed">রক্তদানে হার্ট অ্যাটাকের ঝুঁকি কমে এবং শরীরে নতুন রক্ত কোষ তৈরি হয়। সর্বোপরি একজনের জীবন বাঁচে।</p>
+        </details>
+      </div>
+    </section>
+
+  </main>
+
+  <nav class="fixed bottom-0 left-0 right-0 z-[100] bg-white/80 backdrop-blur-xl border-t border-slate-100 px-6 py-3">
+    <div class="max-w-md mx-auto flex justify-between items-center">
+      <a href="#home" class="flex flex-col items-center gap-1 text-rose-600">
+        <i data-lucide="home" class="w-6 h-6"></i>
+        <span class="text-[10px] font-bold uppercase">হোম</span>
+      </a>
+      
+      <a href="all-donors.html" class="flex flex-col items-center gap-1 text-slate-400">
+        <i data-lucide="users" class="w-6 h-6"></i>
+        <span class="text-[10px] font-bold uppercase">ডোনার</span>
+      </a>
+      
+      <a href="donor_registration.html" class="relative -mt-12 flex flex-col items-center">
+        <div class="w-16 h-16 bg-rose-600 rounded-[22px] flex items-center justify-center text-white shadow-2xl shadow-rose-300 ring-8 ring-[#F8F9FE] active:scale-90 transition-transform">
+          <i data-lucide="plus" class="w-8 h-8"></i>
+        </div>
+      </a>
+
+      <a href="blood_requests.html" class="flex flex-col items-center gap-1 text-slate-400">
+        <i data-lucide="clipboard-list" class="w-6 h-6"></i>
+        <span class="text-[10px] font-bold uppercase">রিকোয়েস্ট</span>
+      </a>
+
+      <button onclick="toggleMenu()" class="flex flex-col items-center gap-1 text-slate-400">
+        <i data-lucide="more-horizontal" class="w-6 h-6"></i>
+        <span class="text-[10px] font-bold uppercase">আরও</span>
+      </button>
     </div>
-  </footer>
+  </nav>
 
   <script>
     function toggleMenu() { document.body.classList.toggle('drawer-open'); }
     const DONOR_API = "https://script.google.com/macros/s/AKfycbyGguWgJdIpVgv0Sol7qF7gJOelhv-y47NoW6my1ZnlSjxHcj7ygwlMuDxffRezTW4wbA/exec?sheet=Donors";
     const BG = ["A+","A-","B+","B-","AB+","AB-","O+","O-"];
-
-    function id(x){ return document.getElementById(x); }
 
     async function loadData(){
       try {
@@ -235,33 +205,32 @@
     }
 
     function renderDonors(list){
-      id('donorList').innerHTML = list.slice(0, 6).map(d => `
-        <article class="p-6 rounded-[2rem] bg-white border border-slate-100 shadow-sm transition hover:scale-[1.02]">
-          <div class="flex items-start justify-between mb-4">
-            <div>
-              <h4 class="font-black text-xl text-slate-800">${d[0]}</h4>
-              <p class="text-rose-600 font-bold text-sm italic">${d[2]} · ${d[3]}</p>
-            </div>
-            <div class="w-12 h-12 rounded-xl bg-rose-600 text-white flex flex-col items-center justify-center">
-              <span class="text-lg font-black">${d[1]}</span>
-            </div>
+      document.getElementById('donorList').innerHTML = list.slice(0, 5).map(d => `
+        <div class="bg-white p-5 rounded-[1.8rem] border border-slate-100 flex items-center gap-4 shadow-sm app-card">
+          <div class="w-14 h-14 rounded-2xl bg-rose-50 text-rose-600 flex flex-col items-center justify-center border border-rose-100">
+            <span class="text-lg font-black leading-none">${d[1]}</span>
           </div>
-          <a href="tel:${d[4]}" class="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl bg-slate-900 text-white font-bold text-sm">কল করুন</a>
-        </article>`).join('');
+          <div class="flex-1">
+            <h4 class="font-bold text-slate-800 leading-tight">${d[0]}</h4>
+            <p class="text-[11px] text-slate-500 font-medium mt-0.5">${d[2]} · ${d[3]}</p>
+          </div>
+          <a href="tel:${d[4]}" class="w-10 h-10 rounded-full bg-slate-900 text-white flex items-center justify-center shadow-lg active:scale-90 transition-transform">
+            <i data-lucide="phone" class="w-4 h-4"></i>
+          </a>
+        </div>`).join('');
       lucide.createIcons();
     }
 
     function renderStats(donors){
       const stats = BG.map(g => ({ g, n: donors.filter(d=>d[1]===g).length }));
-      id('liveStats').innerHTML = stats.filter(s=>s.n>0).map(s => `
-        <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100">
-          <span class="font-black text-rose-600 text-xl">${s.g}</span>
-          <p class="text-xs font-bold text-slate-500 uppercase">${s.n} ডোনার</p>
+      document.getElementById('liveStats').innerHTML = stats.filter(s=>s.n>0).map(s => `
+        <div class="flex-shrink-0 min-w-[100px] p-4 rounded-[1.5rem] bg-white border border-slate-100 shadow-sm text-center">
+          <div class="text-rose-600 font-black text-xl mb-1">${s.g}</div>
+          <div class="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">${s.n} ডোনার</div>
         </div>`).join('');
     }
 
-    id('qGroup').innerHTML = '<option value="">গ্রুপ নির্বাচন করুন</option>' + BG.map(g=>`<option value="${g}">${g}</option>`).join('');
-    id('year').textContent = new Date().getFullYear();
+    document.getElementById('qGroup').innerHTML = '<option value="">গ্রুপ নির্বাচন করুন</option>' + BG.map(g=>`<option value="${g}">${g}</option>`).join('');
     loadData();
     lucide.createIcons();
   </script>
