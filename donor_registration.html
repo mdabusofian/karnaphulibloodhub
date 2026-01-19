@@ -100,7 +100,15 @@
   </header>
 
   <main class="max-w-md mx-auto px-4 mt-6">
-    
+    <div class="mb-6 px-1">
+    <div class="flex gap-2">
+        <input type="text" id="recoverID" placeholder="ID দিয়ে কার্ড খুঁজুন (KH-0000)" 
+               class="input-premium flex-1 !h-12 border-2 border-slate-200">
+        <button onclick="recoverDonorCard()" class="bg-slate-900 text-white px-6 rounded-2xl font-bold text-xs active:scale-95 transition-all">
+            খুঁজুন
+        </button>
+    </div>
+</div>
     <div id="formSection">
       <div class="glass-morphism p-6 relative">
         <div class="text-center mb-8">
@@ -358,6 +366,63 @@
             link.click();
         });
     });
+
+    async function recoverDonorCard() {
+    const recoverIdInput = document.getElementById('recoverID').value.trim().toUpperCase();
+    if (!recoverIdInput) return alert("অনুগ্রহ করে একটি আইডি দিন।");
+
+    const btn = event.target;
+    const originalText = btn.innerText;
+    btn.innerText = "খোঁজা হচ্ছে...";
+    btn.disabled = true;
+
+    try {
+        // গুগল শিট থেকে সব ডেটা আনা
+        const response = await fetch(DONOR_API);
+        const donors = await response.json();
+
+        // আইডি অনুযায়ী ডোনার খুঁজে বের করা
+        // আপনার শিটে কলামের নাম যদি 'donorid' হয় তবে d.donorid ব্যবহার করুন
+        const donor = donors.find(d => 
+            (d.donorid && d.donorid.toString().toUpperCase() === recoverIdInput) || 
+            (d.donorID && d.donorID.toString().toUpperCase() === recoverIdInput)
+        );
+
+        if (donor) {
+            // কার্ডের তথ্য আপডেট করা
+            document.getElementById('cardName').textContent = donor.name;
+            document.getElementById('cardBG').textContent = donor.group || donor['blood group'] || donor.bloodgroup;
+            document.getElementById('cardID').textContent = recoverIdInput;
+            document.getElementById('cardPhone').textContent = donor.phone;
+            
+            // কিউআর কোড বক্স ক্লিয়ার করে নতুন কোড বসানো
+            const qrcodeEl = document.getElementById("qrcode");
+            qrcodeEl.innerHTML = "";
+            new QRCode(qrcodeEl, {
+                text: `KBH-ID: ${recoverIdInput}\nBlood: ${donor.group}`,
+                width: 45, height: 45, colorDark : "#470a16", colorLight : "#ffffff"
+            });
+
+            // জেন্ডার অনুযায়ী আইকন সেট করা
+            const avatarBox = document.getElementById('avatarBox');
+            avatarBox.innerHTML = donor.gender === "Female" ? `<i data-lucide="user-round" class="w-8 h-8 text-pink-100"></i>` : `<i data-lucide="user-round" class="w-8 h-8 text-blue-100"></i>`;
+            
+            // সেকশন পরিবর্তন
+            document.getElementById('formSection').classList.add('hidden');
+            document.getElementById('successSection').classList.remove('hidden');
+            lucide.createIcons();
+            window.scrollTo(0,0);
+        } else {
+            alert("দুঃখিত, এই আইডিতে কোনো তথ্য পাওয়া যায়নি!");
+        }
+    } catch (error) {
+        console.error(error);
+        alert("সার্ভারে সমস্যা হচ্ছে, আবার চেষ্টা করুন।");
+    } finally {
+        btn.innerText = originalText;
+        btn.disabled = false;
+    }
+}
   </script>
 </body>
 </html>
