@@ -366,58 +366,67 @@
             link.click();
         });
     });
-
-    async function recoverDonorCard() {
+async function recoverDonorCard() {
+    // ১. আপনার দেওয়া API URL টি এখানে ঠিক আছে কিনা নিশ্চিত করুন
+    const DONOR_API_URL = "https://script.google.com/macros/s/AKfycbyGguWgJdIpVgv0Sol7qF7gJOelhv-y47NoW6my1ZnlSjxHcj7ygwlMuDxffRezTW4wbA/exec";
+    
     const recoverIdInput = document.getElementById('recoverID').value.trim().toUpperCase();
     if (!recoverIdInput) return alert("অনুগ্রহ করে একটি আইডি দিন।");
 
-    const btn = event.target;
+    // বাটন এনিমেশন
+    const btn = event.currentTarget; // বাটনটি ধরার জন্য
     const originalText = btn.innerText;
     btn.innerText = "খোঁজা হচ্ছে...";
     btn.disabled = true;
 
     try {
-        // গুগল শিট থেকে সব ডেটা আনা
-        const response = await fetch(DONOR_API);
+        // গুগল শিট থেকে সব ডেটা রিড করা
+        const response = await fetch(DONOR_API_URL);
         const donors = await response.json();
 
-        // আইডি অনুযায়ী ডোনার খুঁজে বের করা
-        // আপনার শিটে কলামের নাম যদি 'donorid' হয় তবে d.donorid ব্যবহার করুন
-        const donor = donors.find(d => 
-            (d.donorid && d.donorid.toString().toUpperCase() === recoverIdInput) || 
-            (d.donorID && d.donorID.toString().toUpperCase() === recoverIdInput)
-        );
+        // ২. আইডি অনুযায়ী ডোনার খুঁজে বের করা (সব ধরণের কলাম নাম চেক করবে)
+        const donor = donors.find(d => {
+            // শিটের কলামের নাম ছোট বা বড় হাতের যাই হোক, তা চেক করবে
+            const dID = (d.donorid || d.donorID || d.id || d['donor id'] || "").toString().toUpperCase();
+            return dID === recoverIdInput;
+        });
 
         if (donor) {
-            // কার্ডের তথ্য আপডেট করা
-            document.getElementById('cardName').textContent = donor.name;
-            document.getElementById('cardBG').textContent = donor.group || donor['blood group'] || donor.bloodgroup;
-            document.getElementById('cardID').textContent = recoverIdInput;
-            document.getElementById('cardPhone').textContent = donor.phone;
+            // ৩. কার্ডের তথ্য আপডেট করা
+            document.getElementById('cardName').textContent = donor.name || donor['name'];
             
-            // কিউআর কোড বক্স ক্লিয়ার করে নতুন কোড বসানো
+            // রক্তের গ্রুপ কয়েকভাবে চেক করা
+            const bGroup = donor.group || donor['blood group'] || donor.bloodgroup || donor.group;
+            document.getElementById('cardBG').textContent = bGroup;
+            
+            document.getElementById('cardID').textContent = recoverIdInput;
+            document.getElementById('cardPhone').textContent = donor.phone || donor['phone'];
+            
+            // কিউআর কোড জেনারেট
             const qrcodeEl = document.getElementById("qrcode");
             qrcodeEl.innerHTML = "";
             new QRCode(qrcodeEl, {
-                text: `KBH-ID: ${recoverIdInput}\nBlood: ${donor.group}`,
+                text: `KBH-ID: ${recoverIdInput}\nBlood: ${bGroup}`,
                 width: 45, height: 45, colorDark : "#470a16", colorLight : "#ffffff"
             });
 
-            // জেন্ডার অনুযায়ী আইকন সেট করা
+            // জেন্ডার অনুযায়ী আইকন
+            const gender = (donor.gender || "").toLowerCase();
             const avatarBox = document.getElementById('avatarBox');
-            avatarBox.innerHTML = donor.gender === "Female" ? `<i data-lucide="user-round" class="w-8 h-8 text-pink-100"></i>` : `<i data-lucide="user-round" class="w-8 h-8 text-blue-100"></i>`;
+            avatarBox.innerHTML = gender === "female" ? `<i data-lucide="user-round" class="w-8 h-8 text-pink-100"></i>` : `<i data-lucide="user-round" class="w-8 h-8 text-blue-100"></i>`;
             
-            // সেকশন পরিবর্তন
+            // স্ক্রিন পরিবর্তন
             document.getElementById('formSection').classList.add('hidden');
             document.getElementById('successSection').classList.remove('hidden');
+            
             lucide.createIcons();
             window.scrollTo(0,0);
         } else {
-            alert("দুঃখিত, এই আইডিতে কোনো তথ্য পাওয়া যায়নি!");
+            alert("দুঃখিত, '" + recoverIdInput + "' আইডিতে কোনো তথ্য পাওয়া যায়নি! সঠিক আইডি দিন।");
         }
     } catch (error) {
-        console.error(error);
-        alert("সার্ভারে সমস্যা হচ্ছে, আবার চেষ্টা করুন।");
+        console.error("Fetch Error:", error);
+        alert("গুগল শিট থেকে ডেটা কানেক্ট করা যাচ্ছে না। আপনার Apps Script টি কি 'Anyone' এক্সেসে দেওয়া?");
     } finally {
         btn.innerText = originalText;
         btn.disabled = false;
