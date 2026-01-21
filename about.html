@@ -16,10 +16,13 @@
     .hero-gradient { background: linear-gradient(135deg, #e11d48 0%, #be123c 100%); }
     /* মেনু স্টাইল */
     .nav-blur { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+    .team-card { transition: all 0.3s ease; }
+    .team-card:active { transform: scale(0.98); }
   </style>
 </head>
 
-<body class="bg-[#F8F9FE] text-slate-900 pb-32"> <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-100 px-4 py-4">
+<body class="bg-[#F8F9FE] text-slate-900 pb-32"> 
+  <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-100 px-4 py-4">
     <div class="max-w-md mx-auto flex items-center gap-4">
       <a href="index.html" class="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-slate-600 active:scale-90 transition-transform">
         <i data-lucide="chevron-left"></i>
@@ -43,13 +46,56 @@
       </div>
     </section>
 
+    <section class="mb-8">
+      <h3 class="font-bold text-lg mb-4 px-2 italic">আমাদের <span class="text-rose-600">টিম মেম্বার</span></h3>
+      <div class="space-y-3">
+        <div class="team-card bg-white p-4 rounded-3xl border border-slate-100 shadow-sm flex items-center gap-4">
+          <div class="w-16 h-16 rounded-2xl overflow-hidden border-2 border-rose-100 shrink-0">
+            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Admin1" alt="Member" class="w-full h-full object-cover bg-rose-50">
+          </div>
+          <div>
+            <h4 class="font-bold text-slate-800 text-sm">মোঃ আবু সুফিয়ান </h4>
+            <p class="text-[11px] text-rose-600 font-bold uppercase">ফাউন্ডার ও অ্যাডমিন</p>
+            <div class="flex gap-3 mt-2">
+              <a href="#" class="text-slate-400"><i data-lucide="facebook" class="w-4 h-4"></i></a>
+              <a href="tel:01871536468" class="text-slate-400"><i data-lucide="phone" class="w-4 h-4"></i></a>
+            </div>
+          </div>
+        </div>
+        <div class="team-card bg-white p-4 rounded-3xl border border-slate-100 shadow-sm flex items-center gap-4">
+          <div class="w-16 h-16 rounded-2xl overflow-hidden border-2 border-slate-100 shrink-0">
+            <img src="https://drive.google.com/file/d/1RbCeD1c11GtV7KGKjokBwGtDRFkWkzqU/view?usp=sharing" alt="Member" class="w-full h-full object-cover bg-slate-50">
+          </div>
+          <div>
+            <h4 class="font-bold text-slate-800 text-sm">সদস্যের নাম ২</h4>
+            <p class="text-[11px] text-slate-500 font-bold uppercase">সহ-প্রতিষ্ঠাতা</p>
+            <div class="flex gap-3 mt-2">
+              <a href="#" class="text-slate-400"><i data-lucide="facebook" class="w-4 h-4"></i></a>
+            </div>
+          </div>
+        </div>
+        <div class="team-card bg-white p-4 rounded-3xl border border-slate-100 shadow-sm flex items-center gap-4">
+          <div class="w-16 h-16 rounded-2xl overflow-hidden border-2 border-slate-100 shrink-0">
+            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Member3" alt="Member" class="w-full h-full object-cover bg-slate-50">
+          </div>
+          <div>
+            <h4 class="font-bold text-slate-800 text-sm">সদস্যের নাম ৩</h4>
+            <p class="text-[11px] text-slate-500 font-bold uppercase">টিম মেম্বার</p>
+            <div class="flex gap-3 mt-2">
+              <a href="#" class="text-slate-400"><i data-lucide="facebook" class="w-4 h-4"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section class="space-y-4 mb-8">
       <div class="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm">
         <h3 class="text-rose-600 font-bold flex items-center gap-2 mb-3">
           <i data-lucide="target" class="w-5 h-5"></i> আমাদের লক্ষ্য
         </h3>
         <p class="text-sm text-slate-600 leading-relaxed">
-          আমাদের মূল লক্ষ্য হলো চট্টগ্রামের কর্ণফুলী এলাকা সহ সারা দেশের মানুষের কাছে জরুরি মুহূর্তে বিনামূল্যে রক্তদাতার সন্ধান পৌঁছে দেওয়া। প্রযুক্তির মাধ্যমে দ্রুত ও নিরাপদ সেতুবন্ধন তৈরি করাই আমাদের উদ্দেশ্য।
+          আমাদের মূল লক্ষ্য হলো চট্টগ্রামের কর্ণফুলী এলাকা সহ সারা দেশের মানুষের কাছে জরুরি মুহূর্তে বিনামূল্যে রক্তদাতার সন্ধান পৌঁছে দেওয়া। প্রযুক্তির মাধ্যমে দ্রুত ও নিরাপদ সেতুবন্ধন তৈরি করাই আমাদের উদ্দেশ্য।
         </p>
       </div>
 
@@ -58,7 +104,7 @@
           <i data-lucide="eye" class="w-5 h-5"></i> আমাদের ভিশন
         </h3>
         <p class="text-sm text-slate-600 leading-relaxed">
-          আমরা এমন একটি সমাজ গড়ার স্বপ্ন দেখি যেখানে রক্তের অভাবে কোনো প্রাণ ঝরবে না। প্রতিটি মানুষ সচেতন হবে এবং স্বেচ্ছায় রক্তদানে উৎসাহিত হবে।
+          আমরা এমন একটি সমাজ গড়ার স্বপ্ন দেখি যেখানে রক্তের অভাবে কোনো প্রাণ ঝরবে না। প্রতিটি মানুষ সচেতন হবে এবং স্বেচ্ছায় রক্তদানে উৎসাহিত হবে।
         </p>
       </div>
     </section>
