@@ -17,12 +17,11 @@
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         .install-btn { background: linear-gradient(135deg, #e11d48 0%, #be123c 100%); transition: all 0.3s ease; }
         
-        /* Circular Progress Styling */
         .progress-ring__circle {
             transition: stroke-dashoffset 0.35s;
             transform: rotate(-90deg);
             transform-origin: 50% 50%;
-            stroke: #ffffff; /* Progress color */
+            stroke: #ffffff;
         }
     </style>
 </head>
@@ -32,10 +31,12 @@
     <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-slate-100 px-6 py-4">
         <div class="max-w-md mx-auto flex items-center justify-between">
             <a href="index.html" class="w-10 h-10 flex items-center justify-center rounded-xl bg-slate-50 border border-slate-100 active:scale-90 transition-all">
-                <i data-lucide="chevron-left" class="w-5 h-5"></i>
+                <i data-lucide="chevron-left" class="w-5 h-5 text-slate-700"></i>
             </a>
             <h1 class="font-bold text-slate-800 text-sm italic">App Details</h1>
-            <i data-lucide="share-2" class="w-5 h-5 text-slate-400"></i>
+            <button onclick="shareApp()" class="w-10 h-10 flex items-center justify-center rounded-xl active:bg-slate-100 transition-all">
+                <i data-lucide="share-2" class="w-5 h-5 text-slate-500"></i>
+            </button>
         </div>
     </nav>
 
@@ -55,7 +56,7 @@
                     </div>
                     <div class="w-[1px] h-6 bg-slate-200"></div>
                     <div class="text-center">
-                        <p class="text-[14px] font-extrabold">১.৫ MB</p>
+                        <p class="text-[14px] font-extrabold">১০.৫ MB</p>
                         <p class="text-[9px] font-bold text-slate-400 uppercase">Size</p>
                     </div>
                 </div>
@@ -88,24 +89,6 @@
                 <div class="min-w-[180px] h-[320px] bg-slate-200 rounded-3xl border-4 border-white shadow-lg overflow-hidden shrink-0">
                     <img src="screenshot3.jpg" alt="Screen 3" class="w-full h-full object-cover">
                 </div>
-
-                  <div class="min-w-[180px] h-[320px] bg-slate-200 rounded-3xl border-4 border-white shadow-lg overflow-hidden shrink-0">
-                    <img src="screenshot4.jpg" alt="Screen 3" class="w-full h-full object-cover">
-                </div>
-
-  <div class="min-w-[180px] h-[320px] bg-slate-200 rounded-3xl border-4 border-white shadow-lg overflow-hidden shrink-0">
-                    <img src="screenshot5.jpg" alt="Screen 3" class="w-full h-full object-cover">
-                </div>
-
-
-                  <div class="min-w-[180px] h-[320px] bg-slate-200 rounded-3xl border-4 border-white shadow-lg overflow-hidden shrink-0">
-                    <img src="screenshot7.jpg" alt="Screen 3" class="w-full h-full object-cover">
-                </div>
-  <div class="min-w-[180px] h-[320px] bg-slate-200 rounded-3xl border-4 border-white shadow-lg overflow-hidden shrink-0">
-                    <img src="screenshot7.jpg" alt="Screen 3" class="w-full h-full object-cover">
-                </div>
-                
-                
             </div>
         </section>
 
@@ -180,53 +163,70 @@
 
     </main>
 
-    <script>
-        function handleDownload() {
-            const btn = document.getElementById('installBtn');
-            const btnText = document.getElementById('btnText');
-            const loaderGroup = document.getElementById('loaderGroup');
-            const progressBar = document.getElementById('progressBar');
-            const percentText = document.getElementById('percentText');
-            const apkUrl = "https://github.com/mdabusofian/karnaphulibloodhub/raw/main/karnaphuli_blood.apk";
-            
-            // UI Initialization
-            btn.disabled = true;
-            btnText.classList.add('hidden');
-            loaderGroup.classList.remove('hidden');
-            loaderGroup.classList.add('flex');
-
-            let progress = 0;
-            const circumference = 2 * Math.PI * 10; // r=10
-
-            const interval = setInterval(() => {
-                // Realistic progress jumps
-                progress += Math.floor(Math.random() * 7) + 2; 
-                
-                if (progress >= 100) {
-                    progress = 100;
-                    clearInterval(interval);
-                    
-                    // Final UI Update
-                    setTimeout(() => {
-                        window.location.href = apkUrl; // Start actual download
-                        loaderGroup.classList.add('hidden');
-                        btnText.classList.remove('hidden');
-                        btnText.innerText = "Downloading...";
-                        btn.style.opacity = "0.7";
-                    }, 500);
-                }
-
-                // Update Circular Progress
-                const offset = circumference - (progress / 100) * circumference;
-                progressBar.style.strokeDashoffset = offset;
-                percentText.innerText = progress + "%";
-                
-            }, 200); // Speed of animation
+   <script>
+    // Share Functionality
+    function shareApp() {
+        if (navigator.share) {
+            navigator.share({
+                title: 'Karnaphuli Blood Hub',
+                text: 'নিরাপদ রক্তদান ও গ্রহণে কর্ণফুলী ব্লাড হাব অ্যাপটি ডাউনলোড করুন।',
+                url: window.location.href // This shares the current page link
+            }).catch(console.error);
+        } else {
+            alert("আপনার ব্রাউজারটি শেয়ার অপশন সাপোর্ট করছে না। লিঙ্কটি কপি করে শেয়ার করুন।");
         }
+    }
 
-        window.addEventListener('load', () => {
-            lucide.createIcons();
-        });
-    </script>
+    // Updated Download Logic
+    function handleDownload() {
+        const btn = document.getElementById('installBtn');
+        const btnText = document.getElementById('btnText');
+        const loaderGroup = document.getElementById('loaderGroup');
+        const progressBar = document.getElementById('progressBar');
+        const percentText = document.getElementById('percentText');
+        const apkUrl = "https://github.com/mdabusofian/karnaphulibloodhub/raw/main/karnaphuli_blood.apk";
+        
+        // UI Reset & Start
+        btn.disabled = true;
+        btnText.classList.add('hidden');
+        loaderGroup.classList.remove('hidden');
+        loaderGroup.classList.add('flex');
+
+        let progress = 0;
+        const circumference = 2 * Math.PI * 10; // r=10
+
+        const interval = setInterval(() => {
+            // Realistic progress jumps
+            progress += Math.floor(Math.random() * 8) + 3; 
+            
+            if (progress >= 100) {
+                progress = 100;
+                clearInterval(interval);
+                
+                // Trigger Download
+                window.location.href = apkUrl;
+
+                // Reset Button UI after trigger
+                setTimeout(() => {
+                    loaderGroup.classList.add('hidden');
+                    btnText.classList.remove('hidden');
+                    btnText.innerText = "Install Again"; // Change text to show it's done
+                    btn.disabled = false;
+                    btn.style.opacity = "1";
+                }, 2000); // 2 seconds delay for a smooth feel
+            }
+
+            // Update Circular Progress
+            const offset = circumference - (progress / 100) * circumference;
+            progressBar.style.strokeDashoffset = offset;
+            percentText.innerText = progress + "%";
+            
+        }, 150); // Faster animation speed
+    }
+
+    window.addEventListener('load', () => {
+        lucide.createIcons();
+    });
+</script>
 </body>
 </html>
