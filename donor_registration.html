@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover" />
-  <title>নিবন্ধন — কর্ণফুলী ব্লাড হাব</title>
+  <title> নিবন্ধন — কর্ণফুলী ব্লাড হাব</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,67 +15,62 @@
   
   <style>
     :root { --brand: #e11d48; }
-    body { font-family: 'Hind Siliguri', sans-serif; -webkit-tap-highlight-color: transparent; background: #F8F9FE; }
+    body { font-family: 'Hind Siliguri', sans-serif; -webkit-tap-highlight-color: transparent; background: #F8F9FE; color: #1e293b; }
     
     /* Premium Header */
     .app-bar { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
     
-    /* Glass Form */
+    /* Modern Form UI */
     .glass-morphism {
         background: #ffffff;
         border-radius: 2.5rem;
-        box-shadow: 0 10px 30px -5px rgba(0,0,0,0.03);
+        box-shadow: 0 20px 40px -10px rgba(0,0,0,0.05);
+        border: 1px solid rgba(225, 29, 72, 0.05);
     }
     
-    /* App-like Inputs */
+    .input-group { position: relative; }
+    .input-label-premium {
+        font-size: 11px; font-weight: 700; color: #64748b; margin-left: 12px;
+        margin-bottom: 4px; display: block; text-transform: uppercase; letter-spacing: 0.5px;
+    }
+
     .input-premium {
-        width: 100%;
-        height: 3.5rem;
-        padding: 0 1.2rem;
-        border-radius: 1.2rem;
-        background: #F1F5F9;
-        border: 2px solid transparent;
-        transition: all 0.3s ease;
-        font-size: 15px;
-        font-weight: 500;
-        color: #1e293b;
+        width: 100%; height: 3.8rem; padding: 0 1.2rem; border-radius: 1.25rem;
+        background: #F8FAFC; border: 2px solid #F1F5F9; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        font-size: 15px; font-weight: 600;
     }
     .input-premium:focus {
-        border-color: #e11d48;
-        background: #ffffff;
-        outline: none;
-        box-shadow: 0 0 0 4px rgba(225, 29, 72, 0.1);
+        border-color: #e11d48; background: #ffffff; outline: none;
+        box-shadow: 0 8px 20px -6px rgba(225, 29, 72, 0.15);
     }
 
     .red-glow-btn {
-        background: #e11d48;
-        color: white;
-        width: 100%;
-        height: 3.8rem;
-        border-radius: 1.5rem;
-        font-weight: 800;
-        box-shadow: 0 10px 20px -5px rgba(225, 29, 72, 0.3);
-        transition: 0.3s;
+        background: linear-gradient(135deg, #e11d48 0%, #be123c 100%);
+        color: white; width: 100%; height: 4rem; border-radius: 1.5rem;
+        font-weight: 800; font-size: 1.1rem;
+        box-shadow: 0 12px 24px -6px rgba(225, 29, 72, 0.4);
+        transition: all 0.3s ease;
     }
-    .red-glow-btn:active { transform: scale(0.96); opacity: 0.9; }
+    .red-glow-btn:active { transform: scale(0.97); }
 
-    /* ID Card Premium */
+    /* Fixed ID Card for Stable Download - এদিক ওদিক হবে না */
+    #captureArea { display: inline-block; padding: 0; background: transparent; }
     .id-card {
+        width: 350px; height: 210px; /* Fixed Industrial Size */
         background: linear-gradient(135deg, #e11d48 0%, #9f1239 100%);
-        border-radius: 28px;
-        padding: 24px;
-        color: white;
-        position: relative;
-        overflow: hidden;
-        box-shadow: 0 20px 40px rgba(153, 27, 27, 0.2);
-        max-width: 360px;
-        margin: 20px auto;
+        border-radius: 24px; padding: 20px; color: white;
+        position: relative; overflow: hidden;
+        display: flex; flex-direction: column; justify-content: space-between;
     }
 
-    #mobile-drawer { transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1); border-radius: 32px 32px 0 0; }
-    .drawer-open #mobile-drawer { transform: translateY(0); }
-    .drawer-open .drawer-overlay { opacity: 1; pointer-events: auto; }
-    
+    .blood-badge {
+        background: white; color: #e11d48; width: 55px; height: 45px;
+        display: flex; align-items: center; justify-content: center;
+        border-radius: 12px; font-weight: 900; font-size: 22px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        position: absolute; top: 20px; right: 20px;
+    }
+
     .heart-icon { animation: heartbeat 2s infinite; }
     @keyframes heartbeat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
   </style>
@@ -83,13 +78,11 @@
 
 <body class="pb-28">
 
-  <div class="drawer-overlay fixed inset-0 bg-black/60 z-[60] opacity-0 pointer-events-none transition-opacity duration-300" onclick="toggleMenu()"></div>
-
   <header class="sticky top-0 z-50 app-bar border-b border-slate-100 px-4 py-3">
     <div class="max-w-md mx-auto flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <a href="index.html" class="w-10 h-10 rounded-2xl bg-rose-600 flex items-center justify-center text-white shadow-lg active:scale-90 transition-transform">
-          <i data-lucide="chevron-left" class="w-6 h-6"></i>
+        <a href="index.html" class="w-10 h-10 rounded-2xl bg-rose-600 flex items-center justify-center text-white shadow-lg">
+          <i data-lucide="chevron-left"></i>
         </a>
         <h1 class="font-bold text-lg tracking-tight">ডোনার <span class="text-rose-600">নিবন্ধন</span></h1>
       </div>
@@ -100,15 +93,11 @@
   </header>
 
   <main class="max-w-md mx-auto px-4 mt-6">
-    <div class="mb-6 px-1">
-    <div class="flex gap-2">
-        <input type="text" id="recoverID" placeholder="ID দিয়ে কার্ড খুঁজুন (KH-0000)" 
-               class="input-premium flex-1 !h-12 border-2 border-slate-200">
-        <button onclick="recoverDonorCard()" class="bg-slate-900 text-white px-6 rounded-2xl font-bold text-xs active:scale-95 transition-all">
-            খুঁজুন
-        </button>
+    <div class="mb-6 px-1 flex gap-2">
+        <input type="text" id="recoverID" placeholder="ID (KH-0000)" class="input-premium flex-1 !h-12 border-2 border-slate-200">
+        <button onclick="recoverDonorCard()" class="bg-slate-900 text-white px-6 rounded-2xl font-bold text-xs">খুঁজুন</button>
     </div>
-</div>
+
     <div id="formSection">
       <div class="glass-morphism p-6 relative">
         <div class="text-center mb-8">
@@ -116,39 +105,39 @@
             <i data-lucide="heart-pulse" class="w-8 h-8 text-rose-600 heart-icon"></i>
           </div>
           <h2 class="text-2xl font-black text-slate-800">নতুন ডোনার নিবন্ধন</h2>
-          <p class="text-slate-400 text-xs mt-1">তথ্যগুলো বাংলায় বা ইংরেজিতে পূরণ করুন</p>
+          <p class="text-slate-400 text-xs mt-1">তথ্যগুলো সঠিকভাবে পূরণ করুন</p>
         </div>
 
-        <form id="registerForm" class="space-y-5">
+        <form id="registerForm" class="space-y-4">
           <input type="hidden" id="donorID">
 
-          <div class="space-y-1">
-            <label class="text-[10px] font-bold uppercase text-slate-400 ml-2">পুরো নাম</label>
-            <input type="text" id="fullName" placeholder="উদাঃ শফিক আহমেদ" class="input-premium" required>
+          <div class="input-group">
+            <label class="input-label-premium">পুরো নাম</label>
+            <input type="text" id="fullName" placeholder="উদাঃ মোঃ রহিম " class="input-premium" required>
           </div>
 
           <div class="grid grid-cols-2 gap-3">
-            <div class="space-y-1">
-              <label class="text-[10px] font-bold uppercase text-slate-400 ml-2">মোবাইল</label>
+            <div class="input-group">
+              <label class="input-label-premium">মোবাইল</label>
               <input type="tel" id="phone" placeholder="018XXXXXXXX" class="input-premium" required pattern="[0-9]{11}">
             </div>
-            <div class="space-y-1">
-              <label class="text-[10px] font-bold uppercase text-slate-400 ml-2">রক্তের গ্রুপ</label>
+            <div class="input-group">
+              <label class="input-label-premium">রক্তের গ্রুপ</label>
               <select id="bloodGroup" class="input-premium" required></select>
             </div>
           </div>
 
           <div class="grid grid-cols-2 gap-3">
-            <div class="space-y-1">
-              <label class="text-[10px] font-bold uppercase text-slate-400 ml-2">লিঙ্গ</label>
+            <div class="input-group">
+              <label class="input-label-premium">লিঙ্গ</label>
               <select id="gender" class="input-premium" required>
                   <option value="">নির্বাচন</option>
                   <option value="Male">পুরুষ</option>
                   <option value="Female">মহিলা</option>
               </select>
             </div>
-            <div class="space-y-1">
-              <label class="text-[10px] font-bold uppercase text-slate-400 ml-2">জেলা</label>
+            <div class="input-group">
+              <label class="input-label-premium">জেলা</label>
               <select id="district" class="input-premium" required onchange="loadUpazilas()">
                   <option value="">নির্বাচন</option>
                   <option value="Chattogram">চট্টগ্রাম</option>
@@ -157,133 +146,139 @@
           </div>
 
           <div class="grid grid-cols-2 gap-3">
-            <div class="space-y-1">
-              <label class="text-[10px] font-bold uppercase text-slate-400 ml-2">উপজেলা/থানা</label>
+            <div class="input-group">
+              <label class="input-label-premium">উপজেলা/থানা</label>
               <select id="upazila" class="input-premium" required>
                   <option value="">সিলেক্ট করুন</option>
               </select>
             </div>
-            <div class="space-y-1">
-              <label class="text-[10px] font-bold uppercase text-slate-400 ml-2">ইউনিয়ন/এলাকা</label>
+            <div class="input-group">
+              <label class="input-label-premium">ইউনিয়ন/এলাকা</label>
               <input type="text" id="area" placeholder="গ্রাম/এলাকা" class="input-premium" required>
             </div>
           </div>
 
-          <div class="space-y-1">
-            <label class="text-[10px] font-bold uppercase text-slate-400 ml-2">রক্তদানের সংখ্যা ও সর্বশেষ সময়</label>
-            <div class="grid grid-cols-2 gap-3">
-              <select id="totalDonations" class="input-premium" required>
-                <option value="০">নতুন ডোনার</option>
-                <option value="১-৩">১ - ৩ বার</option>
-                <option value="৪-১০">৪ - ১০ বার</option>
-                <option value="১০+">১০+</option>
-              </select>
-              <select id="lastDonation" class="input-premium" required>
-                <option value="">শেষ রক্তদান</option>
-                <option value="কখনো দেইনি" data-status="ready">কখনো দেইনি</option>
-                <option value="৩ মাসের বেশি" data-status="ready">৩ মাসের বেশি</option>
-                <option value="৩ মাসের কম" data-status="rest">৩ মাসের কম</option>
-              </select>
+          <div class="grid grid-cols-2 gap-3">
+            <div class="input-group">
+                <label class="input-label-premium">রক্তদানের সংখ্যা</label>
+                <select id="totalDonations" class="input-premium" required>
+                  <option value="০">নতুন ডোনার</option>
+                  <option value="১-৩">১ - ৩ বার</option>
+                  <option value="৪-১০">৪ - ১০ বার</option>
+                  <option value="১০+">১০+</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label class="input-label-premium">শেষ রক্তদান</label>
+                <select id="lastDonation" class="input-premium" required>
+                  <option value="">শেষ রক্তদান</option>
+                  <option value="কখনো দেইনি" data-status="ready">কখনো দেইনি</option>
+                  <option value="৩ মাসের বেশি" data-status="ready">৩ মাসের বেশি</option>
+                  <option value="৩ মাসের কম" data-status="rest">৩ মাসের কম</option>
+                </select>
             </div>
           </div>
 
-          <label class="flex items-center gap-3 p-2 cursor-pointer">
-            <input type="checkbox" required class="w-5 h-5 accent-rose-600 rounded">
-            <span class="text-[11px] font-medium text-slate-500">আমি স্বেচ্ছায় রক্তদানে এবং কর্ণফুলী ব্লাড হাবের শর্তাবলীতে রাজি।</span>
+          <label class="flex items-start gap-3 p-2 cursor-pointer">
+            <input type="checkbox" required class="w-5 h-5 accent-rose-600 rounded mt-0.5">
+            <span class="text-[11px] font-medium text-slate-500 leading-tight">আমি স্বেচ্ছায় রক্তদানে এবং কর্ণফুলী ব্লাড হাবের সকল নীতিমালা মেনে চলতে রাজি।</span>
           </label>
 
-          <button type="submit" id="submitBtn" class="red-glow-btn flex items-center justify-center gap-2 mt-4">
-             <span>নিবন্ধন সম্পন্ন করুন</span>
-             <i data-lucide="arrow-right" class="w-5 h-5"></i>
+          <button type="submit" id="submitBtn" class="red-glow-btn flex items-center justify-center gap-2">
+               <span>নিবন্ধন সম্পন্ন করুন</span>
+               <i data-lucide="arrow-right"></i>
           </button>
         </form>
       </div>
     </div>
 
     <div id="successSection" class="hidden">
-      <div class="bg-white rounded-[2.5rem] p-6 text-center shadow-sm">
-        <div class="w-16 h-16 bg-green-100 text-green-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
-          <i data-lucide="badge-check" class="w-10 h-10"></i>
+      <div class="bg-white rounded-[2.5rem] p-6 text-center shadow-lg border border-slate-100">
+        <div class="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
+          <i data-lucide="check" class="w-10 h-10"></i>
         </div>
-        <h2 class="text-xl font-black text-slate-800">অভিনন্দন!</h2>
-        <p class="text-xs text-slate-500 mb-6">আপনার ডিজিটাল ডোনার কার্ড তৈরি হয়েছে</p>
+        <h2 class="text-2xl font-black text-slate-800">রেজিস্ট্রেশন সফল!</h2>
+        <p class="text-sm text-slate-500 mb-6">নিচে আপনার ডিজিটাল ডোনার আইডি কার্ডটি ডাউনলোড করুন </p>
 
-        <div id="captureArea" class="py-2">
+        <div id="captureArea">
             <div class="id-card" id="idCard">
-                <i data-lucide="droplet" class="absolute bottom-[-20px] right-[-10px] w-32 h-32 opacity-10 rotate-12"></i>
-                
-                <div class="flex justify-between items-start mb-10 relative z-10 text-left">
+                <div class="flex justify-between items-start w-full">
                     <div class="flex gap-2 items-center">
-                        <div class="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-md">
-                            <i data-lucide="heart" class="w-5 h-5 fill-white"></i>
+                        <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
+                            <i data-lucide="heart" class="w-6 h-6 fill-white"></i>
                         </div>
-                        <div>
-                            <h2 class="text-sm font-black tracking-tight leading-none">কর্ণফুলী ব্লাড হাব</h2>
-                            <p class="text-[6px] uppercase tracking-widest text-rose-100">Digital Donor Network</p>
+                        <div class="text-left">
+                            <h2 class="text-base font-black leading-none uppercase">কর্ণফুলী </h2>
+                            <p class="text-[8px] tracking-[2px] opacity-80 uppercase font-bold">ব্লাড হাব নেটওয়ার্ক</p>
                         </div>
                     </div>
-                    <div class="bg-white text-rose-600 px-3 py-1 rounded-xl font-black text-lg" id="cardBG">O+</div>
+                    <div class="blood-badge" id="cardBG">O+</div>
                 </div>
                 
-                <div class="flex items-center gap-4 mb-6 relative z-10 text-left">
-                    <div class="w-14 h-14 bg-white/20 rounded-full border border-white/30 flex items-center justify-center overflow-hidden" id="avatarBox"></div>
-                    <div>
-                        <p class="text-lg font-black tracking-wide leading-none" id="cardName">Name</p>
-                        <span id="donorBadge" class="inline-block mt-1 text-[7px] bg-black/20 text-white px-2 py-0.5 rounded-full font-bold uppercase">Member</span>
+                <div class="flex items-center gap-4 w-full">
+                    <div class="w-16 h-16 bg-white/20 rounded-full border-2 border-white/40 flex items-center justify-center overflow-hidden" id="avatarBox"></div>
+                    <div class="text-left">
+                        <p class="text-xl font-black tracking-tight leading-none uppercase" id="cardName">NAME</p>
+                        <span class="inline-block mt-2 text-[9px] bg-black/20 px-3 py-1 rounded-full font-bold uppercase">Verified Donor</span>
                     </div>
                 </div>
 
-                <div class="flex items-end justify-between relative z-10 text-left border-t border-white/10 pt-4">
-                    <div class="space-y-2">
+                <div class="flex items-end justify-between w-full border-t border-white/20 pt-3">
+                    <div class="text-left space-y-1">
                         <div>
-                            <p class="text-[6px] uppercase opacity-60 font-black tracking-widest">Donor ID</p>
+                            <p class="text-[7px] uppercase font-black opacity-60">Donor ID</p>
                             <p class="font-mono text-xs font-bold" id="cardID">KH-0000</p>
                         </div>
                         <div>
-                            <p class="text-[6px] uppercase opacity-60 font-black tracking-widest">Phone</p>
-                            <p class="text-xs font-bold" id="cardPhone">017XXXXXXXX</p>
+                            <p class="text-[7px] uppercase font-black opacity-60">Donor Contact</p>
+                            <p class="text-xs font-bold" id="cardPhone">01XXXXXXXXX</p>
                         </div>
                     </div>
-                    <div class="bg-white p-1 rounded-lg shadow-lg" id="qrcode"></div>
+                    <div class="bg-white p-1 rounded-lg" id="qrcode"></div>
                 </div>
             </div>
         </div>
 
-        <div class="grid grid-cols-1 gap-3 mt-6">
-            <button id="downloadBtn" class="h-14 bg-slate-900 text-white rounded-2xl font-bold flex items-center justify-center gap-2">
-                <i data-lucide="download" class="w-5 h-5"></i> কার্ড ডাউনলোড করুন
+        <div class="space-y-3 mt-6">
+            <button id="downloadBtn" class="w-full h-14 bg-slate-900 text-white rounded-2xl font-bold flex items-center justify-center gap-2 active:scale-95 transition-all">
+                <i data-lucide="download"></i> কার্ডটি সেভ করুন
             </button>
-            <div class="grid grid-cols-2 gap-2">
-                <a href="all-donors.html" class="h-12 border-2 border-slate-100 text-slate-600 rounded-2xl flex items-center justify-center text-sm font-bold">ডোনার তালিকা</a>
-                <a href="index.html" class="h-12 border-2 border-slate-100 text-slate-600 rounded-2xl flex items-center justify-center text-sm font-bold">হোমপেইজ</a>
+            
+            <a href="https://m.me/j/AbY0Z_7X8H_EXAMPLE" target="_blank" class="w-full h-14 bg-[#0084FF] text-white rounded-2xl font-bold flex items-center justify-center gap-2 shadow-lg shadow-blue-200">
+                <i data-lucide="messages-square"></i> মেসেঞ্জার গ্রুপে যুক্ত হোন
+            </a>
+
+            <div class="flex gap-2">
+                <a href="all-donors.html" class="flex-1 h-12 bg-slate-100 text-slate-700 rounded-2xl flex items-center justify-center text-sm font-bold">ডোনার তালিকা</a>
+                <a href="index.html" class="flex-1 h-12 bg-slate-100 text-slate-700 rounded-2xl flex items-center justify-center text-sm font-bold">হোমপেইজ</a>
             </div>
         </div>
       </div>
     </div>
   </main>
 
-  <nav class="fixed bottom-0 left-0 right-0 z-[100] bg-white/80 backdrop-blur-xl border-t border-slate-100 px-6 py-3">
+  <nav class="fixed bottom-0 left-0 right-0 z-[100] bg-white/90 backdrop-blur-2xl border-t border-slate-100 px-6 py-4">
     <div class="max-w-md mx-auto flex justify-between items-center">
       <a href="index.html" class="flex flex-col items-center gap-1 text-slate-400">
-        <i data-lucide="home" class="w-6 h-6"></i>
-        <span class="text-[10px] font-bold uppercase tracking-tighter">হোম</span>
+        <i data-lucide="home"></i>
+        <span class="text-[10px] font-bold uppercase">হোম</span>
       </a>
       <a href="all-donors.html" class="flex flex-col items-center gap-1 text-slate-400">
-        <i data-lucide="users" class="w-6 h-6"></i>
-        <span class="text-[10px] font-bold uppercase tracking-tighter">ডোনার</span>
+        <i data-lucide="users"></i>
+        <span class="text-[10px] font-bold uppercase">ডোনার</span>
       </a>
-      <a href="index.html" class="relative -mt-12">
-        <div class="w-16 h-16 bg-rose-600 rounded-[22px] flex items-center justify-center text-white shadow-2xl ring-8 ring-[#F8F9FE]">
+      <a href="index.html" class="relative -mt-14">
+        <div class="w-16 h-16 bg-rose-600 rounded-3xl flex items-center justify-center text-white shadow-2xl ring-8 ring-[#F8F9FE]">
           <i data-lucide="plus" class="w-8 h-8"></i>
         </div>
       </a>
       <a href="blood_requests.html" class="flex flex-col items-center gap-1 text-slate-400">
-        <i data-lucide="clipboard-list" class="w-6 h-6"></i>
-        <span class="text-[10px] font-bold uppercase tracking-tighter">রিকোয়েস্ট</span>
+        <i data-lucide="clipboard-list"></i>
+        <span class="text-[10px] font-bold uppercase">রিকোয়েস্ট</span>
       </a>
       <button onclick="toggleMenu()" class="flex flex-col items-center gap-1 text-slate-400">
-        <i data-lucide="align-justify" class="w-6 h-6"></i>
-        <span class="text-[10px] font-bold uppercase tracking-tighter">মেনু</span>
+        <i data-lucide="align-justify"></i>
+        <span class="text-[10px] font-bold uppercase">মেনু</span>
       </button>
     </div>
   </nav>
@@ -292,15 +287,13 @@
     lucide.createIcons();
 
     const DONOR_API = "https://script.google.com/macros/s/AKfycbyGguWgJdIpVgv0Sol7qF7gJOelhv-y47NoW6my1ZnlSjxHcj7ygwlMuDxffRezTW4wbA/exec?sheet=Donors";
-    const BG = ["A+","A-","B+","B-","AB+","AB-","O+","O-"];
-    const ctgUpazilas = ["কর্ণফুলী", "পটিয়া", "বাঁশখালী", "আনোয়ারা", "চন্দনাইশ", "সাতকানিয়া", "লোহাগাড়া", "বোয়ালখালী", "রাঙ্গুনিয়া", "রাউজান", "ফটিকছড়ি", "হাটহাজারী", "সীতাকুণ্ড", "মীরসরাই", "সন্দ্বীপ", "কোতোয়ালী", "চকবাজার", "পাঁচলাইশ", "বায়েজিদ", "খুলশী", "চানদগাঁও", "বাকলিয়া", "সদরঘাট", "ডবলমুরিং", "হালিশহর", "পাহাড়তলী", "আকবরশাহ", "বন্দর", "ইপিজেড", "পতেঙ্গা"];
+    const BG_GROUPS = ["A+","A-","B+","B-","AB+","AB-","O+","O-"];
+    const UPAZILAS = ["কর্ণফুলী", "পটিয়া", "বাঁশখালী", "আনোয়ারা", "চন্দনাইশ", "সাতকানিয়া", "লোহাগাড়া", "বোয়ালখালী", "রাঙ্গুনিয়া", "রাউজান", "ফটিকছড়ি", "হাটহাজারী", "সীতাকুণ্ড"];
 
-    const bgSelect = document.getElementById('bloodGroup');
-    bgSelect.innerHTML = '<option value="">রক্তের গ্রুপ</option>' + BG.map(g => `<option value="${g}">${g}</option>`).join('');
+    document.getElementById('bloodGroup').innerHTML = '<option value="">রক্তের গ্রুপ</option>' + BG_GROUPS.map(g => `<option value="${g}">${g}</option>`).join('');
 
     function loadUpazilas() {
-        const upSelect = document.getElementById('upazila');
-        upSelect.innerHTML = csuSelect = ctgUpazilas.map(u => `<option value="${u}">${u}</option>`).join('');
+        document.getElementById('upazila').innerHTML = UPAZILAS.map(u => `<option value="${u}">${u}</option>`).join('');
     }
 
     function toggleMenu() { document.body.classList.toggle('drawer-open'); }
@@ -313,8 +306,7 @@
         const btn = document.getElementById('submitBtn');
         const donorId = document.getElementById('donorID').value;
         const nameValue = document.getElementById('fullName').value;
-        const gender = document.getElementById('gender').value;
-
+        
         const data = {
             name: nameValue,
             group: document.getElementById('bloodGroup').value,
@@ -324,7 +316,7 @@
             lastDonation: document.getElementById('lastDonation').value,
             donorID: donorId,
             status: document.getElementById('lastDonation').options[document.getElementById('lastDonation').selectedIndex].getAttribute('data-status'),
-            gender: gender
+            gender: document.getElementById('gender').value
         };
 
         btn.disabled = true;
@@ -333,24 +325,7 @@
 
         try {
             await fetch(DONOR_API, { method: "POST", mode: "no-cors", body: JSON.stringify(data) });
-            
-            document.getElementById('cardName').textContent = nameValue;
-            document.getElementById('cardBG').textContent = data.group;
-            document.getElementById('cardID').textContent = donorId;
-            document.getElementById('cardPhone').textContent = data.phone;
-            
-            const avatarBox = document.getElementById('avatarBox');
-            avatarBox.innerHTML = gender === "Female" ? `<i data-lucide="user-round" class="w-8 h-8 text-pink-100"></i>` : `<i data-lucide="user-round" class="w-8 h-8 text-blue-100"></i>`;
-            
-            new QRCode(document.getElementById("qrcode"), {
-                text: `KBH-ID: ${donorId}\nBlood: ${data.group}`,
-                width: 45, height: 45, colorDark : "#470a16", colorLight : "#ffffff"
-            });
-
-            document.getElementById('formSection').classList.add('hidden');
-            document.getElementById('successSection').classList.remove('hidden');
-            lucide.createIcons();
-            window.scrollTo(0,0);
+            showSuccessCard(data);
         } catch (error) {
             alert("দুঃখিত, পুনরায় চেষ্টা করুন।");
             btn.disabled = false;
@@ -358,80 +333,80 @@
         }
     });
 
+    function showSuccessCard(data) {
+        document.getElementById('cardName').textContent = data.name;
+        document.getElementById('cardBG').textContent = data.group;
+        document.getElementById('cardID').textContent = data.donorID;
+        document.getElementById('cardPhone').textContent = data.phone;
+        
+        const avatarBox = document.getElementById('avatarBox');
+        avatarBox.innerHTML = data.gender === "Female" ? `<i data-lucide="user-round" class="w-10 h-10 text-pink-200"></i>` : `<i data-lucide="user-round" class="w-10 h-10 text-blue-200"></i>`;
+        
+        document.getElementById('qrcode').innerHTML = "";
+        new QRCode(document.getElementById("qrcode"), {
+            text: `Donor ID: ${data.donorID}\nBlood Hub`,
+            width: 45, height: 45, colorDark : "#470a16", colorLight : "#ffffff"
+        });
+
+        document.getElementById('formSection').classList.add('hidden');
+        document.getElementById('successSection').classList.remove('hidden');
+        lucide.createIcons();
+        window.scrollTo(0,0);
+    }
+
+    // Improved Download Code for Mobile Apps and Browsers
     document.getElementById('downloadBtn').addEventListener('click', function() {
-        html2canvas(document.getElementById('captureArea'), { scale: 3, backgroundColor: null, useCORS: true }).then(canvas => {
+        const area = document.getElementById('captureArea');
+        const downloadBtn = this;
+        
+        downloadBtn.innerHTML = `<i data-lucide="loader" class="animate-spin"></i> প্রসেসিং...`;
+        lucide.createIcons();
+
+        html2canvas(area, { 
+            scale: 3, // High quality
+            backgroundColor: null, 
+            useCORS: true,
+            allowTaint: true,
+            logging: false,
+            width: 350, // Lock width
+            height: 210 // Lock height
+        }).then(canvas => {
+            const imageData = canvas.toDataURL("image/png");
             const link = document.createElement('a');
-            link.download = `KBH_Donor_${document.getElementById('cardID').textContent}.png`;
-            link.href = canvas.toDataURL();
+            link.download = `KBH_Donor_Card_${document.getElementById('cardID').textContent}.png`;
+            link.href = imageData;
+            document.body.appendChild(link);
             link.click();
+            document.body.removeChild(link);
+            
+            downloadBtn.innerHTML = `<i data-lucide="download"></i> কার্ড সেভ করুন`;
+            lucide.createIcons();
         });
     });
-async function recoverDonorCard() {
-    // ১. আপনার দেওয়া API URL টি এখানে ঠিক আছে কিনা নিশ্চিত করুন
-    const DONOR_API_URL = "https://script.google.com/macros/s/AKfycbyGguWgJdIpVgv0Sol7qF7gJOelhv-y47NoW6my1ZnlSjxHcj7ygwlMuDxffRezTW4wbA/exec";
-    
-    const recoverIdInput = document.getElementById('recoverID').value.trim().toUpperCase();
-    if (!recoverIdInput) return alert("অনুগ্রহ করে একটি আইডি দিন।");
 
-    // বাটন এনিমেশন
-    const btn = event.currentTarget; // বাটনটি ধরার জন্য
-    const originalText = btn.innerText;
-    btn.innerText = "খোঁজা হচ্ছে...";
-    btn.disabled = true;
-
-    try {
-        // গুগল শিট থেকে সব ডেটা রিড করা
-        const response = await fetch(DONOR_API_URL);
-        const donors = await response.json();
-
-        // ২. আইডি অনুযায়ী ডোনার খুঁজে বের করা (সব ধরণের কলাম নাম চেক করবে)
-        const donor = donors.find(d => {
-            // শিটের কলামের নাম ছোট বা বড় হাতের যাই হোক, তা চেক করবে
-            const dID = (d.donorid || d.donorID || d.id || d['donor id'] || "").toString().toUpperCase();
-            return dID === recoverIdInput;
-        });
-
-        if (donor) {
-            // ৩. কার্ডের তথ্য আপডেট করা
-            document.getElementById('cardName').textContent = donor.name || donor['name'];
-            
-            // রক্তের গ্রুপ কয়েকভাবে চেক করা
-            const bGroup = donor.group || donor['blood group'] || donor.bloodgroup || donor.group;
-            document.getElementById('cardBG').textContent = bGroup;
-            
-            document.getElementById('cardID').textContent = recoverIdInput;
-            document.getElementById('cardPhone').textContent = donor.phone || donor['phone'];
-            
-            // কিউআর কোড জেনারেট
-            const qrcodeEl = document.getElementById("qrcode");
-            qrcodeEl.innerHTML = "";
-            new QRCode(qrcodeEl, {
-                text: `KBH-ID: ${recoverIdInput}\nBlood: ${bGroup}`,
-                width: 45, height: 45, colorDark : "#470a16", colorLight : "#ffffff"
-            });
-
-            // জেন্ডার অনুযায়ী আইকন
-            const gender = (donor.gender || "").toLowerCase();
-            const avatarBox = document.getElementById('avatarBox');
-            avatarBox.innerHTML = gender === "female" ? `<i data-lucide="user-round" class="w-8 h-8 text-pink-100"></i>` : `<i data-lucide="user-round" class="w-8 h-8 text-blue-100"></i>`;
-            
-            // স্ক্রিন পরিবর্তন
-            document.getElementById('formSection').classList.add('hidden');
-            document.getElementById('successSection').classList.remove('hidden');
-            
-            lucide.createIcons();
-            window.scrollTo(0,0);
-        } else {
-            alert("দুঃখিত, '" + recoverIdInput + "' আইডিতে কোনো তথ্য পাওয়া যায়নি! সঠিক আইডি দিন।");
+    async function recoverDonorCard() {
+        const recoverIdInput = document.getElementById('recoverID').value.trim().toUpperCase();
+        if (!recoverIdInput) return alert("আইডি দিন।");
+        
+        const btn = event.currentTarget;
+        const originalText = btn.innerText;
+        btn.innerText = "...";
+        
+        try {
+            const response = await fetch(DONOR_API.replace('?sheet=Donors', ''));
+            const donors = await response.json();
+            const donor = donors.find(d => (d.donorID || d.donorid || "").toUpperCase() === recoverIdInput);
+            if (donor) {
+                showSuccessCard(donor);
+            } else {
+                alert("আইডি পাওয়া যায়নি!");
+            }
+        } catch (error) {
+            alert("সার্ভার সমস্যা!");
+        } finally {
+            btn.innerText = originalText;
         }
-    } catch (error) {
-        console.error("Fetch Error:", error);
-        alert("গুগল শিট থেকে ডেটা কানেক্ট করা যাচ্ছে না। আপনার Apps Script টি কি 'Anyone' এক্সেসে দেওয়া?");
-    } finally {
-        btn.innerText = originalText;
-        btn.disabled = false;
     }
-}
   </script>
 </body>
 </html>
