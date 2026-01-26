@@ -42,17 +42,47 @@
 
 <body class="bg-[#F8F9FE] text-slate-900 pb-28">
 
-<div id="splash-screen" class="fixed inset-0 z-[9999] bg-rose-600 flex flex-col items-center justify-center text-white transition-opacity duration-700">
-    <div class="relative">
-        <div class="w-24 h-24 bg-white/20 rounded-[2.5rem] flex items-center justify-center backdrop-blur-md animate-bounce">
-            <i data-lucide="heart-handshake" class="w-12 h-12 text-white"></i>
+<div id="splash-screen" class="fixed inset-0 z-[9999] bg-[#fdfdfd] flex flex-col items-center justify-between py-16 transition-opacity duration-1000">
+    
+    <div class="w-full flex justify-center opacity-20">
+        <div class="w-64 h-64 bg-rose-200 rounded-full blur-[100px] absolute -top-20"></div>
+    </div>
+
+    <div class="relative flex flex-col items-center">
+        <div class="relative w-32 h-32 flex items-center justify-center">
+            <div class="absolute inset-0 bg-rose-500/10 rounded-[3rem] animate-ping"></div>
+            <div class="absolute inset-4 bg-rose-500/20 rounded-[2.5rem] animate-pulse"></div>
+            
+            <div class="relative z-10 w-24 h-24 bg-gradient-to-br from-rose-500 to-rose-700 rounded-[2.5rem] shadow-[0_20px_50px_rgba(225,29,72,0.3)] flex items-center justify-center transform rotate-12 hover:rotate-0 transition-transform duration-500">
+                <i data-lucide="heart-pulse" class="w-12 h-12 text-white animate-pulse"></i>
+            </div>
         </div>
-        <div class="absolute inset-0 bg-white rounded-[2.5rem] animate-ping opacity-20"></div>
+
+        <div class="mt-10 text-center">
+            <h2 class="text-3xl font-black text-slate-800 tracking-tighter leading-none">
+                কর্ণফুলী <span class="text-rose-600">ব্লাড হাব</span>
+            </h2>
+            <div class="flex items-center justify-center gap-2 mt-3">
+                <span class="h-[1px] w-8 bg-slate-200"></span>
+                <p class="text-[11px] font-bold text-slate-400 uppercase tracking-[0.2em]">রক্তের বন্ধনে গড়ি সুন্দর পৃথিবী</p>
+                <span class="h-[1px] w-8 bg-slate-200"></span>
+            </div>
+        </div>
     </div>
-    <div class="mt-8 text-center">
-        <h2 class="text-2xl font-black tracking-tighter">কর্ণফুলী ব্লাড হাব</h2>
-        <p class="text-sm font-medium opacity-80 mt-1">রক্তের বন্ধনে গড়ি সুন্দর পৃথিবী</p>
+
+    <div class="flex flex-col items-center gap-4">
+        <div class="w-12 h-1 bg-slate-100 rounded-full overflow-hidden">
+            <div class="h-full bg-rose-600 w-full origin-left animate-[loading_2s_ease-in-out_infinite]"></div>
+        </div>
+        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Version 2.0.4</p>
     </div>
+
+    <style>
+        @keyframes loading {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+    </style>
 </div>
 
 <div class="drawer-overlay fixed inset-0 bg-black/60 z-[60] opacity-0 pointer-events-none transition-opacity duration-300" onclick="toggleMenu()"></div>
