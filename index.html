@@ -42,43 +42,48 @@
 
 <body class="bg-[#F8F9FE] text-slate-900 pb-28">
 
-<div id="splash-screen" class="fixed inset-0 z-[9999] bg-[#fdfdfd] flex flex-col items-center justify-between py-16 transition-opacity duration-1000">
+<div id="splash-screen" class="fixed inset-0 z-[9999] bg-[#0F172A] flex flex-col items-center justify-center transition-opacity duration-1000">
     
-    <div class="w-full flex justify-center opacity-20">
-        <div class="w-64 h-64 bg-rose-200 rounded-full blur-[100px] absolute -top-20"></div>
-    </div>
+    <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-rose-600/20 rounded-full blur-[120px] animate-pulse"></div>
+    <div class="absolute bottom-1/4 right-1/4 w-64 h-64 bg-blue-600/10 rounded-full blur-[120px]"></div>
 
-    <div class="relative flex flex-col items-center">
-        <div class="relative w-32 h-32 flex items-center justify-center">
-            <div class="absolute inset-0 bg-rose-500/10 rounded-[3rem] animate-ping"></div>
-            <div class="absolute inset-4 bg-rose-500/20 rounded-[2.5rem] animate-pulse"></div>
+    <div class="relative scale-110">
+        <div class="absolute inset-[-20px] border-[1.5px] border-dashed border-rose-500/30 rounded-full animate-[spin_8s_linear_infinite]"></div>
+        
+        <div class="relative w-28 h-28 bg-white/5 backdrop-blur-xl border border-white/10 rounded-[2.8rem] flex items-center justify-center shadow-2xl overflow-hidden group">
+            <div class="absolute inset-0 bg-gradient-to-br from-rose-500/20 to-transparent opacity-50"></div>
             
-            <div class="relative z-10 w-24 h-24 bg-gradient-to-br from-rose-500 to-rose-700 rounded-[2.5rem] shadow-[0_20px_50px_rgba(225,29,72,0.3)] flex items-center justify-center transform rotate-12 hover:rotate-0 transition-transform duration-500">
-                <i data-lucide="heart-pulse" class="w-12 h-12 text-white animate-pulse"></i>
+            <div class="relative z-10">
+                <i data-lucide="heart-pulse" class="w-14 h-14 text-rose-500 drop-shadow-[0_0_15px_rgba(225,29,72,0.6)] animate-[heartbeat_1.5s_ease-in-out_infinite]"></i>
             </div>
-        </div>
 
-        <div class="mt-10 text-center">
-            <h2 class="text-3xl font-black text-slate-800 tracking-tighter leading-none">
-                কর্ণফুলী <span class="text-rose-600">ব্লাড হাব</span>
-            </h2>
-            <div class="flex items-center justify-center gap-2 mt-3">
-                <span class="h-[1px] w-8 bg-slate-200"></span>
-                <p class="text-[11px] font-bold text-slate-400 uppercase tracking-[0.2em]">রক্তের বন্ধনে গড়ি সুন্দর পৃথিবী</p>
-                <span class="h-[1px] w-8 bg-slate-200"></span>
-            </div>
+            <div class="absolute bottom-0 left-0 right-0 bg-rose-600/20 h-0 animate-[fill_3s_ease-in-out_forwards]"></div>
         </div>
     </div>
 
-    <div class="flex flex-col items-center gap-4">
-        <div class="w-12 h-1 bg-slate-100 rounded-full overflow-hidden">
-            <div class="h-full bg-rose-600 w-full origin-left animate-[loading_2s_ease-in-out_infinite]"></div>
-        </div>
-        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Version 2.0.4</p>
+    <div class="mt-16 text-center z-10">
+        <h2 class="text-3xl font-light text-white tracking-[0.15em] uppercase">
+            Karnaphuli <span class="font-black text-rose-500">Hub</span>
+        </h2>
+        <p class="text-[10px] font-medium text-slate-400 tracking-[0.4em] uppercase mt-4 opacity-60">
+            Saving Lives • Together
+        </p>
+    </div>
+
+    <div class="absolute bottom-16 w-40 h-[2px] bg-slate-800 rounded-full overflow-hidden">
+        <div class="h-full bg-gradient-to-r from-transparent via-rose-500 to-transparent w-full -translate-x-full animate-[shimmer_2s_infinite]"></div>
     </div>
 
     <style>
-        @keyframes loading {
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.15); opacity: 0.8; }
+        }
+        @keyframes fill {
+            0% { h: 0%; }
+            100% { height: 40%; }
+        }
+        @keyframes shimmer {
             0% { transform: translateX(-100%); }
             100% { transform: translateX(100%); }
         }
