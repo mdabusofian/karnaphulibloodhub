@@ -147,12 +147,70 @@
     </div>
 </header>
 
+<div class="relative bg-white py-3 overflow-hidden border-b border-slate-100 flex items-center">
+    <div class="relative z-10 bg-white pl-4 pr-3 flex items-center gap-2 border-r border-slate-100">
+        <span class="relative flex h-2 w-2">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-rose-600"></span>
+        </span>
+        <span class="text-[10px] font-black uppercase tracking-widest text-slate-400">Update</span>
+    </div>
 
-<div class="bg-rose-50 text-rose-600 py-2 border-b border-rose-100">
-    <div class="animate-marquee whitespace-nowrap font-bold text-sm">
-      🚨 জরুরি প্রয়োজনে কল করুন: ০১৮৭১৫৩৬৪৬৮ &nbsp;&nbsp;&nbsp; 🩸 আপনার রক্তে বাঁচবে প্রাণ &nbsp;&nbsp;&nbsp; 🚨 রক্তদান মহৎ দান
+    <div class="flex-1 overflow-hidden whitespace-nowrap">
+        <div class="inline-block animate-marquee hover:[animation-play-state:paused] cursor-pointer">
+            <span class="inline-flex items-center gap-6 px-4">
+                <span class="flex items-center gap-2">
+                    <span class="w-7 h-7 bg-rose-50 rounded-full flex items-center justify-center">
+                        <i data-lucide="phone-call" class="w-3.5 h-3.5 text-rose-600"></i>
+                    </span>
+                    <span class="text-sm font-bold text-slate-700">জরুরি কল: <span class="text-rose-600">০১৮৭১৫৩৬৪৬৮</span></span>
+                </span>
+                
+                <span class="text-slate-200">|</span>
+
+                <span class="flex items-center gap-2">
+                    <span class="w-7 h-7 bg-blue-50 rounded-full flex items-center justify-center">
+                        <i data-lucide="droplets" class="w-3.5 h-3.5 text-blue-600"></i>
+                    </span>
+                    <span class="text-sm font-bold text-slate-700">আপনার রক্তে বাঁচবে প্রাণ</span>
+                </span>
+
+                <span class="text-slate-200">|</span>
+
+                <span class="flex items-center gap-2">
+                    <span class="w-7 h-7 bg-amber-50 rounded-full flex items-center justify-center">
+                        <i data-lucide="heart" class="w-3.5 h-3.5 text-amber-600"></i>
+                    </span>
+                    <span class="text-sm font-bold text-slate-700">রক্তদান মহৎ দান</span>
+                </span>
+                
+                <span class="text-slate-200">|</span>
+            </span>
+        </div>
+
+        <div class="inline-block animate-marquee hover:[animation-play-state:paused] cursor-pointer">
+            <span class="inline-flex items-center gap-6 px-4">
+                <span class="flex items-center gap-2">
+                    <span class="w-7 h-7 bg-rose-50 rounded-full flex items-center justify-center">
+                        <i data-lucide="phone-call" class="w-3.5 h-3.5 text-rose-600"></i>
+                    </span>
+                    <span class="text-sm font-bold text-slate-700">জরুরি কল: <span class="text-rose-600">০১৮৭১৫৩৬৪৬৮</span></span>
+                </span>
+                </span>
+        </div>
     </div>
 </div>
+
+<style>
+    @keyframes marquee {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-100%); }
+    }
+    .animate-marquee {
+        animation: marquee 20s linear infinite;
+        display: inline-flex;
+    }
+</style>
 
 <main class="max-w-md mx-auto px-4 mt-6">
     
