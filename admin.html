@@ -28,6 +28,7 @@
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     .status-pending { background: #fef3c7; color: #d97706; padding: 4px 12px; border-radius: 40px; font-size: 11px; font-weight: 800; }
     .status-fulfilled { background: #d1fae5; color: #059669; padding: 4px 12px; border-radius: 40px; font-size: 11px; font-weight: 800; }
+    input, input:focus, input:active { background-color: #f8fafc !important; }
   </style>
 </head>
 <body class="text-slate-700">
@@ -42,10 +43,13 @@
     NOTICES: 'kbh_admin_notices',
     SETTINGS: 'kbh_admin_settings'
   };
+  
+  // সেশন স্টোরেজ কী (লগইন সেশন রাখার জন্য)
+  const SESSION_KEY = 'kbh_admin_logged_in';
 </script>
 
 <!-- LOGIN OVERLAY -->
-<div id="loginOverlay" class="fixed inset-0 bg-gradient-to-br from-slate-50 to-rose-50 flex items-center justify-center z-[100] transition-all duration-500">
+<div id="loginOverlay" class="fixed inset-0 bg-gradient-to-br from-slate-50 to-rose-50 flex items-center justify-center z-[100] transition-all duration-500" style="display: flex;">
   <div class="bg-white/90 backdrop-blur-xl p-10 rounded-[3rem] shadow-2xl w-full max-w-md text-center border border-white/60">
     <div class="w-24 h-24 gradient-bg rounded-3xl rotate-12 flex items-center justify-center mx-auto mb-10 shadow-xl shadow-rose-200">
       <span class="text-5xl -rotate-12">🩸</span>
@@ -53,12 +57,11 @@
     <h2 class="text-3xl font-black text-slate-800 mb-2">KBH অ্যাডমিন</h2>
     <p class="text-slate-400 mb-8 font-medium">ম্যানেজমেন্ট কনসোল লগইন</p>
     <div class="space-y-4 text-left">
-      <input type="text" id="userInput" class="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:ring-2 focus:ring-rose-400 transition-all" placeholder="ইউজারনেম" value="admin">
-      <input type="password" id="passInput" class="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:ring-2 focus:ring-rose-400 transition-all" placeholder="পাসওয়ার্ড" value="admin123">
+      <input type="text" id="userInput" class="w-full px-5 py-4 bg-slate-100 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-rose-400 transition-all" placeholder="ইউজারনেম" value="admin" autocomplete="off">
+      <input type="password" id="passInput" class="w-full px-5 py-4 bg-slate-100 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-rose-400 transition-all" placeholder="পাসওয়ার্ড" value="admin123" autocomplete="new-password">
       <button onclick="handleLogin()" id="loginBtn" class="w-full gradient-bg text-white py-4 rounded-2xl font-bold text-lg hover:shadow-lg transform active:scale-95 transition-all">🔐 লগইন করুন</button>
     </div>
-    <p class="text-[10px] text-slate-300 mt-6">ডিফল্ট: admin / admin123</p>
-  </div>
+   </div>
 </div>
 
 <!-- MAIN ADMIN LAYOUT -->
@@ -135,7 +138,7 @@
     <div id="section-donors" class="hidden animate-fade-in">
       <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
         <h2 class="text-2xl font-black text-slate-800">👥 ডোনার লিস্ট (আইডি সহ)</h2>
-        <input type="text" id="searchBox" onkeyup="searchDonorTable()" class="w-full md:w-80 px-5 py-3 bg-white border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-rose-400 text-sm" placeholder="নাম বা গ্রুপ বা এলাকা দিয়ে খুঁজুন...">
+        <input type="text" id="searchBox" onkeyup="searchDonorTable()" class="w-full md:w-80 px-5 py-3 bg-white border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-rose-400 text-sm" placeholder="নাম বা গ্রুপ বা এলাকা দিয়ে খুঁজুন..." autocomplete="off">
       </div>
       <div class="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-x-auto">
         <table class="w-full text-left" id="donorTable">
@@ -154,8 +157,8 @@
       <h2 class="text-2xl font-black text-slate-800 mb-6">🖼️ গ্যালারি ম্যানেজমেন্ট</h2>
       <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 mb-8 max-w-xl">
         <div class="space-y-4">
-          <input type="text" id="eventTitle" placeholder="ইভেন্টের নাম" class="w-full p-4 bg-slate-50 rounded-xl outline-none focus:ring-2 focus:ring-rose-400">
-          <input type="text" id="eventImgUrl" placeholder="ছবির URL (ইমেজ লিংক)" class="w-full p-4 bg-slate-50 rounded-xl outline-none focus:ring-2 focus:ring-rose-400">
+          <input type="text" id="eventTitle" placeholder="ইভেন্টের নাম" class="w-full p-4 bg-slate-50 rounded-xl outline-none focus:ring-2 focus:ring-rose-400" autocomplete="off">
+          <input type="text" id="eventImgUrl" placeholder="ছবির URL (ইমেজ লিংক)" class="w-full p-4 bg-slate-50 rounded-xl outline-none focus:ring-2 focus:ring-rose-400" autocomplete="off">
           <button onclick="addGalleryItem()" class="gradient-bg text-white w-full py-4 rounded-xl font-bold shadow-lg shadow-rose-100">➕ আপলোড করুন</button>
         </div>
       </div>
@@ -166,7 +169,7 @@
     <div id="section-notice" class="hidden animate-fade-in">
       <h2 class="text-2xl font-black text-slate-800 mb-6">📢 নোটিশ বোর্ড</h2>
       <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 mb-8 max-w-xl flex gap-4">
-        <input type="text" id="newNotice" placeholder="জরুরি নোটিশ লিখুন..." class="flex-1 p-4 bg-slate-50 rounded-xl outline-none focus:ring-2 focus:ring-rose-400">
+        <input type="text" id="newNotice" placeholder="জরুরি নোটিশ লিখুন..." class="flex-1 p-4 bg-slate-50 rounded-xl outline-none focus:ring-2 focus:ring-rose-400" autocomplete="off">
         <button onclick="addNotice()" class="gradient-bg text-white px-8 rounded-xl font-bold">প্রকাশ</button>
       </div>
       <div id="noticeList" class="space-y-4 max-w-2xl"></div>
@@ -176,8 +179,8 @@
     <div id="section-settings" class="hidden animate-fade-in">
       <h2 class="text-2xl font-black text-slate-800 mb-6">⚙️ সিস্টেম সেটিংস</h2>
       <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 max-w-lg space-y-6">
-        <div><label class="font-bold text-slate-500 text-xs uppercase ml-2">অ্যাডমিন পাসওয়ার্ড পরিবর্তন</label><input type="password" id="newPass" class="w-full p-4 bg-slate-50 rounded-xl outline-none mt-2" placeholder="নতুন পাসওয়ার্ড দিন"></div>
-        <div><label class="font-bold text-slate-500 text-xs uppercase ml-2">জরুরি কন্টাক্ট নম্বর</label><input type="text" id="emergencyContact" class="w-full p-4 bg-slate-50 rounded-xl outline-none mt-2" placeholder="০১৮XXXXXXXX"></div>
+        <div><label class="font-bold text-slate-500 text-xs uppercase ml-2">অ্যাডমিন পাসওয়ার্ড পরিবর্তন</label><input type="password" id="newPass" class="w-full p-4 bg-slate-50 rounded-xl outline-none mt-2" placeholder="নতুন পাসওয়ার্ড দিন" autocomplete="new-password"></div>
+        <div><label class="font-bold text-slate-500 text-xs uppercase ml-2">জরুরি কন্টাক্ট নম্বর</label><input type="text" id="emergencyContact" class="w-full p-4 bg-slate-50 rounded-xl outline-none mt-2" placeholder="০১৮XXXXXXXX" autocomplete="off"></div>
         <button onclick="saveSettings()" class="gradient-bg text-white w-full py-4 rounded-xl font-bold shadow-lg shadow-rose-100">সংরক্ষণ করুন</button>
       </div>
     </div>
@@ -190,6 +193,17 @@
   let currentDonors = [];
   let currentRequests = [];
 
+  // ==================== সেশন চেক (রিফ্রেশ করলেও লগইন থাকবে) ====================
+  function checkSession() {
+    const isLoggedIn = sessionStorage.getItem(SESSION_KEY);
+    if(isLoggedIn === 'true') {
+      document.getElementById('loginOverlay').style.display = 'none';
+      document.getElementById('adminLayout').classList.remove('hidden');
+      loadAllData();
+      switchTab('dash');
+    }
+  }
+
   // ==================== লগইন ফাংশন ====================
   async function handleLogin() {
     const u = document.getElementById('userInput').value;
@@ -201,6 +215,9 @@
     const savedPass = settings.adminPass || 'admin123';
     
     if((u === 'admin' && p === 'admin123') || (u === 'admin' && p === savedPass)) {
+      // সেশন স্টোরেজে লগইন সেভ করি
+      sessionStorage.setItem(SESSION_KEY, 'true');
+      
       document.getElementById('loginOverlay').style.opacity = '0';
       setTimeout(() => {
         document.getElementById('loginOverlay').style.display = 'none';
@@ -215,9 +232,16 @@
   }
 
   function logout() {
+    // সেশন ক্লিয়ার করি
+    sessionStorage.removeItem(SESSION_KEY);
+    
     document.getElementById('loginOverlay').style.display = 'flex';
     document.getElementById('loginOverlay').style.opacity = '1';
     document.getElementById('adminLayout').classList.add('hidden');
+    
+    // ইনপুট ফিল্ড ক্লিয়ার করি
+    document.getElementById('userInput').value = 'admin';
+    document.getElementById('passInput').value = '';
   }
 
   // ==================== গুগল শীট থেকে ডাটা লোড ====================
@@ -518,6 +542,9 @@
     if(show) el.classList.remove('hidden');
     else el.classList.add('hidden');
   }
+
+  // পেজ লোড হলে সেশন চেক করি
+  checkSession();
 
   // উইন্ডো ফাংশন এক্সপোজ
   window.handleLogin = handleLogin;
