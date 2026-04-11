@@ -16,8 +16,8 @@
 
 <div class="max-w-6xl mx-auto">
     <div class="text-center mb-10">
-        <h1 class="text-4xl font-black text-rose-600 mb-2">কর্ণফুলী ব্লাড হাব</h1>
-        <p class="text-gray-600 font-medium">প্রিমিয়াম প্রতিনিধি কার্ড জেনারেটর</p>
+        <h1 class="text-4xl font-black text-rose-600 mb-2">কর্ণফুলী ব্লাড হাব </h1>
+        <p class="text-gray-600 font-medium">  প্রতিনিধি কার্ড জেনারেটর</p>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
@@ -31,15 +31,15 @@
             <div class="space-y-4">
                 <div class="grid grid-cols-2 gap-4">
                     <input type="text" id="nameInput" class="w-full border-2 border-rose-50 p-3 rounded-xl outline-none focus:border-rose-500" placeholder="পূর্ণ নাম">
-                    <input type="text" id="serialInput" class="w-full border-2 border-rose-50 p-3 rounded-xl outline-none focus:border-rose-500" placeholder="সদস্য নং (KBH-01)">
+                    <input type="text" id="serialInput" class="w-full border-2 border-rose-50 p-3 rounded-xl outline-none focus:border-rose-500" placeholder="সদস্য আইডি (KBH-01)">
                 </div>
 
                 <div class="grid grid-cols-2 gap-4">
                     <select id="desigInput" class="w-full border-2 border-rose-50 p-3 rounded-xl outline-none focus:border-rose-500">
                         <option>Community Ambassador</option>
-                        <option>ব্লাড হিরো</option>
+                        <option>Area Coordinator </option>
                         <option>Area Leader</option>
-                        <option>আইটি এডমিন</option>
+                        <option>Area Representative </option>
                     </select>
                     <select id="bloodInput" class="w-full border-2 border-rose-50 p-3 rounded-xl outline-none focus:border-rose-500">
                         <option>A+</option><option>B+</option><option>O+</option><option>AB+</option>
@@ -55,7 +55,7 @@
                 </div>
 
                 <button onclick="generateCard()" class="w-full bg-rose-600 text-white py-4 rounded-2xl font-bold text-lg shadow-lg hover:bg-rose-700 transition-all active:scale-95">
-                    কার্ড তৈরি করুন ✨
+                    ডাউনলোড করুন
                 </button>
             </div>
         </div>
@@ -146,7 +146,7 @@
             ctx.strokeRect(-80, -35, 160, 70);
             ctx.fillStyle = "rgba(16, 185, 129, 0.7)";
             ctx.font = "bold 24px Arial";
-            ctx.fillText("VERIFIED", 0, 10);
+            ctx.fillText("ভেরিফাইড", 0, 10);
             ctx.restore();
 
             // Name
