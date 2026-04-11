@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KBH Professional Member Card</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Hind Siliguri', sans-serif; background: #fdf2f2; }
+        .card-shadow { filter: drop-shadow(0 30px 60px rgba(0,0,0,0.2)); }
+    </style>
+</head>
+<body class="py-10 px-4">
+
+<div class="max-w-6xl mx-auto">
+    <div class="text-center mb-10">
+        <h1 class="text-4xl font-black text-rose-600 mb-2">কর্ণফুলী ব্লাড হাব</h1>
+        <p class="text-gray-600 font-medium">প্রিমিয়াম প্রতিনিধি কার্ড জেনারেটর</p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
+        
+        <div class="bg-white p-8 rounded-3xl shadow-xl border-t-8 border-rose-600">
+            <h2 class="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+                <span class="bg-rose-600 w-2 h-6 rounded-full"></span>
+                প্রতিনিধির বিস্তারিত তথ্য
+            </h2>
+            
+            <div class="space-y-4">
+                <div class="grid grid-cols-2 gap-4">
+                    <input type="text" id="nameInput" class="w-full border-2 border-rose-50 p-3 rounded-xl outline-none focus:border-rose-500" placeholder="পূর্ণ নাম">
+                    <input type="text" id="serialInput" class="w-full border-2 border-rose-50 p-3 rounded-xl outline-none focus:border-rose-500" placeholder="সদস্য নং (KBH-01)">
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <select id="desigInput" class="w-full border-2 border-rose-50 p-3 rounded-xl outline-none focus:border-rose-500">
+                        <option>Community Ambassador</option>
+                        <option>ব্লাড হিরো</option>
+                        <option>Area Leader</option>
+                        <option>আইটি এডমিন</option>
+                    </select>
+                    <select id="bloodInput" class="w-full border-2 border-rose-50 p-3 rounded-xl outline-none focus:border-rose-500">
+                        <option>A+</option><option>B+</option><option>O+</option><option>AB+</option>
+                        <option>A-</option><option>B-</option><option>O-</option><option>AB-</option>
+                    </select>
+                </div>
+
+                <input type="text" id="phoneInput" class="w-full border-2 border-rose-50 p-3 rounded-xl outline-none focus:border-rose-500" placeholder="জরুরি হটলাইন নম্বর">
+                
+                <div class="bg-rose-50 p-4 rounded-xl border-2 border-dashed border-rose-200">
+                    <label class="block text-sm font-bold text-rose-700 mb-2">প্রতিনিধির ছবি আপলোড করুন</label>
+                    <input type="file" id="imageInput" accept="image/*" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-rose-600 file:text-white hover:file:bg-rose-700 cursor-pointer">
+                </div>
+
+                <button onclick="generateCard()" class="w-full bg-rose-600 text-white py-4 rounded-2xl font-bold text-lg shadow-lg hover:bg-rose-700 transition-all active:scale-95">
+                    কার্ড তৈরি করুন ✨
+                </button>
+            </div>
+        </div>
+
+        <div class="flex flex-col items-center">
+            <div class="card-shadow bg-white p-2 rounded-[50px] overflow-hidden">
+                <canvas id="posterCanvas" width="800" height="1100" class="w-full max-w-[420px] md:max-w-[500px] rounded-[45px]"></canvas>
+            </div>
+            <div id="qrcode" class="hidden"></div> 
+            <button id="downloadBtn" style="display:none;" onclick="downloadCard()" class="mt-8 flex items-center gap-3 bg-emerald-600 text-white px-12 py-4 rounded-full font-bold shadow-2xl hover:bg-emerald-700 transition-all">
+                গ্যালারিতে সেভ করুন
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function generateCard() {
+        const canvas = document.getElementById('posterCanvas');
+        const ctx = canvas.getContext('2d');
+        const name = document.getElementById('nameInput').value || "প্রতিনিধির নাম";
+        const serial = document.getElementById('serialInput').value || "KBH-2026-00";
+        const designation = document.getElementById('desigInput').value;
+        const blood = document.getElementById('bloodInput').value;
+        const phone = document.getElementById('phoneInput').value || "০১৮XXXXXXXX";
+        const imageInput = document.getElementById('imageInput');
+
+        // 1. Deep Red Base
+        ctx.fillStyle = "#9f1239"; 
+        ctx.fillRect(0, 0, 800, 1100);
+
+        // 2. Main White Card Area
+        ctx.fillStyle = "white";
+        ctx.roundRect(30, 160, 740, 910, 60);
+        ctx.fill();
+
+        // 3. Pattern & Background Watermarks
+        ctx.globalAlpha = 0.05;
+        for (let i = 0; i < 800; i += 40) {
+            for (let j = 160; j < 1070; j += 40) {
+                ctx.beginPath();
+                ctx.arc(i, j, 1, 0, Math.PI * 2);
+                ctx.fillStyle = "#000";
+                ctx.fill();
+            }
+        }
+        
+        // Drawing Blood Drops Watermarks
+        ctx.font = "60px Arial";
+        ctx.globalAlpha = 0.08;
+        ctx.fillText("🩸", 100, 300);
+        ctx.fillText("🩸", 700, 450);
+        ctx.fillText("🩸", 150, 900);
+        ctx.fillText("🩸", 650, 850);
+        ctx.globalAlpha = 1.0;
+
+        // 4. Header Branding
+        ctx.fillStyle = "white";
+        ctx.textAlign = "center";
+        ctx.font = "bold 58px 'Hind Siliguri'";
+        ctx.fillText("কর্ণফুলী ব্লাড হাব", 400, 85);
+        ctx.font = "24px 'Hind Siliguri'";
+        ctx.fillText("স্বেচ্ছায় রক্তদান, বাঁচাবে একটি প্রাণ", 400, 130);
+
+        const renderCard = (userImg = null) => {
+            // Profile Picture
+            ctx.save();
+            ctx.beginPath();
+            ctx.arc(400, 380, 165, 0, Math.PI * 2);
+            ctx.lineWidth = 15;
+            ctx.strokeStyle = '#fff1f2';
+            ctx.stroke();
+            ctx.clip();
+            if (userImg) {
+                ctx.drawImage(userImg, 235, 215, 330, 330);
+            } else {
+                ctx.fillStyle = "#f1f5f9";
+                ctx.fillRect(235, 215, 330, 330);
+            }
+            ctx.restore();
+
+            // Official Stamp
+            ctx.save();
+            ctx.translate(630, 420);
+            ctx.rotate(-0.25);
+            ctx.strokeStyle = "rgba(16, 185, 129, 0.7)";
+            ctx.lineWidth = 4;
+            ctx.strokeRect(-80, -35, 160, 70);
+            ctx.fillStyle = "rgba(16, 185, 129, 0.7)";
+            ctx.font = "bold 24px Arial";
+            ctx.fillText("VERIFIED", 0, 10);
+            ctx.restore();
+
+            // Name
+            ctx.fillStyle = "#be123c";
+            ctx.font = "bold 55px 'Hind Siliguri'";
+            ctx.fillText(name, 400, 600);
+
+            // HIGHLIGHTED Designation
+            ctx.fillStyle = "#9f1239";
+            ctx.roundRect(180, 625, 440, 70, 35);
+            ctx.fill();
+            ctx.fillStyle = "white";
+            ctx.font = "bold 34px 'Hind Siliguri'";
+            ctx.fillText(designation, 400, 672);
+
+            // Serial & Blood Group
+            ctx.fillStyle = "#334155";
+            ctx.font = "bold 28px 'Hind Siliguri'";
+            ctx.fillText(`সদস্য নং: ${serial}  |  রক্তের গ্রুপ: ${blood}`, 400, 740);
+
+            // Info Divider
+            ctx.strokeStyle = "#fda4af";
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(200, 770);
+            ctx.lineTo(600, 770);
+            ctx.stroke();
+
+            // Hotline Section
+            ctx.fillStyle = "#1e293b";
+            ctx.font = "bold 32px 'Hind Siliguri'";
+            ctx.fillText(`জরুরি হটলাইন: ${phone}`, 400, 835);
+
+            // Social Icons Area
+            ctx.fillStyle = "#475569";
+            ctx.font = "24px 'Hind Siliguri'";
+            ctx.fillText(" facebook.com/karnafulibloodhub  |  🌐 karnafulibloodhub.com", 400, 895);
+
+            // QR Code Section with Box
+            ctx.fillStyle = "#fff1f2";
+            ctx.roundRect(335, 925, 130, 130, 20);
+            ctx.fill();
+
+            const qrContainer = document.getElementById("qrcode");
+            qrContainer.innerHTML = "";
+            new QRCode(qrContainer, {
+                text: "https://karnaphulibloodhub.com/profile/" + serial,
+                width: 100,
+                height: 100,
+                colorDark : "#9f1239"
+            });
+
+            setTimeout(() => {
+                const qrImg = qrContainer.querySelector('img');
+                if (qrImg) {
+                    ctx.drawImage(qrImg, 350, 940, 100, 100);
+                }
+                document.getElementById('downloadBtn').style.display = "flex";
+            }, 400);
+        };
+
+        if (imageInput.files && imageInput.files[0]) {
+            const reader = new FileReader();
+            reader.onload = e => {
+                const img = new Image();
+                img.onload = () => renderCard(img);
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(imageInput.files[0]);
+        } else {
+            renderCard();
+        }
+    }
+
+    function downloadCard() {
+        const canvas = document.getElementById('posterCanvas');
+        const link = document.createElement('a');
+        link.download = 'KBH-Premium-Card.png';
+        link.href = canvas.toDataURL('image/png', 1.0);
+        link.click();
+    }
+
+    // Custom Rounded Rectangle Polyfill
+    CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, r) {
+        if (w < 2 * r) r = w / 2;
+        if (h < 2 * r) r = h / 2;
+        this.beginPath();
+        this.moveTo(x + r, y);
+        this.arcTo(x + w, y, x + w, y + h, r);
+        this.arcTo(x + w, y + h, x, y + h, r);
+        this.arcTo(x, y + h, x, y, r);
+        this.arcTo(x, y, x + w, y, r);
+        this.closePath();
+        return this;
+    }
+</script>
+
+</body>
+</html>
