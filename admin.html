@@ -2,7 +2,7 @@
 <html lang="bn">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, maximum-scale=1.0, viewport-fit=cover">
   <title>KBH অ্যাডমিন প্যানেল | কর্ণফুলী ব্লাড হাব</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -10,123 +10,170 @@
   <style>
     * { font-family: 'Hind Siliguri', sans-serif; }
     body { background: #f8fafc; }
-    .sidebar-active { 
-      background: linear-gradient(135deg, #e11d48 0%, #be123c 100%); 
-      color: white !important;
-      box-shadow: 0 8px 20px rgba(225, 29, 72, 0.25);
+    
+    /* মোবাইল ফ্রেন্ডলি স্টাইল */
+    .mobile-sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 85%;
+      max-width: 280px;
+      background: white;
+      z-index: 1000;
+      transform: translateX(-100%);
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 2px 0 20px rgba(0,0,0,0.1);
+      overflow-y: auto;
     }
-    .sidebar-active span { color: white !important; }
+    
+    .mobile-sidebar.open {
+      transform: translateX(0);
+    }
+    
+    .sidebar-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 999;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+    
+    .sidebar-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    
     .gradient-bg { background: linear-gradient(135deg, #e11d48, #be123c); }
-    .card-hover { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-    .card-hover:hover { transform: translateY(-4px); box-shadow: 0 20px 35px -12px rgba(0,0,0,0.05); }
-    ::-webkit-scrollbar { width: 5px; }
-    ::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
-    ::-webkit-scrollbar-thumb { background: #e11d48; border-radius: 10px; }
-    @keyframes fadeSlideIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
-    .animate-fade-in { animation: fadeSlideIn 0.4s ease-out forwards; }
+    .status-pending { background: #fef3c7; color: #d97706; padding: 4px 12px; border-radius: 40px; font-size: 10px; font-weight: 800; }
+    .status-fulfilled { background: #d1fae5; color: #059669; padding: 4px 12px; border-radius: 40px; font-size: 10px; font-weight: 800; }
     .loading-spinner { border: 3px solid #f3f3f3; border-top: 3px solid #e11d48; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-    .status-pending { background: #fef3c7; color: #d97706; padding: 4px 12px; border-radius: 40px; font-size: 11px; font-weight: 800; }
-    .status-fulfilled { background: #d1fae5; color: #059669; padding: 4px 12px; border-radius: 40px; font-size: 11px; font-weight: 800; }
-    input, input:focus, input:active { background-color: #f8fafc !important; }
+    
+    /* মোবাইলে টেবিল স্ক্রল */
+    .table-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    
+    /* টাচ ফ্রেন্ডলি বাটন */
+    .touch-btn { min-height: 48px; cursor: pointer; }
+    
+    /* মোবাইলে কার্ড সাইজ */
+    @media (max-width: 640px) {
+      .stat-card { padding: 16px; }
+      .stat-number { font-size: 28px; }
+      .sidebar-item { padding: 14px 16px; }
+    }
   </style>
 </head>
 <body class="text-slate-700">
 
 <script>
-  // আপনার গুগল শীট Apps Script URL
   const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyGguWgJdIpVgv0Sol7qF7gJOelhv-y47NoW6my1ZnlSjxHcj7ygwlMuDxffRezTW4wbA/exec";
-  
-  // লোকাল স্টোরেজ কী (গ্যালারি, নোটিশ, সেটিংসের জন্য)
-  const LOCAL_KEYS = {
-    GALLERY: 'kbh_admin_gallery',
-    NOTICES: 'kbh_admin_notices',
-    SETTINGS: 'kbh_admin_settings'
-  };
-  
-  // সেশন স্টোরেজ কী (লগইন সেশন রাখার জন্য)
+  const LOCAL_KEYS = { GALLERY: 'kbh_admin_gallery', NOTICES: 'kbh_admin_notices', SETTINGS: 'kbh_admin_settings' };
   const SESSION_KEY = 'kbh_admin_logged_in';
 </script>
 
 <!-- LOGIN OVERLAY -->
-<div id="loginOverlay" class="fixed inset-0 bg-gradient-to-br from-slate-50 to-rose-50 flex items-center justify-center z-[100] transition-all duration-500" style="display: flex;">
-  <div class="bg-white/90 backdrop-blur-xl p-10 rounded-[3rem] shadow-2xl w-full max-w-md text-center border border-white/60">
-    <div class="w-24 h-24 gradient-bg rounded-3xl rotate-12 flex items-center justify-center mx-auto mb-10 shadow-xl shadow-rose-200">
-      <span class="text-5xl -rotate-12">🩸</span>
+<div id="loginOverlay" class="fixed inset-0 bg-gradient-to-br from-slate-50 to-rose-50 flex items-center justify-center z-[200] transition-all duration-500 p-4">
+  <div class="bg-white/95 backdrop-blur-xl p-6 sm:p-10 rounded-3xl shadow-2xl w-full max-w-md text-center border border-white/60">
+    <div class="w-20 h-20 sm:w-24 sm:h-24 gradient-bg rounded-2xl rotate-12 flex items-center justify-center mx-auto mb-6 sm:mb-8 shadow-xl shadow-rose-200">
+      <span class="text-4xl sm:text-5xl -rotate-12">🩸</span>
     </div>
-    <h2 class="text-3xl font-black text-slate-800 mb-2">KBH লগইন প্যানেল </h2>
-    <p class="text-slate-400 mb-8 font-medium">ডোনার ম্যানেজমেন্ট সিস্টেম </p>
+    <h2 class="text-2xl sm:text-3xl font-black text-slate-800 mb-2">KBH অ্যাডমিন প্যানেল </h2>
+    <p class="text-slate-400 mb-6 sm:mb-8 font-medium text-sm">ব্লাড ডোনার ম্যানেজমেন্ট সিস্টেম </p>
     <div class="space-y-4 text-left">
-      <input type="text" id="userInput" class="w-full px-5 py-4 bg-slate-100 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-rose-400 transition-all" placeholder="ইউজারনেম" value="admin" autocomplete="off">
-      <input type="password" id="passInput" class="w-full px-5 py-4 bg-slate-100 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-rose-400 transition-all" placeholder="পাসওয়ার্ড" value="admin123" autocomplete="new-password">
-      <button onclick="handleLogin()" id="loginBtn" class="w-full gradient-bg text-white py-4 rounded-2xl font-bold text-lg hover:shadow-lg transform active:scale-95 transition-all">🔐 লগইন করুন</button>
+      <input type="text" id="userInput" class="w-full px-4 py-3 sm:px-5 sm:py-4 bg-slate-100 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-rose-400 transition-all text-base" placeholder="ইউজারনেম" value="admin" autocomplete="off">
+      <input type="password" id="passInput" class="w-full px-4 py-3 sm:px-5 sm:py-4 bg-slate-100 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-rose-400 transition-all text-base" placeholder="পাসওয়ার্ড" value="admin123" autocomplete="new-password">
+      <button onclick="handleLogin()" id="loginBtn" class="w-full gradient-bg text-white py-3 sm:py-4 rounded-xl font-bold text-base sm:text-lg hover:shadow-lg transform active:scale-95 transition-all touch-btn">🔐 লগইন করুন</button>
     </div>
    </div>
 </div>
 
 <!-- MAIN ADMIN LAYOUT -->
-<div id="adminLayout" class="hidden flex min-h-screen">
+<div id="adminLayout" class="hidden min-h-screen pb-20">
   
-  <!-- SIDEBAR -->
-  <aside class="w-72 bg-white border-r border-slate-100 p-6 flex flex-col fixed h-full z-40 overflow-y-auto shadow-sm">
-    <div class="mb-10 flex items-center gap-3 px-3">
-      <div class="w-10 h-10 gradient-bg rounded-xl flex items-center justify-center text-white font-black text-xl shadow-md">K</div>
-      <div>
-        <h1 class="text-xl font-black tracking-tighter text-slate-800">কর্ণফুলী <span class="text-rose-600">হাব</span></h1>
-        <p class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">অ্যাডমিন কনসোল</p>
+  <!-- মোবাইল হেডার -->
+  <div class="fixed top-0 left-0 right-0 bg-white border-b border-slate-100 z-50 px-4 py-3 flex items-center justify-between shadow-sm">
+    <button onclick="toggleSidebar()" class="w-10 h-10 rounded-xl bg-rose-50 flex items-center justify-center touch-btn">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-rose-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+    <div class="flex items-center gap-2">
+      <div class="w-8 h-8 gradient-bg rounded-lg flex items-center justify-center text-white font-black text-sm">K</div>
+      <h1 class="font-black text-base text-slate-800">কর্ণফুলী <span class="text-rose-600">হাব</span></h1>
+    </div>
+    <div class="w-10"></div>
+  </div>
+
+  <!-- সাইডবার ওভারলে -->
+  <div id="sidebarOverlay" class="sidebar-overlay" onclick="closeSidebar()"></div>
+
+  <!-- মোবাইল সাইডবার -->
+  <aside id="mobileSidebar" class="mobile-sidebar">
+    <div class="p-5 border-b border-slate-100">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 gradient-bg rounded-xl flex items-center justify-center text-white font-black text-lg">K</div>
+        <div>
+          <h1 class="text-lg font-black text-slate-800">কর্ণফুলী <span class="text-rose-600"> ব্লাড হাব</span></h1>
+          <p class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">অ্যাডমিন প্যানেল </p>
+        </div>
       </div>
     </div>
     
-    <nav class="space-y-1 flex-1">
-      <button onclick="switchTab('dash')" id="tab-dash" class="w-full flex items-center gap-4 p-4 rounded-2xl transition-all font-bold text-slate-500 hover:bg-rose-50 sidebar-active"><span class="text-xl">📊</span> ড্যাশবোর্ড</button>
-      <button onclick="switchTab('requests')" id="tab-requests" class="w-full flex items-center gap-4 p-4 rounded-2xl transition-all font-bold text-slate-500 hover:bg-rose-50"><span class="text-xl">🆘</span> রক্তের অনুরোধ</button>
-      <button onclick="switchTab('donors')" id="tab-donors" class="w-full flex items-center gap-4 p-4 rounded-2xl transition-all font-bold text-slate-500 hover:bg-rose-50"><span class="text-xl">👥</span> ডোনার লিস্ট</button>
-      <button onclick="switchTab('gallery')" id="tab-gallery" class="w-full flex items-center gap-4 p-4 rounded-2xl transition-all font-bold text-slate-500 hover:bg-rose-50"><span class="text-xl">🖼️</span> গ্যালারি</button>
-      <button onclick="switchTab('notice')" id="tab-notice" class="w-full flex items-center gap-4 p-4 rounded-2xl transition-all font-bold text-slate-500 hover:bg-rose-50"><span class="text-xl">📢</span> নোটিশ বোর্ড</button>
-      <button onclick="switchTab('settings')" id="tab-settings" class="w-full flex items-center gap-4 p-4 rounded-2xl transition-all font-bold text-slate-500 hover:bg-rose-50"><span class="text-xl">⚙️</span> সেটিংস</button>
+    <nav class="p-3 space-y-1">
+      <button onclick="switchTab('dash'); closeSidebar();" id="tab-dash" class="w-full flex items-center gap-4 p-3 rounded-xl transition-all font-bold text-slate-500 hover:bg-rose-50 sidebar-active"><span class="text-xl">📊</span> ড্যাশবোর্ড</button>
+      <button onclick="switchTab('requests'); closeSidebar();" id="tab-requests" class="w-full flex items-center gap-4 p-3 rounded-xl transition-all font-bold text-slate-500 hover:bg-rose-50"><span class="text-xl">🆘</span> রক্তের অনুরোধ</button>
+      <button onclick="switchTab('donors'); closeSidebar();" id="tab-donors" class="w-full flex items-center gap-4 p-3 rounded-xl transition-all font-bold text-slate-500 hover:bg-rose-50"><span class="text-xl">👥</span> ডোনার লিস্ট</button>
+      <button onclick="switchTab('gallery'); closeSidebar();" id="tab-gallery" class="w-full flex items-center gap-4 p-3 rounded-xl transition-all font-bold text-slate-500 hover:bg-rose-50"><span class="text-xl">🖼️</span> গ্যালারি</button>
+      <button onclick="switchTab('notice'); closeSidebar();" id="tab-notice" class="w-full flex items-center gap-4 p-3 rounded-xl transition-all font-bold text-slate-500 hover:bg-rose-50"><span class="text-xl">📢</span> নোটিশ বোর্ড</button>
+      <button onclick="switchTab('settings'); closeSidebar();" id="tab-settings" class="w-full flex items-center gap-4 p-3 rounded-xl transition-all font-bold text-slate-500 hover:bg-rose-50"><span class="text-xl">⚙️</span> সেটিংস</button>
     </nav>
     
-    <button onclick="logout()" class="mt-6 flex items-center gap-4 p-4 text-rose-500 font-bold hover:bg-rose-50 rounded-2xl transition-all"><span class="text-xl">🚪</span> লগআউট</button>
+    <button onclick="logout()" class="mt-6 mx-3 w-[calc(100%-24px)] flex items-center gap-4 p-3 text-rose-500 font-bold hover:bg-rose-50 rounded-xl transition-all"><span class="text-xl">🚪</span> লগআউট</button>
   </aside>
 
   <!-- MAIN CONTENT -->
-  <main class="flex-1 ml-72 p-8 bg-[#f8fafc]">
-    <div id="loadingOverlay" class="hidden fixed inset-0 bg-white/80 backdrop-blur-sm z-50 flex items-center justify-center"><div class="loading-spinner"></div></div>
+  <main class="pt-16 px-4 pb-24">
+    <div id="loadingOverlay" class="hidden fixed inset-0 bg-white/80 backdrop-blur-sm z-[150] flex items-center justify-center"><div class="loading-spinner"></div></div>
     
-    <!-- ========== ড্যাশবোর্ড সেকশন ========== -->
+    <!-- ড্যাশবোর্ড -->
     <div id="section-dash" class="animate-fade-in">
-      <div class="mb-8"><h2 class="text-3xl font-black text-slate-800">ড্যাশবোর্ড ওভারভিউ</h2><p class="text-slate-400">রিয়েল-টাইম পরিসংখ্যান ও গ্রুপ ভিত্তিক বিশ্লেষণ</p></div>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 card-hover">
-          <p class="text-slate-400 text-xs font-bold uppercase tracking-wider mb-1">মোট ডোনার</p>
-          <h3 class="text-4xl font-black text-slate-800" id="stat-total">--</h3>
+      <h2 class="text-xl sm:text-2xl font-black text-slate-800 mb-2">ড্যাশবোর্ড ওভারভিউ</h2>
+      <p class="text-slate-400 text-sm mb-6">রিয়েল-টাইম পরিসংখ্যান</p>
+      <div class="grid grid-cols-3 gap-3 sm:gap-6 mb-8">
+        <div class="bg-white p-3 sm:p-5 rounded-xl shadow-sm border border-slate-100">
+          <p class="text-slate-400 text-[10px] sm:text-xs font-bold uppercase tracking-wider mb-1">মোট ডোনার</p>
+          <h3 class="text-2xl sm:text-3xl font-black text-slate-800" id="stat-total">--</h3>
         </div>
-        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 card-hover">
-          <p class="text-slate-400 text-xs font-bold uppercase tracking-wider mb-1">পেন্ডিং রিকোয়েস্ট</p>
-          <h3 class="text-4xl font-black text-slate-800" id="stat-pending">--</h3>
+        <div class="bg-white p-3 sm:p-5 rounded-xl shadow-sm border border-slate-100">
+          <p class="text-slate-400 text-[10px] sm:text-xs font-bold uppercase tracking-wider mb-1">পেন্ডিং</p>
+          <h3 class="text-2xl sm:text-3xl font-black text-slate-800" id="stat-pending">--</h3>
         </div>
-        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 card-hover">
-          <p class="text-slate-400 text-xs font-bold uppercase tracking-wider mb-1">মোট রিকোয়েস্ট</p>
-          <h3 class="text-4xl font-black text-slate-800" id="stat-total-requests">--</h3>
+        <div class="bg-white p-3 sm:p-5 rounded-xl shadow-sm border border-slate-100">
+          <p class="text-slate-400 text-[10px] sm:text-xs font-bold uppercase tracking-wider mb-1">মোট রিকোয়েস্ট</p>
+          <h3 class="text-2xl sm:text-3xl font-black text-slate-800" id="stat-total-requests">--</h3>
         </div>
       </div>
-      <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 max-w-3xl">
-        <h4 class="font-bold text-slate-800 mb-6 flex items-center gap-2"><span class="w-2 h-6 bg-rose-600 rounded-full"></span> ব্লাড গ্রুপ অনুযায়ী ডোনার সংখ্যা</h4>
-        <canvas id="bloodChart" height="140"></canvas>
+      <div class="bg-white p-4 sm:p-6 rounded-2xl shadow-sm border border-slate-100">
+        <h4 class="font-bold text-slate-800 mb-4 text-sm">ব্লাড গ্রুপ অনুযায়ী ডোনার সংখ্যা</h4>
+        <canvas id="bloodChart" height="120"></canvas>
       </div>
     </div>
 
-    <!-- ========== ১. রক্তের অনুরোধ (লাইভ গুগল শীট থেকে) ========== -->
+    <!-- রক্তের অনুরোধ -->
     <div id="section-requests" class="hidden animate-fade-in">
-      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
-        <h2 class="text-2xl font-black text-slate-800">🩸 রক্তের অনুরোধ লিস্ট</h2>
-        <button onclick="loadRequests()" class="px-5 py-2 bg-slate-100 rounded-xl text-sm font-bold hover:bg-slate-200 transition-all">🔄 রিফ্রেশ</button>
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl sm:text-2xl font-black text-slate-800">🩸 রক্তের অনুরোধ</h2>
+        <button onclick="loadRequests()" class="px-3 py-2 bg-slate-100 rounded-xl text-xs font-bold touch-btn">🔄 রিফ্রেশ</button>
       </div>
-      <div class="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-x-auto">
-        <table class="w-full text-left">
+      <div class="table-wrapper bg-white rounded-2xl shadow-sm border border-slate-100">
+        <table class="w-full text-left text-sm">
           <thead class="bg-slate-50">
-            <tr class="text-slate-500 text-xs font-bold uppercase tracking-wider">
-              <th class="p-5">রোগীর নাম</th><th class="p-5">ব্লাড গ্রুপ</th><th class="p-5">এলাকা</th><th class="p-5">মোবাইল</th><th class="p-5">স্ট্যাটাস</th><th class="p-5 text-center">অ্যাকশন</th>
+            <tr class="text-slate-500 text-[10px] font-bold uppercase">
+              <th class="p-3">রোগী</th><th class="p-3">গ্রুপ</th><th class="p-3 hidden sm:table-cell">এলাকা</th><th class="p-3">স্ট্যাটাস</th><th class="p-3 text-center">অ্যাকশন</th>
             </tr>
           </thead>
           <tbody id="requestsTable" class="divide-y divide-slate-50"></tbody>
@@ -134,17 +181,17 @@
       </div>
     </div>
 
-    <!-- ========== ২. ডোনার লিস্ট (আইডি সহ + লাইভ) ========== -->
+    <!-- ডোনার লিস্ট -->
     <div id="section-donors" class="hidden animate-fade-in">
-      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
-        <h2 class="text-2xl font-black text-slate-800">👥 ডোনার লিস্ট (আইডি সহ)</h2>
-        <input type="text" id="searchBox" onkeyup="searchDonorTable()" class="w-full md:w-80 px-5 py-3 bg-white border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-rose-400 text-sm" placeholder="নাম বা গ্রুপ বা এলাকা দিয়ে খুঁজুন..." autocomplete="off">
+      <div class="flex flex-col gap-3 mb-4">
+        <h2 class="text-xl sm:text-2xl font-black text-slate-800">👥 ডোনার লিস্ট</h2>
+        <input type="text" id="searchBox" onkeyup="searchDonorTable()" class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-rose-400 text-sm" placeholder="নাম বা গ্রুপ দিয়ে খুঁজুন..." autocomplete="off">
       </div>
-      <div class="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-x-auto">
-        <table class="w-full text-left" id="donorTable">
+      <div class="table-wrapper bg-white rounded-2xl shadow-sm border border-slate-100">
+        <table class="w-full text-left text-sm" id="donorTable">
           <thead class="bg-slate-50">
-            <tr class="text-slate-500 text-xs font-bold uppercase tracking-wider">
-              <th class="p-5">ডোনার আইডি</th><th class="p-5">নাম</th><th class="p-5">ব্লাড গ্রুপ</th><th class="p-5">এলাকা</th><th class="p-5">মোবাইল</th><th class="p-5 text-center">অ্যাকশন</th>
+            <tr class="text-slate-500 text-[10px] font-bold uppercase">
+              <th class="p-3">আইডি</th><th class="p-3">নাম</th><th class="p-3">গ্রুপ</th><th class="p-3 hidden sm:table-cell">এলাকা</th><th class="p-3 text-center">অ্যাকশন</th>
             </tr>
           </thead>
           <tbody id="donorTableBody" class="divide-y divide-slate-50"></tbody>
@@ -152,39 +199,47 @@
       </div>
     </div>
 
-    <!-- ========== ৩. গ্যালারি (লোকাল) ========== -->
+    <!-- গ্যালারি -->
     <div id="section-gallery" class="hidden animate-fade-in">
-      <h2 class="text-2xl font-black text-slate-800 mb-6">🖼️ গ্যালারি ম্যানেজমেন্ট</h2>
-      <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 mb-8 max-w-xl">
-        <div class="space-y-4">
-          <input type="text" id="eventTitle" placeholder="ইভেন্টের নাম" class="w-full p-4 bg-slate-50 rounded-xl outline-none focus:ring-2 focus:ring-rose-400" autocomplete="off">
-          <input type="text" id="eventImgUrl" placeholder="ছবির URL (ইমেজ লিংক)" class="w-full p-4 bg-slate-50 rounded-xl outline-none focus:ring-2 focus:ring-rose-400" autocomplete="off">
-          <button onclick="addGalleryItem()" class="gradient-bg text-white w-full py-4 rounded-xl font-bold shadow-lg shadow-rose-100">➕ আপলোড করুন</button>
+      <h2 class="text-xl sm:text-2xl font-black text-slate-800 mb-4">🖼️ গ্যালারি</h2>
+      <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 mb-6">
+        <div class="space-y-3">
+          <input type="text" id="eventTitle" placeholder="ইভেন্টের নাম" class="w-full p-3 bg-slate-50 rounded-xl outline-none focus:ring-2 focus:ring-rose-400 text-sm" autocomplete="off">
+          <input type="text" id="eventImgUrl" placeholder="ছবির URL" class="w-full p-3 bg-slate-50 rounded-xl outline-none focus:ring-2 focus:ring-rose-400 text-sm" autocomplete="off">
+          <button onclick="addGalleryItem()" class="gradient-bg text-white w-full py-3 rounded-xl font-bold touch-btn">➕ আপলোড করুন</button>
         </div>
       </div>
-      <div id="galleryGrid" class="grid grid-cols-2 md:grid-cols-4 gap-6"></div>
+      <div id="galleryGrid" class="grid grid-cols-2 gap-3"></div>
     </div>
 
-    <!-- ========== ৪. নোটিশ বোর্ড (লোকাল) ========== -->
+    <!-- নোটিশ বোর্ড -->
     <div id="section-notice" class="hidden animate-fade-in">
-      <h2 class="text-2xl font-black text-slate-800 mb-6">📢 নোটিশ বোর্ড</h2>
-      <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 mb-8 max-w-xl flex gap-4">
-        <input type="text" id="newNotice" placeholder="জরুরি নোটিশ লিখুন..." class="flex-1 p-4 bg-slate-50 rounded-xl outline-none focus:ring-2 focus:ring-rose-400" autocomplete="off">
-        <button onclick="addNotice()" class="gradient-bg text-white px-8 rounded-xl font-bold">প্রকাশ</button>
+      <h2 class="text-xl sm:text-2xl font-black text-slate-800 mb-4">📢 নোটিশ বোর্ড</h2>
+      <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 mb-6 flex gap-3">
+        <input type="text" id="newNotice" placeholder="জরুরি নোটিশ লিখুন..." class="flex-1 p-3 bg-slate-50 rounded-xl outline-none focus:ring-2 focus:ring-rose-400 text-sm" autocomplete="off">
+        <button onclick="addNotice()" class="gradient-bg text-white px-5 rounded-xl font-bold touch-btn">প্রকাশ</button>
       </div>
-      <div id="noticeList" class="space-y-4 max-w-2xl"></div>
+      <div id="noticeList" class="space-y-3"></div>
     </div>
 
-    <!-- ========== ৫. সেটিংস (লোকাল) ========== -->
+    <!-- সেটিংস -->
     <div id="section-settings" class="hidden animate-fade-in">
-      <h2 class="text-2xl font-black text-slate-800 mb-6">⚙️ সিস্টেম সেটিংস</h2>
-      <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 max-w-lg space-y-6">
-        <div><label class="font-bold text-slate-500 text-xs uppercase ml-2">অ্যাডমিন পাসওয়ার্ড পরিবর্তন</label><input type="password" id="newPass" class="w-full p-4 bg-slate-50 rounded-xl outline-none mt-2" placeholder="নতুন পাসওয়ার্ড দিন" autocomplete="new-password"></div>
-        <div><label class="font-bold text-slate-500 text-xs uppercase ml-2">জরুরি কন্টাক্ট নম্বর</label><input type="text" id="emergencyContact" class="w-full p-4 bg-slate-50 rounded-xl outline-none mt-2" placeholder="০১৮XXXXXXXX" autocomplete="off"></div>
-        <button onclick="saveSettings()" class="gradient-bg text-white w-full py-4 rounded-xl font-bold shadow-lg shadow-rose-100">সংরক্ষণ করুন</button>
+      <h2 class="text-xl sm:text-2xl font-black text-slate-800 mb-4">⚙️ সেটিংস</h2>
+      <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 space-y-5">
+        <div><label class="font-bold text-slate-500 text-xs uppercase">অ্যাডমিন পাসওয়ার্ড</label><input type="password" id="newPass" class="w-full p-3 bg-slate-50 rounded-xl outline-none mt-1" placeholder="নতুন পাসওয়ার্ড" autocomplete="new-password"></div>
+        <div><label class="font-bold text-slate-500 text-xs uppercase">জরুরি কন্টাক্ট নম্বর</label><input type="text" id="emergencyContact" class="w-full p-3 bg-slate-50 rounded-xl outline-none mt-1" placeholder="০১৮XXXXXXXX" autocomplete="off"></div>
+        <button onclick="saveSettings()" class="gradient-bg text-white w-full py-3 rounded-xl font-bold touch-btn">সংরক্ষণ করুন</button>
       </div>
     </div>
 
+    <!-- মোবাইল নিচের নেভিগেশন বার -->
+    <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-100 px-3 py-2 flex justify-around items-center z-50 shadow-lg">
+      <button onclick="switchTab('dash')" id="nav-dash" class="flex flex-col items-center gap-1 p-2 rounded-xl active-nav"><span class="text-xl">📊</span><span class="text-[9px] font-bold">ড্যাশ</span></button>
+      <button onclick="switchTab('requests')" id="nav-requests" class="flex flex-col items-center gap-1 p-2 rounded-xl"><span class="text-xl">🆘</span><span class="text-[9px] font-bold">রিকোয়েস্ট</span></button>
+      <button onclick="switchTab('donors')" id="nav-donors" class="flex flex-col items-center gap-1 p-2 rounded-xl"><span class="text-xl">👥</span><span class="text-[9px] font-bold">ডোনার</span></button>
+      <button onclick="switchTab('gallery')" id="nav-gallery" class="flex flex-col items-center gap-1 p-2 rounded-xl"><span class="text-xl">🖼️</span><span class="text-[9px] font-bold">গ্যালারি</span></button>
+      <button onclick="switchTab('notice')" id="nav-notice" class="flex flex-col items-center gap-1 p-2 rounded-xl"><span class="text-xl">📢</span><span class="text-[9px] font-bold">নোটিশ</span></button>
+    </div>
   </main>
 </div>
 
@@ -193,10 +248,13 @@
   let currentDonors = [];
   let currentRequests = [];
 
-  // ==================== সেশন চেক (রিফ্রেশ করলেও লগইন থাকবে) ====================
+  // সাইডবার ফাংশন
+  function toggleSidebar() { document.getElementById('mobileSidebar').classList.add('open'); document.getElementById('sidebarOverlay').classList.add('active'); }
+  function closeSidebar() { document.getElementById('mobileSidebar').classList.remove('open'); document.getElementById('sidebarOverlay').classList.remove('active'); }
+
+  // সেশন চেক
   function checkSession() {
-    const isLoggedIn = sessionStorage.getItem(SESSION_KEY);
-    if(isLoggedIn === 'true') {
+    if(sessionStorage.getItem(SESSION_KEY) === 'true') {
       document.getElementById('loginOverlay').style.display = 'none';
       document.getElementById('adminLayout').classList.remove('hidden');
       loadAllData();
@@ -204,141 +262,66 @@
     }
   }
 
-  // ==================== লগইন ফাংশন ====================
   async function handleLogin() {
     const u = document.getElementById('userInput').value;
     const p = document.getElementById('passInput').value;
-    const btn = document.getElementById('loginBtn');
-    
-    // সেটিংস থেকে সেভ করা পাসওয়ার্ড চেক
     const settings = getLocalSettings();
     const savedPass = settings.adminPass || 'admin123';
     
     if((u === 'admin' && p === 'admin123') || (u === 'admin' && p === savedPass)) {
-      // সেশন স্টোরেজে লগইন সেভ করি
       sessionStorage.setItem(SESSION_KEY, 'true');
-      
       document.getElementById('loginOverlay').style.opacity = '0';
       setTimeout(() => {
         document.getElementById('loginOverlay').style.display = 'none';
         document.getElementById('adminLayout').classList.remove('hidden');
         loadAllData();
         switchTab('dash');
-      }, 400);
-    } else {
-      alert("ভুল ইউজারনেম বা পাসওয়ার্ড! ডিফল্ট: admin / admin123");
-    }
-    btn.innerText = "লগইন করুন";
+      }, 300);
+    } else alert("ভুল ইউজারনেম বা পাসওয়ার্ড!");
   }
 
   function logout() {
-    // সেশন ক্লিয়ার করি
     sessionStorage.removeItem(SESSION_KEY);
-    
     document.getElementById('loginOverlay').style.display = 'flex';
     document.getElementById('loginOverlay').style.opacity = '1';
     document.getElementById('adminLayout').classList.add('hidden');
-    
-    // ইনপুট ফিল্ড ক্লিয়ার করি
-    document.getElementById('userInput').value = 'admin';
-    document.getElementById('passInput').value = '';
+    closeSidebar();
   }
 
-  // ==================== গুগল শীট থেকে ডাটা লোড ====================
   async function loadDonorsFromSheet() {
-    try {
-      const response = await fetch(`${SCRIPT_URL}?sheet=Donors`);
-      const data = await response.json();
-      currentDonors = data;
-      return data;
-    } catch(e) {
-      console.error("Donors load error:", e);
-      return [];
-    }
+    try { const res = await fetch(`${SCRIPT_URL}?sheet=Donors`); currentDonors = await res.json(); return currentDonors; } catch(e) { return []; }
   }
-
   async function loadRequestsFromSheet() {
-    try {
-      const response = await fetch(`${SCRIPT_URL}?sheet=Requests`);
-      const data = await response.json();
-      currentRequests = data;
-      return data;
-    } catch(e) {
-      console.error("Requests load error:", e);
-      return [];
-    }
+    try { const res = await fetch(`${SCRIPT_URL}?sheet=Requests`); currentRequests = await res.json(); return currentRequests; } catch(e) { return []; }
   }
 
   async function loadAllData() {
     toggleLoading(true);
     await loadDonorsFromSheet();
     await loadRequestsFromSheet();
-    updateDashboardStats();
+    document.getElementById('stat-total').innerText = currentDonors.length;
+    document.getElementById('stat-pending').innerText = currentRequests.filter(r => (r[4] === 'Pending')).length;
+    document.getElementById('stat-total-requests').innerText = currentRequests.length;
     renderChart();
     renderDonorsTable();
     renderRequestsTable();
     toggleLoading(false);
   }
 
-  // ড্যাশবোর্ড স্ট্যাটস আপডেট
-  function updateDashboardStats() {
-    document.getElementById('stat-total').innerText = currentDonors.length;
-    const pendingCount = currentRequests.filter(r => (r[4] === 'Pending' || r.Status === 'Pending')).length;
-    document.getElementById('stat-pending').innerText = pendingCount;
-    document.getElementById('stat-total-requests').innerText = currentRequests.length;
-  }
-
-  // গ্রুপ ভিত্তিক চার্ট রেন্ডার
   function renderChart() {
-    const groups = {"A+":0, "A-":0, "B+":0, "B-":0, "O+":0, "O-":0, "AB+":0, "AB-":0};
-    currentDonors.forEach(d => {
-      let group = d[1] || d.BloodGroup;
-      if(groups[group] !== undefined) groups[group]++;
-    });
-    
+    const groups = {"A+":0,"A-":0,"B+":0,"B-":0,"O+":0,"O-":0,"AB+":0,"AB-":0};
+    currentDonors.forEach(d => { let g = d[1] || d.BloodGroup; if(groups[g]!==undefined) groups[g]++; });
     const ctx = document.getElementById('bloodChart').getContext('2d');
     if(bloodChart) bloodChart.destroy();
-    bloodChart = new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: Object.keys(groups),
-        datasets: [{ label: 'ডোনার সংখ্যা', data: Object.values(groups), backgroundColor: '#e11d48', borderRadius: 8, barPercentage: 0.65 }]
-      },
-      options: { 
-        responsive: true, 
-        maintainAspectRatio: true,
-        plugins: { legend: { display: false } },
-        scales: { y: { beginAtZero: true, grid: { display: false }, border: { display: false } }, x: { grid: { display: false } } }
-      }
-    });
+    bloodChart = new Chart(ctx, { type: 'bar', data: { labels: Object.keys(groups), datasets: [{ label: 'ডোনার', data: Object.values(groups), backgroundColor: '#e11d48', borderRadius: 6 }] }, options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { display: false } }, x: { grid: { display: false } } } } });
   }
 
-  // ==================== ডোনার লিস্ট (আইডি সহ) ====================
   function renderDonorsTable() {
     const tbody = document.getElementById('donorTableBody');
-    if(!currentDonors.length) {
-      tbody.innerHTML = '<tr><td colspan="6" class="text-center p-8 text-slate-400">কোনো ডোনার পাওয়া যায়নি</td></tr>';
-      return;
-    }
-    
+    if(!currentDonors.length) { tbody.innerHTML = '<tr><td colspan="5" class="text-center p-6 text-slate-400">কোনো ডোনার নেই</td></tr>'; return; }
     let html = '';
     currentDonors.forEach(d => {
-      const donorId = d[5] || d.ID || `DON-${Math.floor(Math.random()*10000)}`;
-      const name = d[0] || d.Name || 'N/A';
-      const bloodGroup = d[1] || d.BloodGroup || 'N/A';
-      const area = d[2] || d.Area || 'N/A';
-      const phone = d[3] || d.Phone || 'N/A';
-      
-      html += `
-        <tr class="hover:bg-rose-50/30 transition-all">
-          <td class="p-5 font-mono text-xs font-bold text-slate-500">${donorId}</td>
-          <td class="p-5 font-bold text-slate-800">${name}</td>
-          <td class="p-5"><span class="bg-rose-100 text-rose-600 px-3 py-1 rounded-full font-bold text-xs">${bloodGroup}</span></td>
-          <td class="p-5 text-slate-500">${area}</td>
-          <td class="p-5 font-mono text-sm">${phone}</td>
-          <td class="p-5 text-center"><button onclick="deleteDonor('${donorId}')" class="text-rose-500 hover:text-rose-700 font-bold text-sm px-4 py-2 rounded-xl hover:bg-rose-50 transition-all">🗑️ ডিলিট</button></td>
-        </tr>
-      `;
+      html += `<tr class="hover:bg-rose-50/30"><td class="p-3 font-mono text-[10px] text-slate-500">${d[5] || 'N/A'}</td><td class="p-3 font-bold text-slate-800">${d[0] || 'N/A'}</td><td class="p-3"><span class="bg-rose-100 text-rose-600 px-2 py-1 rounded-full font-bold text-[10px]">${d[1] || 'N/A'}</span></td><td class="p-3 hidden sm:table-cell text-slate-500">${d[2] || 'N/A'}</td><td class="p-3 text-center"><button onclick="deleteDonor('${d[5]}')" class="text-rose-500 text-sm px-2 py-1 rounded-lg">🗑️</button></td></tr>`;
     });
     tbody.innerHTML = html;
   }
@@ -346,93 +329,26 @@
   function searchDonorTable() {
     const input = document.getElementById('searchBox').value.toUpperCase();
     const rows = document.getElementById('donorTableBody').getElementsByTagName('tr');
-    for(let i = 0; i < rows.length; i++) {
-      const text = rows[i].innerText.toUpperCase();
-      rows[i].style.display = text.indexOf(input) > -1 ? '' : 'none';
-    }
+    for(let i=0; i<rows.length; i++) rows[i].style.display = rows[i].innerText.toUpperCase().indexOf(input) > -1 ? '' : 'none';
   }
 
-  async function deleteDonor(id) {
-    if(!confirm('আপনি কি এই ডোনারকে ডিলিট করতে চান?')) return;
-    toggleLoading(true);
-    try {
-      await fetch(`${SCRIPT_URL}?action=deleteDonor&id=${id}`, { method: 'POST' });
-      await loadDonorsFromSheet();
-      renderDonorsTable();
-      renderChart();
-      updateDashboardStats();
-      alert('ডোনার ডিলিট করা হয়েছে');
-    } catch(e) { alert('ডিলিট করতে ব্যর্থ হয়েছে'); }
-    toggleLoading(false);
-  }
-
-  // ==================== রক্তের অনুরোধ (লাইভ) ====================
   function renderRequestsTable() {
     const tbody = document.getElementById('requestsTable');
-    if(!currentRequests.length) {
-      tbody.innerHTML = '<tr><td colspan="6" class="text-center p-8 text-slate-400">কোনো রক্তের অনুরোধ নেই</td></tr>';
-      return;
-    }
-    
+    if(!currentRequests.length) { tbody.innerHTML = '<tr><td colspan="5" class="text-center p-6 text-slate-400">কোনো অনুরোধ নেই</td></tr>'; return; }
     let html = '';
     currentRequests.forEach(r => {
-      const patient = r[0] || r.PatientName || 'N/A';
-      const bloodGroup = r[1] || r.BloodGroup || 'N/A';
-      const area = r[2] || r.Area || 'N/A';
-      const phone = r[3] || r.Phone || 'N/A';
-      const status = r[4] || r.Status || 'Pending';
-      const reqId = r[5] || r.ID || Date.now();
-      
-      html += `
-        <tr class="hover:bg-rose-50/30 transition-all">
-          <td class="p-5 font-bold text-slate-800">${patient}</td>
-          <td class="p-5"><span class="bg-rose-100 text-rose-600 px-3 py-1 rounded-full font-bold text-xs">${bloodGroup}</span></td>
-          <td class="p-5 text-slate-500">${area}</td>
-          <td class="p-5 font-mono text-sm">${phone}</td>
-          <td class="p-5"><span class="${status === 'Pending' ? 'status-pending' : 'status-fulfilled'}">${status}</span></td>
-          <td class="p-5 text-center">
-            <button onclick="updateRequestStatus('${reqId}')" class="bg-green-500 text-white px-3 py-1 rounded-lg text-xs font-bold mr-2 hover:bg-green-600">✓ সম্পন্ন</button>
-            <button onclick="deleteRequest('${reqId}')" class="text-rose-500 hover:text-rose-700 font-bold text-sm">🗑️</button>
-          </td>
-        </tr>
-      `;
+      html += `<tr class="hover:bg-rose-50/30"><td class="p-3 font-bold text-slate-800 text-sm">${r[0] || 'N/A'}</td><td class="p-3"><span class="bg-rose-100 text-rose-600 px-2 py-1 rounded-full font-bold text-[10px]">${r[1] || 'N/A'}</span></td><td class="p-3 hidden sm:table-cell text-slate-500 text-xs">${r[2] || 'N/A'}</td><td class="p-3"><span class="${(r[4]||'Pending')==='Pending'?'status-pending':'status-fulfilled'}">${r[4]||'Pending'}</span></td><td class="p-3 text-center"><button onclick="updateRequestStatus('${r[5]}')" class="bg-green-500 text-white px-2 py-1 rounded-lg text-[10px] mr-1">✓</button><button onclick="deleteRequest('${r[5]}')" class="text-rose-500 text-sm px-1">🗑️</button></td></tr>`;
     });
     tbody.innerHTML = html;
   }
 
-  async function updateRequestStatus(id) {
-    toggleLoading(true);
-    try {
-      await fetch(`${SCRIPT_URL}?action=updateRequest&id=${id}&status=Fulfilled`, { method: 'POST' });
-      await loadRequestsFromSheet();
-      renderRequestsTable();
-      updateDashboardStats();
-      alert('স্ট্যাটাস আপডেট করা হয়েছে');
-    } catch(e) { alert('আপডেট করতে ব্যর্থ হয়েছে'); }
-    toggleLoading(false);
-  }
+  async function deleteDonor(id) { if(confirm('ডিলিট করবেন?')) { toggleLoading(true); await fetch(`${SCRIPT_URL}?action=deleteDonor&id=${id}`,{method:'POST'}); await loadAllData(); toggleLoading(false); } }
+  async function updateRequestStatus(id) { toggleLoading(true); await fetch(`${SCRIPT_URL}?action=updateRequest&id=${id}&status=Fulfilled`,{method:'POST'}); await loadRequestsFromSheet(); renderRequestsTable(); updateDashboardStats(); toggleLoading(false); }
+  async function deleteRequest(id) { if(confirm('ডিলিট করবেন?')) { toggleLoading(true); await fetch(`${SCRIPT_URL}?action=deleteRequest&id=${id}`,{method:'POST'}); await loadAllData(); toggleLoading(false); } }
+  async function loadRequests() { toggleLoading(true); await loadRequestsFromSheet(); renderRequestsTable(); toggleLoading(false); }
+  function updateDashboardStats() { document.getElementById('stat-pending').innerText = currentRequests.filter(r => (r[4] === 'Pending')).length; document.getElementById('stat-total-requests').innerText = currentRequests.length; }
 
-  async function deleteRequest(id) {
-    if(!confirm('অনুরোধটি ডিলিট করবেন?')) return;
-    toggleLoading(true);
-    try {
-      await fetch(`${SCRIPT_URL}?action=deleteRequest&id=${id}`, { method: 'POST' });
-      await loadRequestsFromSheet();
-      renderRequestsTable();
-      updateDashboardStats();
-      alert('অনুরোধ ডিলিট করা হয়েছে');
-    } catch(e) { alert('ডিলিট করতে ব্যর্থ হয়েছে'); }
-    toggleLoading(false);
-  }
-
-  async function loadRequests() {
-    toggleLoading(true);
-    await loadRequestsFromSheet();
-    renderRequestsTable();
-    toggleLoading(false);
-  }
-
-  // ==================== লোকাল স্টোরেজ ফাংশন (গ্যালারি, নোটিশ, সেটিংস) ====================
+  // লোকাল স্টোরেজ ফাংশন
   function getLocalGallery() { return JSON.parse(localStorage.getItem(LOCAL_KEYS.GALLERY) || '[]'); }
   function saveLocalGallery(data) { localStorage.setItem(LOCAL_KEYS.GALLERY, JSON.stringify(data)); }
   function getLocalNotices() { return JSON.parse(localStorage.getItem(LOCAL_KEYS.NOTICES) || '[]'); }
@@ -440,126 +356,56 @@
   function getLocalSettings() { return JSON.parse(localStorage.getItem(LOCAL_KEYS.SETTINGS) || '{"adminPass":"admin123","emergencyContact":"01871536468"}'); }
   function saveLocalSettings(data) { localStorage.setItem(LOCAL_KEYS.SETTINGS, JSON.stringify(data)); }
 
-  // গ্যালারি
   function loadGallery() {
     const gallery = getLocalGallery();
     const container = document.getElementById('galleryGrid');
-    if(!gallery.length) { container.innerHTML = '<p class="text-slate-400 text-center col-span-4">কোনো ছবি নেই</p>'; return; }
-    container.innerHTML = gallery.map((item, idx) => `
-      <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-100">
-        <img src="${item.img}" class="h-40 w-full object-cover" onerror="this.src='https://via.placeholder.com/300'">
-        <div class="p-3"><h4 class="font-bold text-sm">${item.title}</h4><p class="text-[10px] text-slate-400">${item.date || ''}</p><button onclick="deleteGalleryItem(${idx})" class="text-rose-500 text-xs mt-2 font-bold">ডিলিট</button></div>
-      </div>
-    `).join('');
+    if(!gallery.length) { container.innerHTML = '<p class="text-slate-400 text-center col-span-2">কোনো ছবি নেই</p>'; return; }
+    container.innerHTML = gallery.map((item, idx) => `<div class="bg-white rounded-xl overflow-hidden shadow-sm border"><img src="${item.img}" class="h-28 w-full object-cover" onerror="this.src='https://via.placeholder.com/200'"><div class="p-2"><h4 class="font-bold text-xs">${item.title.substring(0,20)}</h4><button onclick="deleteGalleryItem(${idx})" class="text-rose-500 text-[10px] mt-1 font-bold">ডিলিট</button></div></div>`).join('');
   }
 
   function addGalleryItem() {
-    const title = document.getElementById('eventTitle').value;
-    const img = document.getElementById('eventImgUrl').value;
+    const title = document.getElementById('eventTitle').value, img = document.getElementById('eventImgUrl').value;
     if(!title || !img) { alert('শিরোনাম এবং ছবির URL দিন'); return; }
     const gallery = getLocalGallery();
     gallery.push({ title, img, date: new Date().toLocaleString() });
     saveLocalGallery(gallery);
     loadGallery();
-    document.getElementById('eventTitle').value = '';
-    document.getElementById('eventImgUrl').value = '';
+    document.getElementById('eventTitle').value = ''; document.getElementById('eventImgUrl').value = '';
     alert('গ্যালারিতে যোগ করা হয়েছে');
   }
+  function deleteGalleryItem(idx) { if(confirm('ডিলিট করবেন?')) { const gallery = getLocalGallery(); gallery.splice(idx,1); saveLocalGallery(gallery); loadGallery(); } }
 
-  function deleteGalleryItem(idx) {
-    if(confirm('ডিলিট করবেন?')) {
-      const gallery = getLocalGallery();
-      gallery.splice(idx, 1);
-      saveLocalGallery(gallery);
-      loadGallery();
-    }
-  }
-
-  // নোটিশ
   function loadNotices() {
     const notices = getLocalNotices();
     const container = document.getElementById('noticeList');
     if(!notices.length) { container.innerHTML = '<p class="text-slate-400 text-center">কোনো নোটিশ নেই</p>'; return; }
-    container.innerHTML = notices.map((n, idx) => `
-      <div class="bg-amber-50 p-4 rounded-2xl border-l-4 border-rose-500 flex justify-between items-center">
-        <div><p class="font-bold text-sm">📢 ${n.text}</p><span class="text-[10px] text-slate-400">${n.date}</span></div>
-        <button onclick="deleteNotice(${idx})" class="text-rose-500 text-sm font-bold">🗑️</button>
-      </div>
-    `).join('');
+    container.innerHTML = notices.map((n, idx) => `<div class="bg-amber-50 p-3 rounded-xl border-l-4 border-rose-500 flex justify-between items-center"><div><p class="font-bold text-sm">📢 ${n.text}</p><span class="text-[9px] text-slate-400">${n.date}</span></div><button onclick="deleteNotice(${idx})" class="text-rose-500 text-sm">🗑️</button></div>`).join('');
   }
+  function addNotice() { const text = document.getElementById('newNotice').value; if(!text) { alert('নোটিশ লিখুন'); return; } const notices = getLocalNotices(); notices.unshift({ text, date: new Date().toLocaleString() }); saveLocalNotices(notices); loadNotices(); document.getElementById('newNotice').value = ''; }
+  function deleteNotice(idx) { const notices = getLocalNotices(); notices.splice(idx,1); saveLocalNotices(notices); loadNotices(); }
 
-  function addNotice() {
-    const text = document.getElementById('newNotice').value;
-    if(!text) { alert('নোটিশ লিখুন'); return; }
-    const notices = getLocalNotices();
-    notices.unshift({ text, date: new Date().toLocaleString() });
-    saveLocalNotices(notices);
-    loadNotices();
-    document.getElementById('newNotice').value = '';
-  }
+  function loadSettingsUI() { const settings = getLocalSettings(); document.getElementById('newPass').value = settings.adminPass || ''; document.getElementById('emergencyContact').value = settings.emergencyContact || ''; }
+  function saveSettings() { const settings = { adminPass: document.getElementById('newPass').value || 'admin123', emergencyContact: document.getElementById('emergencyContact').value || '01871536468' }; saveLocalSettings(settings); alert('সেটিংস সেভ হয়েছে!'); }
 
-  function deleteNotice(idx) {
-    const notices = getLocalNotices();
-    notices.splice(idx, 1);
-    saveLocalNotices(notices);
-    loadNotices();
-  }
-
-  // সেটিংস
-  function loadSettingsUI() {
-    const settings = getLocalSettings();
-    document.getElementById('newPass').value = settings.adminPass || '';
-    document.getElementById('emergencyContact').value = settings.emergencyContact || '';
-  }
-
-  function saveSettings() {
-    const settings = {
-      adminPass: document.getElementById('newPass').value || 'admin123',
-      emergencyContact: document.getElementById('emergencyContact').value || '01871536468'
-    };
-    saveLocalSettings(settings);
-    alert('সেটিংস সেভ হয়েছে!');
-  }
-
-  // ==================== ট্যাব সুইচ ====================
   function switchTab(tab) {
     const sections = ['dash', 'requests', 'donors', 'gallery', 'notice', 'settings'];
-    sections.forEach(s => {
-      document.getElementById(`section-${s}`).classList.add('hidden');
-      document.getElementById(`tab-${s}`).classList.remove('sidebar-active');
-    });
+    sections.forEach(s => { document.getElementById(`section-${s}`).classList.add('hidden'); document.getElementById(`tab-${s}`).classList.remove('sidebar-active'); });
     document.getElementById(`section-${tab}`).classList.remove('hidden');
     document.getElementById(`tab-${tab}`).classList.add('sidebar-active');
-    
     if(tab === 'gallery') loadGallery();
     if(tab === 'notice') loadNotices();
     if(tab === 'settings') loadSettingsUI();
     if(tab === 'requests') loadRequests();
   }
 
-  function toggleLoading(show) {
-    const el = document.getElementById('loadingOverlay');
-    if(show) el.classList.remove('hidden');
-    else el.classList.add('hidden');
-  }
+  function toggleLoading(show) { const el = document.getElementById('loadingOverlay'); if(show) el.classList.remove('hidden'); else el.classList.add('hidden'); }
 
-  // পেজ লোড হলে সেশন চেক করি
   checkSession();
-
-  // উইন্ডো ফাংশন এক্সপোজ
-  window.handleLogin = handleLogin;
-  window.logout = logout;
-  window.switchTab = switchTab;
-  window.deleteDonor = deleteDonor;
-  window.searchDonorTable = searchDonorTable;
-  window.updateRequestStatus = updateRequestStatus;
-  window.deleteRequest = deleteRequest;
-  window.loadRequests = loadRequests;
-  window.addGalleryItem = addGalleryItem;
-  window.deleteGalleryItem = deleteGalleryItem;
-  window.addNotice = addNotice;
-  window.deleteNotice = deleteNotice;
-  window.saveSettings = saveSettings;
+  window.handleLogin = handleLogin; window.logout = logout; window.switchTab = switchTab; window.deleteDonor = deleteDonor;
+  window.searchDonorTable = searchDonorTable; window.updateRequestStatus = updateRequestStatus; window.deleteRequest = deleteRequest;
+  window.loadRequests = loadRequests; window.addGalleryItem = addGalleryItem; window.deleteGalleryItem = deleteGalleryItem;
+  window.addNotice = addNotice; window.deleteNotice = deleteNotice; window.saveSettings = saveSettings;
+  window.toggleSidebar = toggleSidebar; window.closeSidebar = closeSidebar;
 </script>
 </body>
 </html>
