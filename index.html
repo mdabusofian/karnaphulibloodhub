@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#e11d2e">
+<title>কর্ণফুলী ব্লাড হাব</title>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--r:#e11d2e;--r2:#ff5a64;--ink:#1f1f23;--mut:#6b6b76;--bg:#fff5f6;--ln:#fde1e4;--g:linear-gradient(135deg,#ff5a64,#e11d2e)}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:'Hind Siliguri',system-ui,sans-serif;background:var(--bg);color:var(--ink);padding-bottom:calc(86px + env(safe-area-inset-bottom,0px));line-height:1.5}
+a{color:inherit;text-decoration:none}button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
+.w{max-width:480px;margin:0 auto;padding:0 16px}
+svg.i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+:focus-visible{outline:3px solid #1f1f23;outline-offset:2px}
+#sp{position:fixed;inset:0;z-index:99;background:var(--g);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;transition:opacity .6s}
+#sp h2{font-size:34px}#sp p{opacity:.9}#sp svg{width:84px;height:84px;animation:bt 1.2s ease-in-out infinite}
+@keyframes bt{0%,100%{transform:scale(1)}20%{transform:scale(1.12)}40%{transform:scale(1)}}
+header{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.9);backdrop-filter:blur(16px);border-bottom:1px solid var(--ln);padding-top:env(safe-area-inset-top,0px)}
+header .w{display:flex;align-items:center;justify-content:space-between;height:60px}
+.lg{display:flex;align-items:center;gap:10px;font-weight:700;font-size:19px}
+.lg b{width:38px;height:38px;border-radius:12px;background:var(--g);color:#fff;display:flex;align-items:center;justify-content:center}.lg span{color:var(--r)}
+.ib{width:42px;height:42px;border-radius:50%;background:#fff0f1;color:var(--r);display:flex;align-items:center;justify-content:center;position:relative}
+.ib i{position:absolute;top:9px;right:10px;width:9px;height:9px;border-radius:50%;background:var(--r);border:2px solid #fff}
+.hot{background:#1f1f23;color:#fff;font-size:14px}.hot .w{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-top:8px;padding-bottom:8px}
+.hot a{background:var(--r);border-radius:999px;padding:4px 14px;font-weight:700;display:flex;gap:6px;align-items:center}
+.hero{margin-top:16px;border-radius:28px;background:var(--g);color:#fff;padding:24px 22px;position:relative;overflow:hidden;box-shadow:0 22px 40px -20px rgba(225,29,46,.7)}
+.hero:before,.hero:after{content:"";position:absolute;border-radius:50%;border:2px solid rgba(255,255,255,.2)}
+.hero:before{width:260px;height:260px;right:-80px;top:-60px}.hero:after{width:400px;height:400px;right:-150px;top:-130px}
+.hero h1{font-size:32px;line-height:1.25;position:relative}.hero p{margin:8px 0 18px;opacity:.95;position:relative;max-width:78%}
+.hero .dr{position:absolute;right:20px;top:20px;width:88px;height:88px}
+.row{display:flex;gap:10px;position:relative}
+.bt{flex:1;border-radius:16px;padding:12px 10px;font-weight:700;text-align:center;display:flex;gap:6px;align-items:center;justify-content:center}
+.bw{background:#fff;color:var(--r)}.bo{border:2px solid #fff;color:#fff}
+h2.t{font-size:19px;margin:26px 0 12px;display:flex;justify-content:space-between;align-items:baseline}
+h2.t a{font-size:14px;color:var(--r);font-weight:600}
+.qa{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.qa a,.qa button{background:#fff;border:1px solid var(--ln);border-radius:20px;padding:12px 4px;display:flex;flex-direction:column;align-items:center;gap:6px;font-size:12.5px;font-weight:600;text-align:center;box-shadow:0 8px 18px -14px rgba(225,29,46,.6)}
+.qa b{width:44px;height:44px;border-radius:14px;background:#fff0f1;color:var(--r);display:flex;align-items:center;justify-content:center}
+.card{background:#fff;border:1px solid var(--ln);border-radius:24px;padding:18px;box-shadow:0 12px 28px -20px rgba(225,29,46,.55)}
+.gc{display:flex;gap:8px;flex-wrap:wrap}
+.gc button{min-width:56px;padding:8px 0;border-radius:14px;background:#fff0f1;color:var(--r);font-weight:700;border:2px solid transparent}
+.gc button.on{background:var(--r);color:#fff}
+input{width:100%;font:inherit;padding:13px 14px;border:2px solid var(--ln);border-radius:14px;background:#fffafa;margin-top:12px}
+.go{width:100%;margin-top:12px;background:var(--g);color:#fff;border-radius:14px;padding:13px;font-weight:700}
+.sc{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:2px 16px 12px;margin:0 -16px;scrollbar-width:none}.sc::-webkit-scrollbar{display:none}
+.rq{width:270px;flex:none;scroll-snap-align:start;background:#fff;border:1px solid var(--ln);border-radius:24px;padding:16px;box-shadow:0 12px 28px -20px rgba(225,29,46,.55)}
+.gb{display:inline-flex;align-items:center;justify-content:center;min-width:52px;height:40px;padding:0 12px;border-radius:14px;background:var(--g);color:#fff;font-weight:700;font-size:18px}
+.tag{font-size:12px;font-weight:700;color:var(--r);background:#fff0f1;border-radius:999px;padding:2px 10px}
+.rq h4{margin-top:10px;font-size:16px}.rq p{font-size:13px;color:var(--mut);display:flex;gap:5px;align-items:center}
+.rq .row{margin-top:12px}.rq .row a,.rq .row button{flex:1;border-radius:12px;padding:9px;font-size:13px;font-weight:700;text-align:center}
+.k{background:#1f1f23;color:#fff}.s{background:#fff0f1;color:var(--r)}
+.st{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.st div{border-radius:20px;padding:14px;color:#fff;background:var(--g)}.st div+div{background:#1f1f23}.st b{font-size:30px;display:block;line-height:1.1}
+.bar{display:flex;align-items:center;gap:10px;font-size:14px;margin:7px 0}.bar b{width:38px;color:var(--r)}.bar i{flex:1;height:10px;border-radius:6px;background:#fde1e4;overflow:hidden}.bar i u{display:block;height:100%;background:var(--g);border-radius:6px}.bar span{width:26px;text-align:right;color:var(--mut);font-size:13px}
+.dn{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--ln)}.dn:last-child{border:0}.dn div{flex:1;min-width:0}.dn h4{font-size:15px}.dn p{font-size:12.5px;color:var(--mut)}
+.cl{width:42px;height:42px;border-radius:50%;background:var(--r);color:#fff;display:flex;align-items:center;justify-content:center;flex:none}
+.cp{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 12px}.cp span{background:#fff0f1;color:var(--r);font-weight:700;border-radius:999px;padding:3px 12px;font-size:14px}.cp .a{background:var(--r);color:#fff}
+.lb{font-size:13.5px;font-weight:600;color:var(--mut)}.nt{font-size:12.5px;color:var(--mut);margin-top:6px}
+.pg{height:6px;border-radius:4px;background:#fde1e4;margin-bottom:14px;overflow:hidden}.pg i{display:block;height:100%;background:var(--g);transition:width .3s}
+.yn{display:flex;gap:10px;margin-top:12px}.yn button{flex:1;border-radius:14px;padding:12px;font-weight:700;background:#fff0f1;color:var(--r)}.yn button+button{background:var(--r);color:#fff}
+.q3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.q3 div{background:#fff;border:1px solid var(--ln);border-radius:20px;padding:14px 6px;text-align:center;font-size:13px;font-weight:600}.q3 b{display:flex;width:40px;height:40px;margin:0 auto 6px;border-radius:12px;background:#fff0f1;color:var(--r);align-items:center;justify-content:center}
+details{background:#fff;border:1px solid var(--ln);border-radius:18px;padding:14px 16px;margin-bottom:8px}summary{font-weight:600;cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:10px}summary::-webkit-details-marker{display:none}details p{margin-top:8px;font-size:14px;color:#444}
+.wn{background:#fff8e6;border:1px solid #fde4a0;border-radius:22px;padding:16px;display:flex;gap:12px;font-size:14px}.wn svg{color:#c27a00}
+.ph{display:grid;grid-template-columns:1fr 1fr;gap:10px}.ph a{background:#fff;border:1px solid var(--ln);border-radius:18px;padding:14px;display:flex;gap:10px;align-items:center;font-weight:600;font-size:14px}.ph a svg{color:var(--r)}
+.ap{margin-top:24px;border-radius:24px;background:#1f1f23;color:#fff;padding:18px;display:flex;align-items:center;gap:14px}.ap div{flex:1}.ap p{font-size:13px;opacity:.8}.ap a{background:var(--r);border-radius:14px;padding:10px 16px;font-weight:700}
+footer{text-align:center;color:var(--mut);font-size:13px;padding:26px 0 10px}footer a{color:var(--r);font-weight:600}
+nav{position:fixed;left:0;right:0;bottom:0;z-index:40;background:rgba(255,255,255,.95);backdrop-filter:blur(16px);border-top:1px solid var(--ln);padding-bottom:env(safe-area-inset-bottom,0px)}
+nav .w{display:flex;justify-content:space-around;align-items:center;height:68px}
+nav a,nav button{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11.5px;font-weight:600;color:var(--mut);min-width:60px}nav .on{color:var(--r)}
+nav .fab{width:58px;height:58px;border-radius:50%;background:var(--g);color:#fff;justify-content:center;margin-top:-26px;box-shadow:0 14px 26px -8px rgba(225,29,46,.7);border:4px solid #fff}
+#dw{position:fixed;inset:0;z-index:60;background:rgba(0,0,0,.45);opacity:0;pointer-events:none;transition:opacity .3s}
+#dw>div{position:absolute;left:0;right:0;bottom:0;max-width:480px;margin:0 auto;background:#fff;border-radius:28px 28px 0 0;padding:22px 20px calc(24px + env(safe-area-inset-bottom,0px));transform:translateY(100%);transition:transform .35s}
+.op #dw{opacity:1;pointer-events:auto}.op #dw>div{transform:none}
+#dw a{display:flex;align-items:center;gap:12px;padding:13px 4px;border-bottom:1px solid var(--ln);font-weight:600}#dw a svg{color:var(--r)}
+.em{color:var(--mut);font-size:14px;padding:6px 0}.sk{height:110px;border-radius:24px;background:linear-gradient(90deg,#fde1e4,#fff,#fde1e4);background-size:200% 100%;animation:sh 1.2s linear infinite}
+@keyframes sh{to{background-position:-200% 0}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="phone" viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.800 19.800 0 0 1-8.600-3.100 19.500 19.500 0 0 1-6-6A19.800 19.800 0 0 1 2.100 4.200 2 2 0 0 1 4.100 2h3a2 2 0 0 1 2 1.700c.1 1 .4 1.900.7 2.800a2 2 0 0 1-.5 2.100L8.100 9.900a16 16 0 0 0 6 6l1.300-1.300a2 2 0 0 1 2.100-.4c.9.3 1.800.6 2.800.7a2 2 0 0 1 1.700 2z"/></symbol>
+<symbol id="search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.300-4.300"/></symbol>
+<symbol id="bell" viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.700 21a2 2 0 0 1-3.400 0"/></symbol>
+<symbol id="drop" viewBox="0 0 24 24"><path d="M12 2.700S5 10 5 14.500a7 7 0 0 0 14 0C19 10 12 2.700 12 2.700z"/></symbol>
+<symbol id="home" viewBox="0 0 24 24"><path d="m3 11 9-8 9 8"/><path d="M5 10v10h14V10"/></symbol>
+<symbol id="users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.500"/><path d="M2.500 20a6.500 6.500 0 0 1 13 0"/><path d="M16 4.500a3.500 3.500 0 0 1 0 7M18 14.500a6.500 6.500 0 0 1 3.500 5.500"/></symbol>
+<symbol id="clip" viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4h6v3H9zM9 12h6M9 16h4"/></symbol>
+<symbol id="menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+<symbol id="plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+<symbol id="truck" viewBox="0 0 24 24"><path d="M2 6h11v10H2zM13 9h4l3 3v4h-7"/><circle cx="6.500" cy="17.500" r="1.800"/><circle cx="16.500" cy="17.500" r="1.800"/></symbol>
+<symbol id="shield" viewBox="0 0 24 24"><path d="M12 3 4 6v6c0 5 3.500 8 8 9 4.500-1 8-4 8-9V6z"/><path d="m9 12 2 2 4-4"/></symbol>
+<symbol id="chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+<symbol id="pin" viewBox="0 0 24 24"><path d="M12 21s7-6 7-11a7 7 0 0 0-14 0c0 5 7 11 7 11z"/><circle cx="12" cy="10" r="2.500"/></symbol>
+<symbol id="share" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.600 13.500 6.800 4M15.400 6.500l-6.800 4"/></symbol>
+<symbol id="bank" viewBox="0 0 24 24"><path d="M3 21h18M5 21V9l7-5 7 5v12"/><path d="M10 21v-6h4v6"/></symbol>
+<symbol id="act" viewBox="0 0 24 24"><path d="M3 12h4l3-8 4 16 3-8h4"/></symbol>
+<symbol id="warn" viewBox="0 0 24 24"><path d="M12 3 2 21h20z"/><path d="M12 10v5M12 18h.01"/></symbol>
+</defs></svg>
+
+<div id="sp"><svg class="i" style="fill:#fff;stroke:none"><use href="#drop"/></svg><h2>কর্ণফুলী ব্লাড হাব</h2><p>রক্তের বন্ধনে গড়ি সুন্দর পৃথিবী</p></div>
+
+<header><div class="w"><div class="lg"><b><svg class="i"><use href="#drop"/></svg></b><div>কর্ণফুলী <span>ব্লাড হাব</span></div></div><button class="ib" aria-label="নোটিফিকেশন"><svg class="i"><use href="#bell"/></svg><i></i></button></div></header>
+<div class="hot"><div class="w"><span>জরুরি রক্তের প্রয়োজনে কল করুন</span><a id="hotA" href="#"><svg class="i" style="width:16px;height:16px"><use href="#phone"/></svg><span id="hotN"></span></a></div></div>
+
+<main class="w">
+<section class="hero"><h1>রক্তদান করুন,<br>জীবন বাঁচান</h1><p>স্বেচ্ছায় রক্তদানে এগিয়ে আসুন, মুমূর্ষু রোগীর পাশে দাঁড়ান।</p>
+<div class="row"><a class="bt bw" href="donor_registration.html"><svg class="i"><use href="#drop"/></svg>ডোনার হোন</a><a class="bt bo" href="blood_requests.html"><svg class="i"><use href="#clip"/></svg>রক্ত চাই</a></div>
+<svg class="i dr" style="fill:rgba(255,255,255,.25);stroke:none"><use href="#drop"/></svg></section>
+
+<h2 class="t">দ্রুত সেবা</h2>
+<div class="qa">
+<a href="#search"><b><svg class="i"><use href="#search"/></svg></b>ডোনার খুঁজুন</a>
+<a href="blood_requests.html"><b><svg class="i"><use href="#clip"/></svg></b>রক্তের অনুরোধ</a>
+<a href="all-donors.html"><b><svg class="i"><use href="#users"/></svg></b>ডোনার তালিকা</a>
+<a id="qB" href="#"><b><svg class="i"><use href="#bank"/></svg></b>ব্লাড ব্যাংক</a>
+<a id="qA" href="#"><b><svg class="i"><use href="#truck"/></svg></b>অ্যাম্বুলেন্স</a>
+<a href="#guide"><b><svg class="i"><use href="#drop"/></svg></b>গ্রুপ গাইড</a>
+<a href="#elig"><b><svg class="i"><use href="#shield"/></svg></b>যোগ্যতা যাচাই</a>
+<a href="#faq"><b><svg class="i"><use href="#act"/></svg></b>সচেতনতা</a>
+</div>
+
+<h2 class="t">জরুরি রক্তের অনুরোধ <a href="blood_requests.html">সবগুলো দেখুন</a></h2>
+<div class="sc" id="rq"><div class="sk" style="width:270px;flex:none"></div></div>
+
+<section id="search"><h2 class="t">ডোনার খুঁজুন</h2>
+<div class="card"><div class="lb">রক্তের গ্রুপ বেছে নিন</div><div class="gc" id="sg" style="margin-top:8px"></div>
+<input id="ar" placeholder="এলাকার নাম (ঐচ্ছিক)" autocomplete="off"><button class="go" id="sb">ডোনার খুঁজুন</button><div id="sr" style="margin-top:6px"></div></div></section>
+
+<h2 class="t">ডোনার পরিসংখ্যান</h2>
+<div class="st"><div><b id="tD">–</b>নিবন্ধিত ডোনার</div><div><b id="tR">–</b>সাম্প্রতিক অনুরোধ</div></div>
+<div class="card" id="bars"><div class="em">লোড হচ্ছে…</div></div>
+
+<h2 class="t">নতুন ডোনার <a href="all-donors.html">সব দেখুন</a></h2>
+<div class="card" id="dl"><div class="em">লোড হচ্ছে…</div></div>
+
+<section id="guide"><h2 class="t">কে কাকে রক্ত দিতে পারে</h2>
+<div class="card"><div class="lb">আপনার গ্রুপ বেছে নিন</div><div class="gc" id="cg" style="margin:8px 0 14px"></div>
+<div class="lb">রক্ত দিতে পারবেন</div><div class="cp" id="cgv"></div><div class="lb">রক্ত নিতে পারবেন</div><div class="cp" id="cgt"></div>
+<p class="nt">* লোহিত রক্তকণিকার জন্য। O− সর্বজনীন দাতা, AB+ সর্বজনীন গ্রহীতা। রক্ত দেওয়ার আগে ব্লাড ব্যাংক ক্রসম্যাচ করে।</p></div></section>
+
+<section id="elig"><h2 class="t">রক্ত দিতে পারবেন কি?</h2>
+<div class="card"><div class="pg"><i id="qp" style="width:0"></i></div><div id="qb"></div></div></section>
+
+<h2 class="t">রক্তদানের উপকারিতা</h2>
+<div class="q3"><div><b><svg class="i"><use href="#act"/></svg></b>হার্ট ভালো রাখে</div><div><b><svg class="i"><use href="#shield"/></svg></b>স্বাস্থ্য পরীক্ষা হয়</div><div><b><svg class="i"><use href="#drop"/></svg></b>নতুন রক্তকণিকা তৈরি</div></div>
+
+<section id="faq"><h2 class="t">সচরাচর জিজ্ঞাসা</h2>
+<details><summary>কত দিন পর আবার রক্ত দেওয়া যায়?<svg class="i"><use href="#chev"/></svg></summary><p>সুস্থ পুরুষ প্রতি <b>৩ মাস</b> এবং সুস্থ নারী প্রতি <b>৪ মাস</b> অন্তর রক্ত দিতে পারেন।</p></details>
+<details><summary>রক্তদানের ন্যূনতম যোগ্যতা কী?<svg class="i"><use href="#chev"/></svg></summary><p>বয়স <b>১৮–৬০ বছর</b>, ওজন কমপক্ষে <b>৪৫ কেজি</b> এবং শারীরিকভাবে সুস্থ থাকতে হবে।</p></details>
+<details><summary>রক্ত দিলে কি শরীর দুর্বল হয়?<svg class="i"><use href="#chev"/></svg></summary><p>না। ২৪–৪৮ ঘণ্টার মধ্যে রক্তের পরিমাণ পূরণ হয় এবং কয়েক সপ্তাহে নতুন লোহিত কণিকা তৈরি হয়।</p></details>
+<details><summary>কারা রক্ত দিতে পারবেন না?<svg class="i"><use href="#chev"/></svg></summary><p>জ্বর বা অসুস্থতা, হিমোগ্লোবিন কম, গর্ভাবস্থা, বুকের দুধ খাওয়ানো এবং কিছু সংক্রমণ থাকলে রক্ত দেওয়া যায় না। দ্বিধা থাকলে চিকিৎসকের পরামর্শ নিন।</p></details>
+<details><summary>রক্তের বিনিময়ে কি টাকা লেনদেন বৈধ?<svg class="i"><use href="#chev"/></svg></summary><p>না। রক্তদান স্বেচ্ছায় ও বিনামূল্যে হওয়া উচিত। রক্তের নামে টাকা চাইলে সতর্ক থাকুন।</p></details></section>
+
+<div class="wn" style="margin-top:18px"><svg class="i" style="width:26px;height:26px"><use href="#warn"/></svg><div><b>প্রতারণা থেকে সাবধান</b><br>রক্তের জন্য টাকা চাইলে বা আগাম টাকা পাঠাতে বললে রাজি হবেন না। সরাসরি ডোনারের সঙ্গে কথা বলুন।</div></div>
+
+<h2 class="t">জরুরি যোগাযোগ</h2>
+<div class="ph"><a href="tel:999"><svg class="i"><use href="#phone"/></svg>জাতীয় ৯৯৯</a><a id="pH" href="#"><svg class="i"><use href="#phone"/></svg>হটলাইন</a><a id="pB" href="#"><svg class="i"><use href="#bank"/></svg>ব্লাড ব্যাংক</a><a id="pA" href="#"><svg class="i"><use href="#truck"/></svg>অ্যাম্বুলেন্স</a></div>
+
+<div class="ap"><svg class="i" style="width:30px;height:30px"><use href="#drop"/></svg><div><b>অফিসিয়াল অ্যাপ</b><p>ইনস্টল না হলে "Install Anyway" চাপুন</p></div><a href="https://github.com/mdabusofian/karnaphulibloodhub/raw/main/karnaphuli_blood.apk" download>ডাউনলোড</a></div>
+
+<footer><a href="about.html">আমাদের সম্পর্কে</a> • <a href="https://www.facebook.com/khb">ফেসবুক পেজ</a><br>© কর্ণফুলী ব্লাড হাব • সংস্করণ ২.১</footer>
+</main>
+
+<nav><div class="w"><a class="on" href="index.html"><svg class="i"><use href="#home"/></svg>হোম</a><a href="all-donors.html"><svg class="i"><use href="#users"/></svg>ডোনার</a><a class="fab" href="donor_registration.html" aria-label="ডোনার নিবন্ধন"><svg class="i" style="width:28px;height:28px"><use href="#plus"/></svg></a><a href="blood_requests.html"><svg class="i"><use href="#clip"/></svg>রিকোয়েস্ট</a><button id="mn"><svg class="i"><use href="#menu"/></svg>মেনু</button></div></nav>
+
+<div id="dw"><div><a href="about.html"><svg class="i"><use href="#users"/></svg>আমাদের সম্পর্কে</a><a id="dH" href="#"><svg class="i"><use href="#phone"/></svg>হটলাইন কল</a><a href="https://www.facebook.com/khb"><svg class="i"><use href="#share"/></svg>ফেসবুক পেজ</a><a href="download.html"><svg class="i"><use href="#drop"/></svg>অ্যাপ ইনস্টলের নিয়ম</a><button class="go" id="dx">বন্ধ করুন</button></div></div>
+
+<script>
+const CFG={hotline:'01600169597',ambulance:'01871536468',bank:'01871536468',
+api:'https://script.google.com/macros/s/AKfycbyGguWgJdIpVgv0Sol7qF7gJOelhv-y47NoW6my1ZnlSjxHcj7ygwlMuDxffRezTW4wbA/exec?sheet='};
+const BG=['A+','A-','B+','B-','AB+','AB-','O+','O-'],$=i=>document.getElementById(i);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const bn=n=>String(n).replace(/\d/g,d=>'০১২৩৪৫৬৭৮৯'[d]),tel=p=>String(p||'').replace(/[^\d+]/g,''),G=g=>String(g||'').trim().toUpperCase().replace(/[−–]/g,'-'),show=g=>g.replace('-','−');
+const ic=n=>`<svg class="i" style="width:15px;height:15px"><use href="#${n}"/></svg>`;
+[['hotA',CFG.hotline],['pH',CFG.hotline],['dH',CFG.hotline],['pB',CFG.bank],['qB',CFG.bank],['pA',CFG.ambulance],['qA',CFG.ambulance]].forEach(([i,n])=>$(i).href='tel:'+n);
+$('hotN').textContent=bn(CFG.hotline);
+// splash (once per session)
+const sp=$('sp');if(sessionStorage.getItem('sp'))sp.remove();else{sessionStorage.setItem('sp',1);setTimeout(()=>{sp.style.opacity=0;setTimeout(()=>sp.remove(),600)},1400)}
+$('mn').onclick=()=>document.body.classList.add('op');$('dx').onclick=$('dw').onclick=e=>{if(e.target.id=='dw'||e.target.id=='dx')document.body.classList.remove('op')};
+// compatibility rule (red cells)
+const P=x=>({a:x.replace(/[+-]/,'').replace('O',''),r:x.slice(-1)}),ok=(d,r)=>[...P(d).a].every(c=>P(r).a.includes(c))&&(P(d).r=='-'||P(r).r=='+');
+function chips(box,sel){$(box).innerHTML=BG.map(g=>`<button data-g="${g}">${show(g)}</button>`).join('');$(box).onclick=e=>{const g=e.target.dataset.g;if(!g)return;[...$(box).children].forEach(b=>b.classList.toggle('on',b.dataset.g==g));sel(g)}}
+let sg='';chips('sg',g=>sg=g);
+chips('cg',g=>{const f=(a,b)=>BG.filter(x=>a(x)).map(x=>`<span${b?'':''}>${show(x)}</span>`).join('');$('cgv').innerHTML=f(r=>ok(g,r));$('cgt').innerHTML=f(d=>ok(d,g))});
+$('cg').children[6].click();
+// data
+let donors=[];
+const get=s=>Promise.race([fetch(CFG.api+s).then(r=>r.json()),new Promise((_,j)=>setTimeout(()=>j(),12000))]);
+const dRow=d=>`<div class="dn"><span class="gb">${esc(show(G(d[1])))}</span><div><h4>${esc(d[0])}</h4><p>${esc([d[2],d[3]].filter(Boolean).join(' · '))}</p></div><a class="cl" href="tel:${tel(d[4])}" aria-label="কল করুন"><svg class="i"><use href="#phone"/></svg></a></div>`;
+const CLOSED=/^(closed|done|fulfilled|completed|expired|বন্ধ|সম্পন্ন)$/i;
+// Requests sheet: 0 group, 1 units, 2 patient, 3 hospital, 5 area, 6 phone, 7 date, 9 status
+function liveReqs(rows){const t0=new Date().setHours(0,0,0,0);
+ return (rows||[]).filter(r=>Array.isArray(r)&&r[0]&&r[2]&&!CLOSED.test(String(r[9]||'').trim())).map((r,i)=>{
+  const dt=new Date(r[7]),dd=isNaN(dt)?null:Math.round((new Date(dt).setHours(0,0,0,0)-t0)/864e5);
+  return{g:G(r[0]),u:r[1],p:String(r[2]).trim(),h:String(r[3]||'').trim(),a:String(r[5]||'').trim(),ph:tel(r[6]),dd,i}})
+ .filter(d=>d.dd===null||d.dd>=0).sort((x,y)=>(x.dd??99)-(y.dd??99)||y.i-x.i)}
+function renderReq(rows){const b=$('rq'),l=liveReqs(rows);$('tR').textContent=bn(l.length);
+ if(!l.length){b.innerHTML='<div class="em" style="padding:10px 16px">বর্তমানে কোনো জরুরি রিকোয়েস্ট নেই।</div>';return}
+ b.innerHTML=l.slice(0,6).map(d=>{const loc=[d.h,d.a&&d.a!==d.h?d.a:''].filter(Boolean).join(', ')||'স্থান দেওয়া নেই';
+  return`<div class="rq"><div style="display:flex;justify-content:space-between;align-items:center"><span class="gb">${esc(show(d.g))}</span><span class="tag">${d.dd===0?'আজই':'জরুরি'}</span></div><h4>রোগী: ${esc(d.p)}</h4><p>${ic('pin')}${esc(loc)}</p><div class="row">${d.ph?`<a class="k" href="tel:${d.ph}">কল করুন</a>`:''}<button class="s" data-sh="${esc(d.g)}|${esc(loc)}">শেয়ার</button></div></div>`}).join('')}
+function renderDon(l){donors=l||[];$('tD').textContent=bn(donors.length);$('dl').innerHTML=donors.length?donors.slice(0,5).map(dRow).join(''):'<div class="em">কোনো ডোনার পাওয়া যায়নি।</div>';
+const c=BG.map(g=>[g,donors.filter(d=>G(d[1])==g).length]),m=Math.max(1,...c.map(x=>x[1]));$('bars').innerHTML=c.map(([g,n])=>`<div class="bar"><b>${show(g)}</b><i><u style="width:${n/m*100}%"></u></i><span>${bn(n)}</span></div>`).join('')}
+$('rq').onclick=e=>{const b=e.target.closest('[data-sh]');if(!b)return;const [g,a]=b.dataset.sh.split('|'),t=`জরুরি ${show(G(g))} রক্ত দরকার, স্থান: ${a}। কর্ণফুলী ব্লাড হাব`;navigator.share?navigator.share({text:t,url:location.href}).catch(()=>{}):navigator.clipboard&&navigator.clipboard.writeText(t+' '+location.href)}
+Promise.allSettled([get('Donors'),get('Requests')]).then(([a,b])=>{
+ if(a.status=='fulfilled')renderDon(a.value);else{$('dl').innerHTML=$('bars').innerHTML='<div class="em">ডাটা লোড করা যায়নি। ইন্টারনেট দেখে আবার চেষ্টা করুন।</div>'}
+ if(b.status=='fulfilled')renderReq(b.value);else $('rq').innerHTML='<div class="em" style="padding:10px 16px">রিকোয়েস্ট লোড করা যায়নি।</div>'});
+// search
+$('sb').onclick=()=>{const a=$('ar').value.trim().toLowerCase(),o=$('sr');if(!sg){o.innerHTML='<div class="em">আগে রক্তের গ্রুপ বেছে নিন।</div>';return}
+ const r=donors.filter(d=>G(d[1])==sg&&(!a||[d[2],d[3]].join(' ').toLowerCase().includes(a)));
+ o.innerHTML=r.length?`<div class="lb" style="margin:10px 0 2px">${bn(r.length)} জন ${show(sg)} ডোনার পাওয়া গেছে</div>`+r.slice(0,15).map(dRow).join(''):'<div class="em">এই এলাকায় এই গ্রুপের ডোনার পাওয়া যায়নি। <a href="all-donors.html" style="color:var(--r);font-weight:700">সব ডোনার দেখুন</a></div>'}
+// eligibility quiz
+const Q=[['আপনার বয়স কি ১৮ থেকে ৬০ বছরের মধ্যে?',1],['আপনার ওজন কি কমপক্ষে ৪৫ কেজি?',1],['আপনি কি এখন সুস্থ বোধ করছেন (জ্বর বা অসুস্থতা নেই)?',1],['শেষ রক্তদানের পর কি ৪ মাস পার হয়েছে? (পুরুষদের ক্ষেত্রে ৩ মাস)',1]];let qi=0;
+function quiz(){const b=$('qb');$('qp').style.width=qi/Q.length*100+'%';
+ if(qi<0){b.innerHTML=`<p style="font-weight:700">দুঃখিত, এখন রক্ত দেওয়ার জন্য উপযুক্ত নন।</p><p class="nt">বিশ্রাম নিন, সুস্থ হয়ে পরে আবার যাচাই করুন। সন্দেহ থাকলে চিকিৎসকের পরামর্শ নিন।</p><button class="go" onclick="qi=0;quiz()">আবার যাচাই করুন</button>`;return}
+ if(qi>=Q.length){b.innerHTML=`<p style="font-weight:700;color:var(--r)">অভিনন্দন! আপনি রক্ত দেওয়ার জন্য উপযুক্ত।</p><p class="nt">আপনার এক ব্যাগ রক্ত একাধিক রোগীর কাজে লাগতে পারে।</p><a class="go" style="display:block;text-align:center" href="donor_registration.html">ডোনার হিসেবে নিবন্ধন করুন</a>`;return}
+ b.innerHTML=`<div class="lb">প্রশ্ন ${bn(qi+1)} / ${bn(Q.length)}</div><p style="font-weight:600;margin-top:6px">${Q[qi][0]}</p><div class="yn"><button onclick="qi=-1;quiz()">না</button><button onclick="qi++;quiz()">হ্যাঁ</button></div>`}
+quiz();
+</script>
+</body>
+</html>

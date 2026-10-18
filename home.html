@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>কর্ণফুলী ব্লাড হাব — চট্টগ্রামে রক্ত দরকার? ডোনার খুঁজুন</title>
+<meta name="description" content="চট্টগ্রামের রক্তদাতা কমিউনিটি। ব্লাড গ্রুপ দিয়ে ডোনার খুঁজুন, জরুরি রক্তের অনুরোধ দিন, অথবা ডোনার হিসেবে নিবন্ধন করুন।">
+<meta name="theme-color" content="#d4112b">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--red:#d4112b;--red2:#a80c20;--ink:#14161a;--mut:#555a66;--line:#e4e5e9;--paper:#fbfafa;--tint:#fdecee;--ok:#15803d;--okb:#e6f6ec;--am:#8a5300;--amb:#fff1cf}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:76px;-webkit-text-size-adjust:100%}
+body{font:400 17px/1.7 'Hind Siliguri',system-ui,sans-serif;color:var(--ink);background:var(--paper);-webkit-font-smoothing:antialiased;overflow-x:hidden;padding-bottom:env(safe-area-inset-bottom,0px)}
+a{color:inherit;text-decoration:none}button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+:focus-visible{outline:3px solid var(--ink);outline-offset:3px;border-radius:6px}
+.red :focus-visible,.dark :focus-visible{outline-color:#fff}
+.w{max-width:1120px;margin:0 auto;padding:0 20px}
+.ico{width:1em;height:1em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:0 24px;border-radius:12px;font-weight:700;font-size:17px;white-space:nowrap;transition:background .2s,color .2s,border-color .2s,transform .15s}
+.btn:active{transform:scale(.97)}
+.b-red{background:var(--red);color:#fff}.b-red:hover{background:var(--red2)}
+.b-wh{background:#fff;color:var(--red2)}.b-wh:hover{background:var(--tint)}
+.b-ol{border:2px solid rgba(255,255,255,.7);color:#fff}.b-ol:hover{background:#fff;color:var(--red2)}
+.b-ink{background:var(--ink);color:#fff}.b-ink:hover{background:#000}
+
+/* header */
+.nav{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.94);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
+.nb{display:flex;align-items:center;justify-content:space-between;height:64px;gap:12px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:19px}
+.lg{width:34px;height:34px;border-radius:10px;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px}
+.mn{display:flex;align-items:center;gap:22px;font-weight:600}
+.mn .l{display:none;color:var(--mut)}.mn .l:hover{color:var(--red)}
+.mn .btn{min-height:42px;font-size:15.5px;padding:0 16px}
+.mn .reg{display:none}
+
+/* hero */
+.red{background:var(--red);color:#fff}
+.hero{padding:40px 0 56px}
+.hg{display:grid;gap:34px}
+h1{font-size:clamp(34px,8.4vw,62px);line-height:1.22;font-weight:700;letter-spacing:-.01em}
+.lead{font-size:18.5px;margin:16px 0 26px;max-width:520px;color:rgba(255,255,255,.93)}
+.row{display:flex;flex-wrap:wrap;gap:10px}.row .btn{flex:1 1 210px}
+.st{display:flex;gap:26px;margin-top:30px;padding-top:20px;border-top:1px solid rgba(255,255,255,.35);font-size:15px;color:rgba(255,255,255,.9)}
+.st b{display:block;font-size:30px;line-height:1.2;color:#fff}
+.st[hidden]{display:none}
+.fd{background:#fff;color:var(--ink);border-radius:20px;padding:22px;box-shadow:0 30px 60px -30px rgba(0,0,0,.55)}
+.fd h2{font-size:22px;line-height:1.3}.fd p{font-size:15px;color:var(--mut);margin:2px 0 16px}
+.tl{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.tl button{height:60px;border-radius:12px;background:var(--tint);color:var(--red2);font-weight:700;font-size:21px;border:2px solid transparent;transition:background .15s,color .15s}
+.tl button:hover{border-color:var(--red)}
+.tl button[aria-pressed=true]{background:var(--red);color:#fff}
+.fd input{width:100%;font:inherit;font-size:16px;padding:14px;border:2px solid var(--line);border-radius:12px;margin-top:12px;background:#fff;color:var(--ink)}
+.fd input:focus{border-color:var(--red);outline:0}
+.fd .btn{width:100%;margin-top:12px}
+
+/* sections */
+section{padding:64px 0}
+h2.t{font-size:clamp(28px,6.5vw,42px);line-height:1.25;font-weight:700}
+.sub{font-size:17.5px;color:var(--mut);margin-top:10px;max-width:520px}
+
+/* live requests */
+.lv{padding:44px 0 8px}
+.lh{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:16px}
+.lh h2{font-size:24px;display:flex;align-items:center;gap:10px}
+.lh h2::before{content:"";width:10px;height:10px;border-radius:50%;background:var(--red);animation:pu 2s infinite}
+.lh a{color:var(--red2);font-weight:700;display:flex;gap:6px;align-items:center;white-space:nowrap}
+.rq{display:grid;gap:10px}
+.rr{display:flex;align-items:center;gap:14px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.rr.td{border-color:var(--red);box-shadow:inset 4px 0 0 var(--red)}
+.gb{width:54px;height:54px;border-radius:12px;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;font-size:21px;font-weight:700;flex:none}
+.ri{flex:1;min-width:0}.ri b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ri span{font-size:14.5px;color:var(--mut)}
+.pl{display:inline-block;font-size:13px;font-weight:700;padding:0 9px;border-radius:999px;background:var(--amb);color:var(--am);margin-right:6px}
+.pl.u{background:var(--red);color:#fff}
+.cl{width:46px;height:46px;border-radius:12px;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;flex:none}
+.cl:hover{background:var(--red)}
+.nr{color:var(--mut);padding:14px 2px}
+.sk{height:78px;border-radius:14px;background:linear-gradient(90deg,#efeff2,#fafafb,#efeff2);background-size:200% 100%;animation:sh 1.3s linear infinite}
+
+/* services */
+.two{display:grid;gap:32px}
+.sv a{display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:center;padding:24px 0;border-top:1px solid var(--line)}
+.sv a:last-child{border-bottom:1px solid var(--line)}
+.si{width:52px;height:52px;border:1.5px solid var(--ink);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;transition:background .2s,color .2s,border-color .2s}
+.sv h3{font-size:21px;line-height:1.35}.sv p{color:var(--mut);font-size:16px;margin-top:2px}
+.sv .ar{font-size:22px;color:var(--mut);transition:transform .25s,color .2s}
+.sv a:hover .si{background:var(--red);border-color:var(--red);color:#fff}.sv a:hover .ar{transform:translateX(5px);color:var(--red)}
+
+/* donor band */
+.dark{background:var(--ink);color:#fff}
+.dark .sub{color:#c4c7cf}
+.ck{list-style:none;display:grid;gap:0}
+.ck li{display:flex;gap:14px;align-items:center;padding:16px 0;border-top:1px solid #2c3037;font-size:18px}
+.ck li:last-child{border-bottom:1px solid #2c3037}
+.ck .ico{width:26px;height:26px;padding:5px;border-radius:50%;background:var(--red);color:#fff;stroke-width:3}
+.dark .row{margin-top:26px}.dark .row .btn{flex:0 1 auto}
+.dn{margin-top:14px;font-size:14.5px;color:#9da1ab}
+
+/* guide */
+.tint{background:var(--tint)}
+.gc{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:18px}
+.gc button{height:56px;border-radius:12px;background:#fff;border:2px solid #f3c6cc;font-weight:700;font-size:20px;transition:background .15s,color .15s}
+.gc button:hover{border-color:var(--red)}
+.gc button[aria-pressed=true]{background:var(--red);border-color:var(--red);color:#fff}
+.res{display:grid;gap:12px}
+.rb{background:#fff;border-radius:14px;padding:16px 18px}
+.rb h3{font-size:15.5px;font-weight:600;color:var(--mut);margin-bottom:10px}
+.rb div{display:flex;flex-wrap:wrap;gap:8px}
+.rb span{padding:3px 14px;border-radius:999px;background:var(--tint);color:var(--red2);font-weight:700;font-size:18px}
+.rb .all{background:var(--ink);color:#fff}
+.gn{font-size:14px;color:var(--mut);margin-top:12px}
+
+/* faq */
+details{border-top:1px solid var(--line)}details:last-of-type{border-bottom:1px solid var(--line)}
+summary{cursor:pointer;font-weight:700;font-size:18px;padding:20px 0;list-style:none;display:flex;justify-content:space-between;gap:14px;align-items:center}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font-size:26px;line-height:1;color:var(--red);flex:none;transition:transform .25s}
+details[open] summary::after{transform:rotate(45deg)}
+details p{padding:0 0 20px;color:var(--mut);max-width:680px}
+
+/* app */
+.ap{border-top:1px solid var(--line);padding:36px 0}
+.ap .w{display:flex;flex-wrap:wrap;gap:16px 28px;align-items:center;justify-content:space-between}
+.ap h3{font-size:20px}.ap p{color:var(--mut);font-size:15px}
+
+footer{background:var(--ink);color:#c4c7cf;padding:48px 0 30px}
+.fg{display:grid;gap:28px}
+footer .logo{color:#fff}footer h4{color:#fff;font-size:16px;margin-bottom:10px}footer ul{list-style:none;display:grid;gap:8px}
+footer a:hover{color:#fff}
+.sc{margin-top:30px;padding:14px 16px;border-radius:12px;background:#22252b;font-size:15px;display:flex;gap:12px;align-items:flex-start}
+.sc .ico{color:#ffb4bd;font-size:20px;margin-top:3px}
+.fb{display:flex;flex-wrap:wrap;gap:14px 24px;justify-content:space-between;align-items:center;margin-top:22px;font-size:14.5px}
+.cr{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border:1px solid #3a3e46;border-radius:999px;color:#e5e7eb}.cr:hover{border-color:#fff}.cr b{color:#fff}
+
+@keyframes pu{0%{box-shadow:0 0 0 0 rgba(212,17,43,.45)}70%,100%{box-shadow:0 0 0 9px rgba(212,17,43,0)}}
+@keyframes sh{to{background-position:-200% 0}}
+@media(min-width:640px){.fg{grid-template-columns:2fr 1fr 1fr}}
+@media(min-width:900px){
+  .mn .l,.mn .reg{display:inline-flex}.nb{height:72px}
+  .hero{padding:72px 0 88px}.hg{grid-template-columns:1.1fr .9fr;align-items:center;gap:56px}
+  section{padding:96px 0}.lv{padding:56px 0 8px}
+  .rq{grid-template-columns:repeat(3,1fr)}.rr{flex-direction:column;align-items:flex-start;padding:16px}.rr .ri{width:100%}.rr .cl{width:100%;height:44px;gap:8px;font-size:16px;font-weight:700}
+  .two{grid-template-columns:.85fr 1.15fr;gap:72px;align-items:start}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="d" viewBox="0 0 24 24"><path d="M12 3s-6 6.500-6 11a6 6 0 0 0 12 0c0-4.500-6-11-6-11z"/></symbol>
+<symbol id="s" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></symbol>
+<symbol id="c" viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4h6v3H9zM9 12h6M9 16h4"/></symbol>
+<symbol id="u" viewBox="0 0 24 24"><circle cx="10" cy="8" r="4"/><path d="M3 20c0-4 3-6 7-6M18 8v6M15 11h6"/></symbol>
+<symbol id="a" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+<symbol id="p" viewBox="0 0 24 24"><path d="M22 16.900v3a2 2 0 0 1-2.200 2 19.800 19.800 0 0 1-8.600-3.100 19.500 19.500 0 0 1-6-6A19.800 19.800 0 0 1 2.100 4.200 2 2 0 0 1 4.100 2h3a2 2 0 0 1 2 1.700c.1 1 .4 1.900.7 2.800a2 2 0 0 1-.5 2.100L8.100 9.900a16 16 0 0 0 6 6l1.300-1.300a2 2 0 0 1 2.100-.4c.9.3 1.800.6 2.800.7a2 2 0 0 1 1.700 2z"/></symbol>
+<symbol id="k" viewBox="0 0 24 24"><path d="m5 12 5 5 9-10"/></symbol>
+<symbol id="w" viewBox="0 0 24 24"><path d="M12 3 2 21h20z"/><path d="M12 10v5M12 18h.01"/></symbol>
+<symbol id="fb" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></symbol>
+<symbol id="dl" viewBox="0 0 24 24"><path d="M12 4v11M7 11l5 5 5-5M5 20h14"/></symbol>
+</defs></svg>
+
+<header class="nav"><div class="w nb">
+  <a class="logo" href="index.html"><span class="lg"><svg class="ico"><use href="#d"/></svg></span>কর্ণফুলী ব্লাড হাব</a>
+  <nav class="mn" aria-label="প্রধান মেনু">
+    <a class="l" href="all-donors.html">ডোনার</a><a class="l" href="blood_requests.html">রিকোয়েস্ট</a><a class="l" href="#guide">রক্ত গাইড</a><a class="l" href="#faq">প্রশ্নোত্তর</a>
+    <a class="btn b-ink hot" href="tel:01600169597" aria-label="জরুরি হটলাইনে কল করুন"><svg class="ico"><use href="#p"/></svg>জরুরি কল</a>
+    <a class="btn b-red reg" href="donor_registration.html">ডোনার হোন</a>
+  </nav>
+</div></header>
+
+<main>
+<section class="red hero"><div class="w hg">
+  <div>
+    <h1>চট্টগ্রামে রক্ত দরকার? সরাসরি ডোনারকে কল করুন।</h1>
+    <p class="lead">ব্লাড গ্রুপ বেছে নিন। এলাকার প্রস্তুত ডোনার আর চলমান রক্তের অনুরোধ, সব এক জায়গায়।</p>
+    <div class="row">
+      <a class="btn b-wh" href="tel:01600169597"><svg class="ico"><use href="#p"/></svg>হটলাইন ০১৬০০১৬৯৫৯৭</a>
+      <a class="btn b-ol" href="blood_requests.html#new">রক্তের অনুরোধ দিন</a>
+    </div>
+    <div class="st" id="st" hidden aria-live="polite">
+      <div><b id="sd">–</b>নিবন্ধিত ডোনার</div><div><b id="sr">–</b>রক্ত দিতে প্রস্তুত</div><div><b id="sq">–</b>চলমান অনুরোধ</div>
+    </div>
+  </div>
+
+  <form class="fd" action="all-donors.html" method="get">
+    <h2>ডোনার খুঁজুন</h2><p>কোন গ্রুপের রক্ত লাগবে?</p>
+    <input type="hidden" name="g" id="fg">
+    <div class="tl" id="tl" role="group" aria-label="রক্তের গ্রুপ"></div>
+    <input type="text" name="q" placeholder="উপজেলা বা এলাকা (ঐচ্ছিক)" autocomplete="off" aria-label="এলাকা">
+    <button class="btn b-red" type="submit"><svg class="ico"><use href="#s"/></svg>ডোনার তালিকা দেখুন</button>
+  </form>
+</div></section>
+
+<section class="lv"><div class="w">
+  <div class="lh"><h2>এখন যাদের রক্ত লাগছে</h2><a href="blood_requests.html">সব অনুরোধ<svg class="ico"><use href="#a"/></svg></a></div>
+  <div class="rq" id="rq"><div class="sk"></div><div class="sk"></div><div class="sk"></div></div>
+</div></section>
+
+<section><div class="w two">
+  <div><h2 class="t">তিনটি কাজ, এক জায়গায়</h2><p class="sub">রক্ত খুঁজুন, রিকোয়েস্ট দিন, বা নিজে ডোনার হয়ে যুক্ত হোন।</p></div>
+  <div class="sv">
+    <a href="all-donors.html"><span class="si"><svg class="ico"><use href="#s"/></svg></span><div><h3>ডোনার খুঁজুন</h3><p>গ্রুপ ও এলাকা দিয়ে প্রস্তুত ডোনার বেছে কল বা WhatsApp করুন।</p></div><svg class="ico ar"><use href="#a"/></svg></a>
+    <a href="blood_requests.html#new"><span class="si"><svg class="ico"><use href="#c"/></svg></span><div><h3>রক্তের অনুরোধ দিন</h3><p>রোগীর তথ্য পোস্ট করুন, এক ট্যাপে বন্ধুদের কাছে শেয়ার করুন।</p></div><svg class="ico ar"><use href="#a"/></svg></a>
+    <a href="donor_registration.html"><span class="si"><svg class="ico"><use href="#u"/></svg></span><div><h3>ডোনার হোন</h3><p>নাম, মোবাইল, গ্রুপ ও এলাকা দিয়ে ১ মিনিটে নিবন্ধন করুন।</p></div><svg class="ico ar"><use href="#a"/></svg></a>
+  </div>
+</div></section>
+
+<section class="dark"><div class="w two">
+  <div><h2 class="t">আপনার এক ব্যাগ রক্ত, কারো একটি জীবন</h2><p class="sub">রক্ত দেওয়ার আগে নিচের চারটি বিষয় মিলিয়ে নিন।</p>
+    <div class="row"><a class="btn b-red" href="donor_registration.html">ডোনার হিসেবে নিবন্ধন করুন</a></div>
+  </div>
+  <div>
+    <ul class="ck">
+      <li><svg class="ico"><use href="#k"/></svg>বয়স ১৮ থেকে ৬০ বছরের মধ্যে</li>
+      <li><svg class="ico"><use href="#k"/></svg>ওজন কমপক্ষে ৪৫ কেজি</li>
+      <li><svg class="ico"><use href="#k"/></svg>জ্বর বা অসুস্থতা নেই</li>
+      <li><svg class="ico"><use href="#k"/></svg>শেষ রক্তদানের পর পুরুষের ৩ মাস, নারীর ৪ মাস পার হয়েছে</li>
+    </ul>
+    <p class="dn">সন্দেহ থাকলে রক্ত দেওয়ার আগে চিকিৎসকের পরামর্শ নিন।</p>
+  </div>
+</div></section>
+
+<section class="tint" id="guide"><div class="w two">
+  <div><h2 class="t">কে কাকে রক্ত দিতে পারে</h2><p class="sub">আপনার গ্রুপ বেছে নিলে দেখাবে কাকে দিতে পারবেন আর কার কাছ থেকে নিতে পারবেন।</p></div>
+  <div>
+    <div class="gc" id="gc" role="group" aria-label="ব্লাড গ্রুপ"></div>
+    <div class="res" aria-live="polite">
+      <div class="rb"><h3>রক্ত দিতে পারবেন</h3><div id="o1"></div></div>
+      <div class="rb"><h3>রক্ত নিতে পারবেন</h3><div id="o2"></div></div>
+    </div>
+    <p class="gn">লোহিত রক্তকণিকার হিসাবে। রক্ত দেওয়ার আগে ব্লাড ব্যাংক ক্রসম্যাচ করে।</p>
+  </div>
+</div></section>
+
+<section id="faq"><div class="w" style="max-width:800px">
+  <h2 class="t">সচরাচর জিজ্ঞাসা</h2>
+  <div style="margin-top:28px">
+    <details><summary>কত দিন পর আবার রক্ত দেওয়া যায়?</summary><p>সুস্থ পুরুষ প্রতি <b>৩ মাস</b> এবং সুস্থ নারী প্রতি <b>৪ মাস</b> অন্তর রক্ত দিতে পারেন।</p></details>
+    <details><summary>রক্তদানের ন্যূনতম যোগ্যতা কী?</summary><p>বয়স <b>১৮–৬০ বছর</b>, ওজন কমপক্ষে <b>৪৫ কেজি</b> এবং শারীরিকভাবে সুস্থ থাকতে হবে।</p></details>
+    <details><summary>রক্ত দিলে কি শরীর দুর্বল হয়?</summary><p>না। ২৪–৪৮ ঘণ্টার মধ্যে রক্তের পরিমাণ পূরণ হয় এবং কয়েক সপ্তাহে নতুন লোহিত কণিকা তৈরি হয়।</p></details>
+    <details><summary>কারা রক্ত দিতে পারবেন না?</summary><p>জ্বর বা অসুস্থতা, হিমোগ্লোবিন কম, গর্ভাবস্থা, বুকের দুধ খাওয়ানো এবং কিছু সংক্রমণ থাকলে রক্ত দেওয়া যায় না। দ্বিধা থাকলে চিকিৎসকের পরামর্শ নিন।</p></details>
+    <details><summary>রক্তের বিনিময়ে কি টাকা দিতে হয়?</summary><p>না। রক্তদান স্বেচ্ছায় ও বিনামূল্যে হওয়া উচিত। রক্তের নামে কেউ টাকা চাইলে বা আগাম টাকা পাঠাতে বললে রাজি হবেন না।</p></details>
+  </div>
+</div></section>
+
+<div class="ap"><div class="w">
+  <div><h3>অ্যান্ড্রয়েড অ্যাপ</h3><p>ইনস্টলের সময় সতর্কতা এলে “Install Anyway” চাপুন।</p></div>
+  <a class="btn b-ink" href="https://github.com/mdabusofian/karnaphulibloodhub/raw/main/karnaphuli_blood.apk" rel="noopener"><svg class="ico"><use href="#dl"/></svg>অ্যাপ ডাউনলোড (APK)</a>
+</div></div>
+</main>
+
+<footer><div class="w">
+  <div class="fg">
+    <div><a class="logo" href="index.html"><span class="lg"><svg class="ico"><use href="#d"/></svg></span>কর্ণফুলী ব্লাড হাব</a><p style="margin-top:14px;max-width:340px">রক্তের বন্ধনে গড়ি সুন্দর পৃথিবী।</p></div>
+    <div><h4>পেজসমূহ</h4><ul><li><a href="all-donors.html">সকল ডোনার</a></li><li><a href="blood_requests.html">রক্তের অনুরোধ</a></li><li><a href="donor_registration.html">ডোনার নিবন্ধন</a></li><li><a href="about.html">আমাদের সম্পর্কে</a></li></ul></div>
+    <div><h4>জরুরি যোগাযোগ</h4><ul><li><a href="tel:01600169597">হটলাইন ০১৬০০১৬৯৫৯৭</a></li><li><a href="tel:01871536468">অ্যাম্বুলেন্স ০১৮৭১৫৩৬৪৬৮</a></li><li><a href="tel:999">জাতীয় জরুরি সেবা ৯৯৯</a></li></ul></div>
+  </div>
+  <p class="sc"><svg class="ico"><use href="#w"/></svg><span>রক্তের জন্য টাকা চাইলে বা আগাম টাকা পাঠাতে বললে রাজি হবেন না। সরাসরি ডোনারের সঙ্গে কথা বলুন।</span></p>
+  <div class="fb"><span>© কর্ণফুলী ব্লাড হাব</span>
+    <a class="cr" href="https://www.facebook.com/mdsofian68" target="_blank" rel="noopener noreferrer" aria-label="Made by MD ABU SOFIAN, Facebook প্রোফাইল নতুন ট্যাবে খুলবে">Made by <b>MD ABU SOFIAN</b><svg class="ico"><use href="#fb"/></svg></a></div>
+</div></footer>
+
+<script>
+const API="https://script.google.com/macros/s/AKfycbyGguWgJdIpVgv0Sol7qF7gJOelhv-y47NoW6my1ZnlSjxHcj7ygwlMuDxffRezTW4wbA/exec";
+const $=i=>document.getElementById(i);
+const G=['A+','A-','B+','B-','O+','O-','AB+','AB-'];
+const bn=n=>String(n).replace(/\d/g,d=>'০১২৩৪৫৬৭৮৯'[d]),show=g=>g.replace('-','−'),norm=g=>String(g||'').trim().toUpperCase().replace(/[−–]/g,'-');
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+// finder tiles (form GET -> all-donors.html?g=..&q=..)
+$('tl').innerHTML=G.map(g=>`<button type="button" data-g="${g}" aria-pressed="false">${show(g)}</button>`).join('');
+$('tl').onclick=e=>{const b=e.target.closest('button');if(!b)return;const on=b.getAttribute('aria-pressed')!=='true';
+  [...$('tl').children].forEach(x=>x.setAttribute('aria-pressed',x==b&&on));$('fg').value=on?b.dataset.g:''};
+
+// compatibility guide
+const can=(d,r)=>{const a=d.replace(/[+-]/,''),b=r.replace(/[+-]/,'');return(a==='O'||b==='AB'||a===b)&&(d.endsWith('-')||r.endsWith('+'))};
+const list=l=>l.length===8?'<span class="all">সব গ্রুপ</span>':l.map(x=>`<span>${show(x)}</span>`).join('');
+function pick(g){[...$('gc').children].forEach(b=>b.setAttribute('aria-pressed',b.dataset.g===g));$('o1').innerHTML=list(G.filter(r=>can(g,r)));$('o2').innerHTML=list(G.filter(d=>can(d,g)))}
+$('gc').innerHTML=G.map(g=>`<button type="button" data-g="${g}" aria-pressed="false">${show(g)}</button>`).join('');
+$('gc').onclick=e=>{const b=e.target.closest('button');if(b)pick(b.dataset.g)};pick('B+');
+
+// live data
+const day0=()=>{const d=new Date();d.setHours(0,0,0,0);return d.getTime()};
+const isF=d=>d.some(x=>/^(female|মহিলা|নারী)$/i.test(String(x==null?'':x).trim()));
+const ready=d=>{const l=d[6];if(l==='কখনো দেইনি'||l==='৩ মাসের বেশি')return true;if(l==='৩ মাসের কম'){const t=new Date(d[9]).getTime();return!isNaN(t)&&Date.now()-t>=(isF(d)?120:90)*864e5}return false};
+const CLOSED=/^(closed|done|fulfilled|completed|expired|বন্ধ|সম্পন্ন)$/i;
+function reqs(rows){const t0=day0();
+  return (rows||[]).filter(r=>Array.isArray(r)&&r[0]&&r[2]&&!CLOSED.test(String(r[9]||'').trim())).map((r,i)=>{
+    const dt=new Date(r[7]),dd=isNaN(dt)?null:Math.round((new Date(dt).setHours(0,0,0,0)-t0)/864e5);
+    return{g:norm(r[0]),u:r[1],h:String(r[3]||'').trim(),a:String(r[5]||'').trim(),ph:String(r[6]||'').replace(/[^\d]/g,''),dd,i}})
+  .filter(d=>d.dd===null||d.dd>=0).sort((x,y)=>(x.dd??99)-(y.dd??99)||y.i-x.i)}
+const when=d=>d.dd===0?['u','আজই']:d.dd===1?['','আগামীকাল']:d.dd>1?['',bn(d.dd)+' দিন পরে']:['','তারিখ নেই'];
+function row(d){const w=when(d),loc=[d.h,d.a&&d.a!==d.h?d.a:''].filter(Boolean).join(', ')||'স্থান দেওয়া নেই';
+  return`<article class="rr ${d.dd===0?'td':''}"><div class="gb">${esc(show(d.g))}</div><div class="ri"><b>${esc(loc)}</b><span><span class="pl ${w[0]}">${w[1]}</span>${bn(d.u||1)} ব্যাগ</span></div>${d.ph?`<a class="cl" href="tel:${d.ph}" aria-label="কল করুন"><svg class="ico"><use href="#p"/></svg><span class="m" style="display:none">কল করুন</span></a>`:''}</article>`}
+
+(async()=>{
+  const [a,b]=await Promise.allSettled([fetch(API+'?sheet=Donors').then(r=>r.json()),fetch(API+'?sheet=Requests').then(r=>r.json())]);
+  if(b.status==='fulfilled'){const l=reqs(b.value);
+    $('rq').innerHTML=l.length?l.slice(0,3).map(row).join(''):'<p class="nr">এখন কোনো চলমান অনুরোধ নেই।</p>';
+    if(matchMedia('(min-width:900px)').matches)document.querySelectorAll('.cl .m').forEach(m=>m.style.display='inline');
+    $('sq').textContent=bn(l.length);
+    if(a.status==='fulfilled'){const d=a.value.filter(Array.isArray);$('sd').textContent=bn(d.length);$('sr').textContent=bn(d.filter(ready).length);$('st').hidden=false}
+  }else{
+    $('rq').innerHTML='<p class="nr">অনুরোধ লোড করা যায়নি। <a href="blood_requests.html" style="color:var(--red2);font-weight:700">সব অনুরোধ দেখুন</a></p>';
+    if(a.status==='fulfilled'){const d=a.value.filter(Array.isArray);$('sd').textContent=bn(d.length);$('sr').textContent=bn(d.filter(ready).length);$('sq').parentElement.remove();$('st').hidden=false}
+  }
+})();
+</script>
+</body>
+</html>
