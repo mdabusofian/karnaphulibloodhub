@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#e11d2e">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/favicon-48.png" type="image/png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="ব্লাড হাব">
+<title>অ্যাপ ইনস্টল — কর্ণফুলী ব্লাড হাব</title>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--r:#e11d2e;--ink:#1f1f23;--mut:#6b6b76;--bg:#fff5f6;--ln:#fde1e4;--g:linear-gradient(135deg,#ff5a64,#e11d2e)}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:'Hind Siliguri',system-ui,sans-serif;background:var(--bg);color:var(--ink);padding-bottom:calc(92px + env(safe-area-inset-bottom,0px));line-height:1.6}
+a{color:inherit;text-decoration:none}button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
+.w{max-width:480px;margin:0 auto;padding:0 16px}
+svg.i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+header{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--ln);padding-top:env(safe-area-inset-top,0px)}
+header .w{display:flex;align-items:center;gap:10px;height:60px}
+header h1{font-size:19px}header h1 span{color:var(--r)}
+.ib{width:42px;height:42px;border-radius:50%;background:#fff0f1;color:var(--r);display:flex;align-items:center;justify-content:center}
+.hero{margin-top:16px;border-radius:26px;background:var(--g);color:#fff;padding:24px 22px;position:relative;overflow:hidden;box-shadow:0 22px 40px -22px rgba(225,29,46,.7)}
+.hero:before{content:"";position:absolute;width:240px;height:240px;border-radius:50%;border:2px solid rgba(255,255,255,.22);right:-70px;top:-70px}
+.hero h2{font-size:26px;line-height:1.3;position:relative}.hero p{position:relative;margin-top:4px;font-weight:500}
+.btn{width:100%;margin-top:14px;padding:14px;border-radius:16px;background:var(--g);color:#fff;font-weight:700;font-size:16px;display:flex;justify-content:center;align-items:center;gap:8px;box-shadow:0 14px 24px -12px rgba(225,29,46,.8)}
+.btn.dark{background:var(--ink);box-shadow:none}
+.btn[hidden]{display:none}
+.card{margin-top:14px;background:#fff;border:1px solid var(--ln);border-radius:24px;padding:18px;box-shadow:0 12px 28px -22px rgba(225,29,46,.55)}
+.card h3{font-size:18px;margin-bottom:8px}
+.card ol{padding-left:22px;color:#333;font-size:15.5px}.card li{margin:4px 0}.card li::marker{color:var(--r);font-weight:700}
+.card p.n{margin-top:8px;font-size:13.5px;color:var(--mut)}
+nav{position:fixed;left:0;right:0;bottom:0;z-index:40;background:rgba(255,255,255,.95);backdrop-filter:blur(16px);border-top:1px solid var(--ln);padding-bottom:env(safe-area-inset-bottom,0px)}
+nav .w{display:flex;justify-content:space-around;align-items:center;height:68px}
+nav a{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11.5px;font-weight:600;color:var(--mut);min-width:60px}
+nav .fab{width:58px;height:58px;border-radius:50%;background:var(--g);color:#fff;justify-content:center;margin-top:-26px;box-shadow:0 14px 26px -8px rgba(225,29,46,.7);border:4px solid #fff}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="back" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+<symbol id="dl" viewBox="0 0 24 24"><path d="M12 3v12M7 11l5 5 5-5M5 21h14"/></symbol>
+<symbol id="home" viewBox="0 0 24 24"><path d="m3 11 9-8 9 8"/><path d="M5 10v10h14V10"/></symbol>
+<symbol id="users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.500"/><path d="M2.500 20a6.500 6.500 0 0 1 13 0"/><path d="M16 4.500a3.500 3.500 0 0 1 0 7M18 14.500a6.500 6.500 0 0 1 3.500 5.500"/></symbol>
+<symbol id="clip" viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4h6v3H9zM9 12h6M9 16h4"/></symbol>
+<symbol id="plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+</defs></svg>
+
+<header><div class="w"><a class="ib" href="index.html" aria-label="পেছনে"><svg class="i"><use href="#back"/></svg></a><h1>অ্যাপ <span>ইনস্টল</span></h1></div></header>
+
+<main class="w">
+  <section class="hero"><h2>ফোনে অ্যাপ হিসেবে রাখুন</h2><p>ইনস্টল করলে হোম স্ক্রিন থেকে এক ট্যাপে খুলবে, ফুল স্ক্রিনে চলবে, আর ডোনার তালিকা ইন্টারনেট ছাড়াও (শেষ দেখা কপি) পাবেন।</p></section>
+
+  <button class="btn" id="ib" hidden><svg class="i"><use href="#dl"/></svg>এখনই ইনস্টল করুন</button>
+  <p id="ok" class="card" hidden style="font-weight:700;color:#15803d">অ্যাপটি ইতিমধ্যে ইনস্টল করা আছে।</p>
+
+  <section class="card"><h3>Android (Chrome)</h3>
+    <ol><li>Chrome-এ এই সাইট খুলুন।</li><li>ডান পাশের উপরের <b>⋮ মেনু</b> চাপুন।</li><li><b>“Install app”</b> বা <b>“Add to Home screen”</b> বেছে নিন।</li></ol>
+    <p class="n">উপরে “এখনই ইনস্টল করুন” বাটন এলে সেটাই সবচেয়ে সহজ।</p></section>
+
+  <section class="card"><h3>iPhone (Safari)</h3>
+    <ol><li>Safari-তে সাইট খুলুন (অন্য ব্রাউজারে চলবে না)।</li><li>নিচের <b>Share</b> বাটন চাপুন।</li><li><b>“Add to Home Screen”</b> চেপে <b>Add</b> করুন।</li></ol></section>
+
+  <section class="card"><h3>APK ফাইল (শুধু Android)</h3>
+    <p style="font-size:15px;color:#333">ইনস্টলের সময় সতর্কতা এলে “Install Anyway” চাপুন।</p>
+    <a class="btn dark" href="https://github.com/mdabusofian/karnaphulibloodhub/raw/main/karnaphuli_blood.apk" rel="noopener"><svg class="i"><use href="#dl"/></svg>APK ডাউনলোড</a></section>
+</main>
+
+<nav><div class="w">
+  <a href="index.html"><svg class="i"><use href="#home"/></svg>হোম</a>
+  <a href="all-donors.html"><svg class="i"><use href="#users"/></svg>ডোনার</a>
+  <a class="fab" href="donor_registration.html" aria-label="ডোনার নিবন্ধন"><svg class="i" style="width:28px;height:28px"><use href="#plus"/></svg></a>
+  <a href="blood_requests.html"><svg class="i"><use href="#clip"/></svg>রিকোয়েস্ট</a>
+  <a href="about.html"><svg class="i"><use href="#users"/></svg>আমরা</a>
+</div></nav>
+
+<script src="pwa.js" defer></script>
+<script>
+const b=document.getElementById('ib');
+const sa=(matchMedia('(display-mode: standalone)').matches)||navigator.standalone===true;
+if(sa)document.getElementById('ok').hidden=false;
+const sync=()=>{b.hidden=!(window.kbhCanInstall&&window.kbhCanInstall())};
+document.addEventListener('kbh-install-ready',sync);
+document.addEventListener('kbh-installed',()=>{b.hidden=true;document.getElementById('ok').hidden=false});
+b.onclick=()=>window.kbhInstall&&window.kbhInstall().then(sync);
+window.addEventListener('load',sync);
+</script>
+</body>
+</html>

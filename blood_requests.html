@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#e11d2e">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/favicon-48.png" type="image/png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="ব্লাড হাব">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>রক্তের অনুরোধ — কর্ণফুলী ব্লাড হাব</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--r:#e11d2e;--ink:#1f1f23;--mut:#6b6b76;--bg:#fff5f6;--ln:#fde1e4;--ok:#15803d;--okb:#e8f7ee;--am:#a35f00;--amb:#fff3d6;--g:linear-gradient(135deg,#ff5a64,#e11d2e)}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:'Hind Siliguri',system-ui,sans-serif;background:var(--bg);color:var(--ink);padding-bottom:calc(92px + env(safe-area-inset-bottom,0px));line-height:1.5}
+a{color:inherit;text-decoration:none}button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
+.w{max-width:480px;margin:0 auto;padding:0 16px}
+svg.i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+.h{display:none!important}
+
+header{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--ln);padding-top:env(safe-area-inset-top,0px)}
+header .w{display:flex;align-items:center;justify-content:space-between;height:60px}
+header h1{font-size:19px}header h1 span{color:var(--r)}
+.ib{width:42px;height:42px;border-radius:50%;background:#fff0f1;color:var(--r);display:flex;align-items:center;justify-content:center}
+
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:16px;background:#fff;border:2px solid var(--ln);border-radius:18px;padding:4px}
+.tabs button{padding:11px 6px;border-radius:14px;font-weight:700;font-size:15px;color:var(--mut);display:flex;gap:8px;align-items:center;justify-content:center}
+.tabs button.on{background:var(--g);color:#fff;box-shadow:0 10px 18px -10px rgba(225,29,46,.8)}
+
+/* list */
+.chips{display:flex;gap:8px;overflow-x:auto;margin:14px -16px 0;padding:2px 16px;scrollbar-width:none}.chips::-webkit-scrollbar{display:none}
+.chips button{flex:none;min-width:52px;padding:8px 14px;border-radius:14px;background:#fff;border:2px solid var(--ln);color:var(--r);font-weight:700}
+.chips button.on{background:var(--r);border-color:var(--r);color:#fff}
+.meta{display:flex;justify-content:space-between;align-items:center;margin:14px 2px 10px;font-size:14px;color:var(--mut)}
+.meta b{color:var(--ink)}.meta button{color:var(--r);font-weight:700;display:flex;gap:6px;align-items:center}
+
+.rq{background:#fff;border:1px solid var(--ln);border-radius:24px;margin-bottom:12px;overflow:hidden;box-shadow:0 12px 28px -22px rgba(225,29,46,.55)}
+.rq.old{opacity:.65}
+.rq.today{border-color:var(--r);box-shadow:0 0 0 1px var(--r),0 16px 30px -20px rgba(225,29,46,.7)}
+.top{display:flex;gap:14px;padding:14px;align-items:center}
+.gb{width:64px;height:64px;border-radius:18px;background:var(--g);color:#fff;display:flex;align-items:center;justify-content:center;font-size:25px;font-weight:700;line-height:1;flex:none;box-shadow:0 12px 20px -12px rgba(225,29,46,.8)}
+.old .gb{background:#c9c9d1;box-shadow:none}
+.inf{flex:1;min-width:0}
+.inf small{font-size:12.5px;color:var(--mut)}
+.inf h3{font-size:17px;line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.loc{display:flex;gap:5px;align-items:flex-start;font-size:13.5px;color:var(--mut);margin-top:2px}
+.loc svg{margin-top:3px}
+.tags{display:flex;flex-wrap:wrap;gap:6px;padding:0 14px 12px}
+.tag{font-size:12.5px;font-weight:700;padding:2px 10px;border-radius:999px;background:#fff0f1;color:var(--r)}
+.tag.u{background:var(--r);color:#fff}.tag.a{background:var(--amb);color:var(--am)}.tag.m{background:#f0f0f3;color:var(--mut)}
+.nt{padding:0 14px 12px;font-size:13.5px;color:#444}
+.ft{display:flex;gap:8px;padding:10px 14px;border-top:1px dashed var(--ln)}
+.ft a,.ft button{height:44px;border-radius:14px;display:flex;align-items:center;justify-content:center;gap:6px;font-weight:700;font-size:14px}
+.cl{flex:1;background:var(--ink);color:#fff}.sh{width:44px;background:#fff0f1;color:var(--r)}.wa{width:44px;background:var(--okb);color:var(--ok)}
+
+.btn{width:100%;padding:14px;border-radius:16px;background:var(--g);color:#fff;font-weight:700;font-size:16px;display:flex;justify-content:center;align-items:center;gap:8px;box-shadow:0 14px 24px -12px rgba(225,29,46,.8)}
+.btn:disabled{opacity:.7}.btn.ghost{background:#fff;border:2px solid var(--ln);color:var(--r);box-shadow:none}.btn.dark{background:var(--ink);box-shadow:none}
+.em{text-align:center;color:var(--mut);padding:34px 12px}.em svg{width:40px;height:40px;color:var(--r);margin-bottom:8px}.em p+p{font-size:14px;margin-top:2px}
+.sk{height:150px;border-radius:24px;margin-bottom:12px;background:linear-gradient(90deg,#fde1e4,#fff,#fde1e4);background-size:200% 100%;animation:sh 1.2s linear infinite}
+@keyframes sh{to{background-position:-200% 0}}
+
+/* form */
+.wn{margin-top:14px;background:#fff8e6;border:1px solid #fde4a0;border-radius:18px;padding:12px 14px;display:flex;gap:10px;font-size:13.5px}.wn svg{color:#c27a00;margin-top:2px}
+.card{margin-top:14px;background:#fff;border:1px solid var(--ln);border-radius:26px;padding:20px;box-shadow:0 14px 30px -22px rgba(225,29,46,.6)}
+.card h2{font-size:19px}.card>p.sb{font-size:13.5px;color:var(--mut);margin:2px 0 16px}
+.f{margin-bottom:16px}.f>label,.f>.lb{display:block;font-size:13.5px;font-weight:600;margin-bottom:6px}
+input[type=text],input[type=tel],input[type=date],select,textarea{width:100%;font:inherit;font-size:16px;padding:13px 14px;border:2px solid var(--ln);border-radius:14px;background:#fffafa;color:var(--ink);appearance:none;-webkit-appearance:none}
+textarea{resize:vertical;min-height:76px}
+select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23e11d2e' stroke-width='3' stroke-linecap='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center}
+input:focus,select:focus,textarea:focus{border-color:var(--r);outline:0;background:#fff}
+.er{color:var(--r);font-size:12.5px;margin-top:4px;display:none}.bad .er{display:block}.bad input,.bad select,.bad textarea{border-color:var(--r)}.bad .seg,.bad .step{outline:2px solid var(--r);outline-offset:3px}
+.seg{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;border-radius:14px}
+.seg button{padding:14px 0;border-radius:14px;background:#fff0f1;color:var(--r);font-weight:700;font-size:18px;border:2px solid transparent}
+.seg button.on{background:var(--r);color:#fff;box-shadow:0 10px 18px -10px rgba(225,29,46,.8)}
+.step{display:flex;align-items:center;border:2px solid var(--ln);border-radius:14px;background:#fffafa;overflow:hidden}
+.step button{width:52px;height:50px;font-size:24px;font-weight:700;color:var(--r)}.step output{flex:1;text-align:center;font-weight:700;font-size:18px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ck{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;margin:4px 0 18px}.ck input{width:22px;height:22px;accent-color:var(--r);flex:none;margin-top:2px}
+
+.ok{text-align:center;margin-top:24px}.ok .tk{width:72px;height:72px;border-radius:50%;background:var(--g);color:#fff;margin:0 auto 10px;display:flex;align-items:center;justify-content:center}
+.ok .tk svg{width:38px;height:38px;stroke-width:3}.ok h2{font-size:24px}.ok p{color:var(--mut);font-size:14px;margin-bottom:18px}.ok .btn{margin-top:10px}
+
+nav{position:fixed;left:0;right:0;bottom:0;z-index:40;background:rgba(255,255,255,.95);backdrop-filter:blur(16px);border-top:1px solid var(--ln);padding-bottom:env(safe-area-inset-bottom,0px)}
+nav .w{display:flex;justify-content:space-around;align-items:center;height:68px}
+nav a,nav button{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11.5px;font-weight:600;color:var(--mut);min-width:60px}nav .on{color:var(--r)}
+nav .fab{width:58px;height:58px;border-radius:50%;background:var(--g);color:#fff;justify-content:center;margin-top:-26px;box-shadow:0 14px 26px -8px rgba(225,29,46,.7);border:4px solid #fff}
+#dw{position:fixed;inset:0;z-index:60;background:rgba(0,0,0,.45);opacity:0;pointer-events:none;transition:opacity .3s}
+#dw>div{position:absolute;left:0;right:0;bottom:0;max-width:480px;margin:0 auto;background:#fff;border-radius:28px 28px 0 0;padding:22px 20px calc(24px + env(safe-area-inset-bottom,0px));transform:translateY(100%);transition:transform .35s}
+.op #dw{opacity:1;pointer-events:auto}.op #dw>div{transform:none}
+#dw a{display:flex;align-items:center;gap:12px;padding:13px 4px;border-bottom:1px solid var(--ln);font-weight:600}#dw a svg{color:var(--r)}
+#ts{position:fixed;left:16px;right:16px;bottom:calc(92px + env(safe-area-inset-bottom,0px));z-index:70;max-width:448px;margin:0 auto;background:var(--ink);color:#fff;border-radius:16px;padding:12px 16px;font-size:14px;transform:translateY(30px);opacity:0;pointer-events:none;transition:.3s}#ts.on{transform:none;opacity:1}
+.cd{width:44px;background:#fff0f1;color:var(--r)}
+#cw{position:fixed;inset:0;z-index:65;background:rgba(0,0,0,.45);opacity:0;pointer-events:none;transition:opacity .3s}
+#cw>div{position:absolute;left:0;right:0;bottom:0;max-width:480px;margin:0 auto;background:#fff;border-radius:28px 28px 0 0;padding:16px 18px calc(20px + env(safe-area-inset-bottom,0px));max-height:94vh;overflow-y:auto;transform:translateY(100%);transition:transform .35s}
+.cop #cw{opacity:1;pointer-events:auto}.cop #cw>div{transform:none}
+.cv{width:100%;height:auto;aspect-ratio:4/5;border-radius:18px;display:block;margin:12px 0;box-shadow:0 20px 36px -22px rgba(225,29,46,.8);background:#fde1e4}
+.btn.sm{padding:12px;font-size:15px}.cwh{display:flex;justify-content:space-between;align-items:center}.cwh h3{font-size:19px}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="back" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+<symbol id="menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+<symbol id="pin" viewBox="0 0 24 24"><path d="M12 21s7-6 7-11a7 7 0 0 0-14 0c0 5 7 11 7 11z"/><circle cx="12" cy="10" r="2.500"/></symbol>
+<symbol id="phone" viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.200 2 19.800 19.800 0 0 1-8.600-3.100 19.500 19.500 0 0 1-6-6A19.800 19.800 0 0 1 2.100 4.200 2 2 0 0 1 4.100 2h3a2 2 0 0 1 2 1.700c.1 1 .4 1.900.7 2.800a2 2 0 0 1-.5 2.100L8.100 9.900a16 16 0 0 0 6 6l1.300-1.300a2 2 0 0 1 2.100-.4c.9.3 1.800.6 2.800.7a2 2 0 0 1 1.700 2z"/></symbol>
+<symbol id="msg" viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.800 7L4 20l1.200-4.500A8 8 0 1 1 21 12z"/></symbol>
+<symbol id="share" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.600 13.500 6.800 4M15.400 6.500l-6.800 4"/></symbol>
+<symbol id="drop" viewBox="0 0 24 24"><path d="M12 2.700S5 10 5 14.500a7 7 0 0 0 14 0C19 10 12 2.700 12 2.700z"/></symbol>
+<symbol id="home" viewBox="0 0 24 24"><path d="m3 11 9-8 9 8"/><path d="M5 10v10h14V10"/></symbol>
+<symbol id="users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.500"/><path d="M2.500 20a6.500 6.500 0 0 1 13 0"/><path d="M16 4.500a3.500 3.500 0 0 1 0 7M18 14.500a6.500 6.500 0 0 1 3.500 5.500"/></symbol>
+<symbol id="clip" viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4h6v3H9zM9 12h6M9 16h4"/></symbol>
+<symbol id="plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+<symbol id="refresh" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.700L21 8M21 3v5h-5"/></symbol>
+<symbol id="check" viewBox="0 0 24 24"><path d="m5 12 5 5 9-10"/></symbol>
+<symbol id="img" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-8 8"/></symbol>
+<symbol id="close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+<symbol id="warn" viewBox="0 0 24 24"><path d="M12 3 2 21h20z"/><path d="M12 10v5M12 18h.01"/></symbol>
+</defs></svg>
+
+<header><div class="w">
+  <div style="display:flex;align-items:center;gap:10px"><a class="ib" href="index.html" aria-label="পেছনে"><svg class="i"><use href="#back"/></svg></a><h1>রক্তের <span>অনুরোধ</span></h1></div>
+  <button class="ib" id="mn" aria-label="মেনু"><svg class="i"><use href="#menu"/></svg></button>
+</div></header>
+
+<main class="w">
+  <div class="tabs" role="tablist">
+    <button class="on" id="tL" role="tab" aria-selected="true"><svg class="i"><use href="#clip"/></svg>অনুরোধ তালিকা</button>
+    <button id="tF" role="tab" aria-selected="false"><svg class="i"><use href="#drop"/></svg>রক্ত চাই</button>
+  </div>
+
+  <!-- LIST -->
+  <section id="pL">
+    <div class="chips" id="gc" role="group" aria-label="রক্তের গ্রুপ"></div>
+    <div class="meta"><span id="rs">লোড হচ্ছে…</span><button id="rf"><svg class="i" style="width:16px;height:16px"><use href="#refresh"/></svg>রিফ্রেশ</button></div>
+    <div id="ls"><div class="sk"></div><div class="sk"></div></div>
+    <button class="btn ghost h" id="old"></button>
+  </section>
+
+  <!-- FORM -->
+  <section id="pF" class="h">
+    <div id="fw">
+      <div class="wn"><svg class="i"><use href="#warn"/></svg><div><b>মনে রাখুন:</b> রক্তের জন্য কাউকে টাকা দেবেন না। সরাসরি ডোনারের সঙ্গে কথা বলুন।</div></div>
+      <form class="card" id="fm" novalidate>
+        <h2>রক্তের জন্য আবেদন</h2><p class="sb">সঠিক তথ্য দিলে দ্রুত ডোনার পাওয়া যায়</p>
+        <div class="f" data-f="group"><div class="lb">রক্তের গ্রুপ</div><div class="seg" id="bg"></div><div class="er">রক্তের গ্রুপ বেছে নিন</div></div>
+        <div class="f"><div class="lb">কত ব্যাগ লাগবে?</div><div class="step"><button type="button" id="u-" aria-label="কমান">−</button><output id="uo">১</output><button type="button" id="u+" aria-label="বাড়ান">+</button></div></div>
+        <div class="f" data-f="patient"><label for="pt">রোগীর নাম</label><input type="text" id="pt" placeholder="যেমন: মোঃ রহিম উদ্দিন" autocomplete="off"><div class="er">রোগীর নাম লিখুন</div></div>
+        <div class="f" data-f="hospital"><label for="hs">হাসপাতালের নাম</label><input type="text" id="hs" placeholder="যেমন: চট্টগ্রাম মেডিকেল কলেজ হাসপাতাল" autocomplete="off"><div class="er">হাসপাতালের নাম লিখুন</div></div>
+        <div class="f" data-f="area"><label for="ar">উপজেলা / এলাকা</label><select id="ar"><option value="">নির্বাচন করুন</option></select><div class="er">এলাকা বেছে নিন</div></div>
+        <div class="two">
+          <div class="f" data-f="date"><label for="dt">কবে লাগবে?</label><input type="date" id="dt"><div class="er">আজ বা পরের তারিখ দিন</div></div>
+          <div class="f" data-f="phone"><label for="ph">মোবাইল নম্বর</label><input type="tel" id="ph" inputmode="numeric" placeholder="01XXXXXXXXX" maxlength="14" autocomplete="tel"><div class="er">১১ সংখ্যার সঠিক নম্বর দিন</div></div>
+        </div>
+        <div class="f"><label for="nt">অতিরিক্ত তথ্য (ঐচ্ছিক)</label><textarea id="nt" maxlength="160" placeholder="যেমন: অপারেশন, থ্যালাসেমিয়া, কেবিন নম্বর"></textarea></div>
+        <div class="f" data-f="ok"><label class="ck"><input type="checkbox" id="ag"><span>আমি জানি আমার মোবাইল নম্বর সবার জন্য দেখা যাবে এবং আমি এই তথ্যের জন্য দায়ী।</span></label><div class="er" style="margin-top:-12px">চালিয়ে যেতে সম্মতি দিন</div></div>
+        <button type="submit" class="btn" id="sb"><svg class="i"><use href="#drop"/></svg>অনুরোধ পোস্ট করুন</button>
+      </form>
+    </div>
+
+    <div class="ok h" id="okw">
+      <div class="tk"><svg class="i"><use href="#check"/></svg></div>
+      <h2>অনুরোধ পোস্ট হয়েছে</h2><p>নিচের কার্ডটি ডাউনলোড করে ফেসবুকে পোস্ট করুন। বন্ধুদের কাছে শেয়ার করলে আরও দ্রুত ডোনার পাবেন।</p>
+      <canvas class="cv" id="rcv" width="1080" height="1350" aria-label="রক্তের অনুরোধ কার্ড"></canvas>
+      <button class="btn" id="cdl"><svg class="i"><use href="#img"/></svg>কার্ড ডাউনলোড করুন</button>
+      <div class="two" style="margin-top:10px"><button class="btn dark sm" id="csh" style="margin-top:0"><svg class="i"><use href="#share"/></svg>শেয়ার</button><button class="btn ghost sm" id="ccp" style="margin-top:0">ক্যাপশন কপি</button></div>
+      <button class="btn ghost" id="okl">তালিকায় দেখুন</button>
+    </div>
+  </section>
+</main>
+
+<nav><div class="w">
+  <a href="index.html"><svg class="i"><use href="#home"/></svg>হোম</a>
+  <a href="all-donors.html"><svg class="i"><use href="#users"/></svg>ডোনার</a>
+  <a class="fab" href="donor_registration.html" aria-label="ডোনার নিবন্ধন"><svg class="i" style="width:28px;height:28px"><use href="#plus"/></svg></a>
+  <a class="on" href="blood_requests.html"><svg class="i"><use href="#clip"/></svg>রিকোয়েস্ট</a>
+  <button id="mn2"><svg class="i"><use href="#menu"/></svg>মেনু</button>
+</div></nav>
+
+<div id="dw"><div>
+  <a href="about.html"><svg class="i"><use href="#users"/></svg>আমাদের সম্পর্কে</a>
+  <a href="all-donors.html"><svg class="i"><use href="#users"/></svg>ডোনার তালিকা</a>
+  <a href="donor_registration.html"><svg class="i"><use href="#drop"/></svg>ডোনার নিবন্ধন</a>
+  <a href="https://www.facebook.com/khb"><svg class="i"><use href="#share"/></svg>ফেসবুক পেজ</a>
+  <button class="btn" id="dx" style="margin-top:14px">বন্ধ করুন</button>
+</div></div>
+<div id="cw" role="dialog" aria-modal="true" aria-label="শেয়ার কার্ড"><div>
+  <div class="cwh"><h3>ফেসবুকে শেয়ার কার্ড</h3><button class="ib" id="cx" aria-label="বন্ধ করুন"><svg class="i"><use href="#close"/></svg></button></div>
+  <canvas class="cv" id="scv" width="1080" height="1350" aria-label="রক্তের অনুরোধ কার্ড"></canvas>
+  <button class="btn" id="sdl"><svg class="i"><use href="#img"/></svg>কার্ড ডাউনলোড করুন</button>
+  <div class="two" style="margin-top:10px"><button class="btn dark sm" id="ssh" style="margin-top:0"><svg class="i"><use href="#share"/></svg>শেয়ার</button><button class="btn ghost sm" id="scp" style="margin-top:0">ক্যাপশন কপি</button></div>
+</div></div>
+<div id="ts" role="status"></div>
+
+<script>
+const API="https://script.google.com/macros/s/AKfycbyGguWgJdIpVgv0Sol7qF7gJOelhv-y47NoW6my1ZnlSjxHcj7ygwlMuDxffRezTW4wbA/exec";
+const BG=['A+','A-','B+','B-','AB+','AB-','O+','O-'];
+const UP=["কর্ণফুলী","পটিয়া","বাঁশখালী","আনোয়ারা","চন্দনাইশ","সাতকানিয়া","লোহাগাড়া","বোয়ালখালী","রাঙ্গুনিয়া","রাউজান","ফটিকছড়ি","হাটহাজারী","সীতাকুণ্ড","মীরসরাই","সন্দ্বীপ","চট্টগ্রাম শহর"];
+const $=i=>document.getElementById(i);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const bn=n=>String(n).replace(/\d/g,d=>'০১২৩৪৫৬৭৮৯'[d]),bnd=s=>String(s).replace(/[০-৯]/g,d=>'০১২৩৪৫৬৭৮৯'.indexOf(d));
+const show=g=>g.replace('-','−'),norm=g=>String(g||'').trim().toUpperCase().replace(/[−–]/g,'-');
+const ic=n=>`<svg class="i" style="width:15px;height:15px"><use href="#${n}"/></svg>`;
+const toast=m=>{const t=$('ts');t.textContent=m;t.classList.add('on');clearTimeout(t.k);t.k=setTimeout(()=>t.classList.remove('on'),3200)};
+
+const normPh=p=>{p=String(p==null?'':p).replace(/\D/g,'').replace(/^88/,'');return /^1\d{9}$/.test(p)?'0'+p:p};
+if(window.CanvasRenderingContext2D&&!CanvasRenderingContext2D.prototype.roundRect)CanvasRenderingContext2D.prototype.roundRect=function(a,b,w,h,r){r=Array.isArray(r)?r[0]:r;this.moveTo(a+r,b);this.arcTo(a+w,b,a+w,b+h,r);this.arcTo(a+w,b+h,a,b+h,r);this.arcTo(a,b+h,a,b,r);this.arcTo(a,b,a+w,b,r);this.closePath()};
+$('mn').onclick=$('mn2').onclick=()=>document.body.classList.add('op');
+$('dw').onclick=e=>{if(e.target.id=='dw'||e.target.id=='dx')document.body.classList.remove('op')};
+
+// tabs
+function tab(t){const f=t=='form';$('pL').classList.toggle('h',f);$('pF').classList.toggle('h',!f);
+  $('tL').classList.toggle('on',!f);$('tF').classList.toggle('on',f);$('tL').setAttribute('aria-selected',!f);$('tF').setAttribute('aria-selected',f);scrollTo(0,0)}
+$('tL').onclick=()=>{tab('list');load()};
+// সফল পেজ থেকে অন্য ট্যাবে গিয়ে ফিরলে আবার ফর্ম দেখাতে হবে
+$('tF').onclick=()=>{$('okw').classList.add('h');$('fw').classList.remove('h');tab('form')};
+
+// ---------- list ----------
+// Sheet column order (payload order): 0 group, 1 units, 2 patient, 3 hospital, 4 district, 5 area, 6 contact, 7 needed-by date, 8 notes, 9 status
+const day0=()=>{const d=new Date();d.setHours(0,0,0,0);return d.getTime()};
+const CLOSED=/^(closed|done|fulfilled|completed|expired|বন্ধ|সম্পন্ন)$/i;
+let all=[],gF='',showOld=false;
+
+function prep(rows){
+  const t0=day0();
+  return (rows||[]).filter(r=>Array.isArray(r)&&r[0]&&r[2]).map((r,i)=>{
+    const dt=new Date(r[7]),ok=!isNaN(dt),dd=ok?Math.round((new Date(dt).setHours(0,0,0,0)-t0)/864e5):null;
+    return{g:norm(r[0]),u:r[1],p:String(r[2]).trim(),h:String(r[3]||'').trim(),a:String(r[5]||'').trim(),ph:normPh(r[6]),
+      dt:ok?dt:null,dd,n:String(r[8]||'').trim(),closed:CLOSED.test(String(r[9]||'').trim()),i};
+  }).filter(d=>!d.closed).sort((x,y)=>{const ox=x.dd!==null&&x.dd<0,oy=y.dd!==null&&y.dd<0;
+    return ox-oy||(ox?y.dd-x.dd:(x.dd??99)-(y.dd??99))||y.i-x.i});
+}
+function when(d){
+  if(d.dd===null)return{c:'m',t:'তারিখ দেওয়া নেই'};
+  if(d.dd<0)return{c:'m',t:'তারিখ পেরিয়ে গেছে'};
+  if(d.dd===0)return{c:'u',t:'আজই দরকার'};
+  if(d.dd===1)return{c:'a',t:'আগামীকাল'};
+  return{c:'a',t:d.dt.toLocaleDateString('bn-BD',{day:'numeric',month:'long'})};
+}
+function card(d,k){
+  const w=when(d),old=d.dd!==null&&d.dd<0,loc=[d.h,d.a&&d.a!==d.h?d.a:''].filter(Boolean).join(', ')||'স্থান দেওয়া নেই';
+  const note=d.n&&d.n!=='জরুরি প্রয়োজন'?`<p class="nt">${esc(d.n)}</p>`:'';
+  const call=d.ph?`<a class="cl" href="tel:${d.ph}">${ic('phone')}কল করুন</a><a class="wa" href="https://wa.me/88${d.ph}" target="_blank" rel="noopener" aria-label="হোয়াটসঅ্যাপ">${ic('msg')}</a>`:'';
+  return `<article class="rq ${old?'old':''} ${d.dd===0?'today':''}"><div class="top"><div class="gb">${esc(show(d.g))}</div>
+  <div class="inf"><small>রোগী</small><h3>${esc(d.p)}</h3><div class="loc">${ic('pin')}<span>${esc(loc)}</span></div></div></div>
+  <div class="tags"><span class="tag ${w.c}">${w.t}</span><span class="tag">${esc(bn(d.u||1))} ব্যাগ</span></div>${note}
+  <div class="ft">${call}<button class="cd" data-c="${k}" aria-label="ফেসবুকের জন্য কার্ড">${ic('img')}</button><button class="sh" data-k="${k}" aria-label="শেয়ার করুন">${ic('share')}</button></div></article>`;
+}
+function render(){
+  const f=all.filter(d=>!gF||d.g===gF),act=f.filter(d=>d.dd===null||d.dd>=0),old=f.filter(d=>d.dd!==null&&d.dd<0);
+  const list=showOld?f:act;
+  $('rs').innerHTML=`<b>${bn(act.length)}টি</b> চলমান অনুরোধ`;
+  $('ls').innerHTML=list.length?list.map(d=>card(d,all.indexOf(d))).join(''):
+   `<div class="em"><svg class="i"><use href="#clip"/></svg><p><b>এখন কোনো চলমান অনুরোধ নেই</b></p><p>${gF?'অন্য গ্রুপ বেছে দেখুন।':'আপনার রক্ত লাগলে “রক্ত চাই” ট্যাবে আবেদন করুন।'}</p></div>`;
+  $('old').classList.toggle('h',!old.length);$('old').textContent=showOld?'পুরনো অনুরোধ লুকান':`পুরনো অনুরোধ দেখুন (${bn(old.length)})`;
+}
+function load(){
+  $('ls').innerHTML='<div class="sk"></div><div class="sk"></div>';$('rs').textContent='লোড হচ্ছে…';
+  Promise.race([fetch(`${API}?sheet=Requests`).then(r=>r.json()),new Promise((_,j)=>setTimeout(j,15000))])
+   .then(r=>{all=prep(r);render()})
+   .catch(()=>{$('rs').textContent='';$('old').classList.add('h');$('ls').innerHTML=`<div class="em"><p><b>ডাটা লোড করা যায়নি</b></p><p>ইন্টারনেট দেখে আবার চেষ্টা করুন।</p></div>`});
+}
+$('gc').innerHTML=`<button class="on" data-g="">সব</button>`+BG.map(g=>`<button data-g="${g}">${show(g)}</button>`).join('');
+$('gc').onclick=e=>{const b=e.target.closest('button');if(!b)return;gF=b.dataset.g;[...$('gc').children].forEach(x=>x.classList.toggle('on',x==b));render()};
+$('old').onclick=()=>{showOld=!showOld;render()};$('rf').onclick=load;
+
+function msg(d){return `🚨 জরুরি রক্ত দরকার!\n🩸 গ্রুপ: ${show(d.g)} (${bn(d.u||1)} ব্যাগ)\n🏥 স্থান: ${[d.h,d.a&&d.a!==d.h?d.a:''].filter(Boolean).join(', ')}\n📞 যোগাযোগ: ${d.ph}\n📌 কর্ণফুলী ব্লাড হাব`}
+async function share(text){
+  try{if(navigator.share)await navigator.share({text,url:location.origin+location.pathname});
+  else{await navigator.clipboard.writeText(text);toast('তথ্য কপি হয়েছে, এবার পেস্ট করে শেয়ার করুন')}}catch(e){}}
+$('ls').onclick=e=>{const c=e.target.closest('[data-c]');if(c)return openCard(all[+c.dataset.c]);const b=e.target.closest('[data-k]');if(b)share(msg(all[+b.dataset.k]))};
+
+// ---------- form ----------
+$('bg').innerHTML=BG.map(g=>`<button type="button" data-v="${g}">${show(g)}</button>`).join('');
+$('ar').innerHTML+=UP.map(u=>`<option>${u}</option>`).join('');
+const pad=n=>String(n).padStart(2,'0'),td=new Date(),iso=`${td.getFullYear()}-${pad(td.getMonth()+1)}-${pad(td.getDate())}`;
+$('dt').min=iso;$('dt').value=iso;
+let grp='',units=1;
+$('bg').onclick=e=>{const b=e.target.closest('button');if(!b)return;grp=b.dataset.v;[...$('bg').children].forEach(x=>x.classList.toggle('on',x==b));$('bg').closest('.f').classList.remove('bad')};
+const setU=n=>{units=Math.min(10,Math.max(1,n));$('uo').textContent=bn(units)};
+$('u-').onclick=()=>setU(units-1);$('u+').onclick=()=>setU(units+1);
+const bad=(k,t)=>{const f=document.querySelector(`[data-f=${k}]`);f.classList.toggle('bad',t);return t};
+document.querySelectorAll('#fm input,#fm select').forEach(el=>el.addEventListener('input',()=>el.closest('.f')?.classList.remove('bad')));
+
+let last=null;
+$('fm').onsubmit=async e=>{e.preventDefault();
+  const ph=bnd($('ph').value).replace(/[\s-]/g,'').replace(/^\+?88/,'');
+  let n=0;
+  n+=bad('group',!grp);n+=bad('patient',$('pt').value.trim().length<2);n+=bad('hospital',$('hs').value.trim().length<2);
+  n+=bad('area',!$('ar').value);n+=bad('date',!$('dt').value||$('dt').value<iso);n+=bad('phone',!/^01[3-9]\d{8}$/.test(ph));n+=bad('ok',!$('ag').checked);
+  if(n)return toast('লাল চিহ্নিত তথ্যগুলো ঠিক করুন');
+  let prev=0;try{prev=+localStorage.getItem('kbhReqT')||0}catch(_){}if(Date.now()-prev<120000)return toast('একটু আগেই অনুরোধ পাঠিয়েছেন। ২ মিনিট পর আবার চেষ্টা করুন');
+  const b=$('sb');b.disabled=true;b.textContent='জমা হচ্ছে…';
+  const p={group:grp,units:String(units),patient:$('pt').value.trim(),hospital:$('hs').value.trim(),district:'চট্টগ্রাম',area:$('ar').value,contact:ph,date:$('dt').value,notes:$('nt').value.trim()||'জরুরি প্রয়োজন',status:'Live'};
+  try{
+    await fetch(`${API}?sheet=Requests`,{method:'POST',mode:'no-cors',body:JSON.stringify(p)});
+    try{localStorage.setItem('kbhReqT',Date.now())}catch(_){}
+    const dt0=new Date(p.date+'T00:00:00');last={g:grp,u:units,p:p.patient,h:p.hospital,a:p.area,ph,dt:dt0,dd:Math.round((dt0-day0())/864e5)};
+    $('fw').classList.add('h');$('okw').classList.remove('h');scrollTo(0,0);drawTo($('rcv'),last);$('fm').reset();$('dt').value=iso;grp='';setU(1);[...$('bg').children].forEach(x=>x.classList.remove('on'));
+  }catch(err){toast('ইন্টারনেট সমস্যা, আবার চেষ্টা করুন')}
+  b.disabled=false;b.innerHTML='<svg class="i"><use href="#drop"/></svg>অনুরোধ পোস্ট করুন'};
+bindCard('rcv','cdl','csh','ccp',()=>last);
+$('okl').onclick=()=>{$('okw').classList.add('h');$('fw').classList.remove('h');tab('list');setTimeout(load,1200);load()};
+
+
+// ---------- ফেসবুক পোস্টের কার্ড (canvas 1080x1350) ----------
+const SITE=location.origin+location.pathname;
+let cardFor=null;
+const cap=d=>msg(d)+'\n'+SITE;
+function fit(x,t,max,size,min,wt,F){while(size>min){x.font=`${wt} ${size}px ${F}`;if(x.measureText(t).width<=max)break;size-=2}x.font=`${wt} ${size}px ${F}`;return size}
+function wrap(x,t,maxW,maxL){const w=String(t).split(/\s+/),L=[];let c='';for(const k of w){const n=c?c+' '+k:k;if(x.measureText(n).width>maxW&&c){L.push(c);c=k}else c=n}if(c)L.push(c);
+  if(L.length>maxL){L.length=maxL;let s=L[maxL-1];while(x.measureText(s+'…').width>maxW&&s.length>1)s=s.slice(0,-1);L[maxL-1]=s+'…'}return L}
+async function drawTo(cv,d){
+  try{await document.fonts.load('700 40px "Hind Siliguri"');await document.fonts.load('600 30px "Hind Siliguri"')}catch(_){}
+  const x=cv.getContext('2d'),W=1080,H=1350,F='"Hind Siliguri",system-ui,sans-serif',INK='#1f1f23',MUT='#5c5c66',RED='#d4112b';
+  x.clearRect(0,0,W,H);x.textBaseline='alphabetic';x.textAlign='left';
+  // লাল ব্যাকগ্রাউন্ড (এর ওপরে শুধু সাদা লেখা)
+  const g=x.createLinearGradient(0,0,W,H);g.addColorStop(0,'#f0414f');g.addColorStop(1,'#b80f1e');x.fillStyle=g;x.fillRect(0,0,W,H);
+  x.strokeStyle='rgba(255,255,255,.16)';x.lineWidth=4;[[960,80,240],[960,80,360],[90,1300,260]].forEach(([a,b,r])=>{x.beginPath();x.arc(a,b,r,0,7);x.stroke()});
+  x.fillStyle='#fff';x.beginPath();x.arc(110,104,48,0,7);x.fill();
+  x.save();x.translate(110,106);x.scale(.5,.5);x.translate(-60,-63);x.fillStyle=RED;x.fill(new Path2D('M60 8C60 8 22 54 22 80a38 38 0 0 0 76 0C98 54 60 8 60 8z'));x.restore();
+  x.fillStyle='#fff';x.font=`700 46px ${F}`;x.fillText('কর্ণফুলী ব্লাড হাব',178,100);
+  x.font=`600 28px ${F}`;x.fillText('চট্টগ্রামের রক্তদাতা কমিউনিটি',180,142);
+  x.textAlign='center';fit(x,'জরুরি রক্ত দরকার',940,100,56,700,F);x.fillText('জরুরি রক্ত দরকার',W/2,312);
+  // সাদা প্যানেল (এর ওপরে শুধু গাঢ় লেখা)
+  x.fillStyle='#fff';x.beginPath();x.roundRect(60,360,960,865,48);x.fill();
+  const gg=x.createLinearGradient(110,410,340,640);gg.addColorStop(0,'#f0414f');gg.addColorStop(1,'#c4121f');
+  x.fillStyle=gg;x.beginPath();x.roundRect(110,410,230,230,40);x.fill();
+  x.fillStyle='#fff';x.textAlign='center';fit(x,show(d.g),190,124,60,700,F);x.fillText(show(d.g),225,555);
+  x.textAlign='left';x.fillStyle=INK;x.font=`700 68px ${F}`;x.fillText(`${bn(d.u||1)} ব্যাগ রক্ত`,380,500);
+  const w=when(d);x.fillStyle=MUT;x.font=`600 30px ${F}`;x.fillText('কবে লাগবে',380,556);
+  x.fillStyle=RED;fit(x,w.t,600,48,32,700,F);x.fillText(w.t,380,614);
+  x.strokeStyle='#fde1e4';x.lineWidth=3;x.beginPath();x.moveTo(110,690);x.lineTo(970,690);x.stroke();
+  x.fillStyle=MUT;x.font=`600 28px ${F}`;x.fillText('রোগী',110,742);
+  x.fillStyle=INK;fit(x,d.p||'—',860,56,32,700,F);x.fillText(d.p||'—',110,800);
+  x.fillStyle=MUT;x.font=`600 28px ${F}`;x.fillText('হাসপাতাল / স্থান',110,866);
+  const loc=[d.h,d.a&&d.a!==d.h?d.a:''].filter(Boolean).join(', ')||'স্থান দেওয়া নেই';
+  x.fillStyle=INK;x.font=`700 46px ${F}`;wrap(x,loc,860,2).forEach((l,i)=>x.fillText(l,110,922+i*62));
+  x.fillStyle=MUT;x.font=`600 28px ${F}`;x.fillText('যোগাযোগ',110,1066);
+  x.fillStyle=RED;fit(x,d.ph||'—',620,78,40,700,F);x.fillText(d.ph||'—',110,1148);
+  x.fillStyle=MUT;x.font=`500 26px ${F}`;x.fillText('এই নম্বরে সরাসরি কল করুন',110,1196);
+  // QR লাইব্রেরি লোড না হলে বক্সটাই আঁকা হবে না (খালি বক্স দেখা যাবে না)
+  if(typeof QRCode!=='undefined'){try{const t=document.createElement('div');new QRCode(t,{text:SITE,width:170,height:170,colorDark:INK,colorLight:'#ffffff'});const q=t.querySelector('canvas');
+    if(q){x.fillStyle='#fff';x.strokeStyle='#fde1e4';x.lineWidth=3;x.beginPath();x.roundRect(780,1012,190,190,22);x.fill();x.stroke();x.drawImage(q,790,1022,170,170)}}catch(e){}}
+  // নিচে লাল ব্যাকগ্রাউন্ডে সাদা লেখা
+  x.fillStyle='#fff';x.textAlign='center';
+  const warn='রক্তের জন্য টাকা দেবেন না। সরাসরি ডোনারের সঙ্গে কথা বলুন।';fit(x,warn,960,32,22,600,F);x.fillText(warn,W/2,1279);
+  fit(x,location.host,900,38,24,700,F);x.fillText(location.host,W/2,1325)}
+async function copyTxt(t){try{await navigator.clipboard.writeText(t);return true}catch(_){try{const a=document.createElement('textarea');a.value=t;a.style.cssText='position:fixed;opacity:0';document.body.appendChild(a);a.select();const ok=document.execCommand('copy');a.remove();return ok}catch(e){return false}}}
+function bindCard(cvId,dl,sh,cp,get){
+  const blob=()=>new Promise(r=>$(cvId).toBlob(r,'image/png')),fn=()=>`KBH_Blood_${String((get()||{}).g||'').replace('+','pos').replace('-','neg')}.png`;
+  $(dl).onclick=async()=>{const b=await blob();if(!b)return toast('কার্ড তৈরি হয়নি, আবার চেষ্টা করুন');const u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download=fn();document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),4000);toast('কার্ড ডাউনলোড হয়েছে। এবার ফেসবুকে পোস্ট করুন')};
+  $(sh).onclick=async()=>{const d=get();if(!d)return;try{const b=await blob(),f=new File([b],fn(),{type:'image/png'});
+    if(navigator.canShare&&navigator.canShare({files:[f]}))await navigator.share({files:[f],text:cap(d)});
+    else if(navigator.share)await navigator.share({text:cap(d),url:SITE});
+    else toast('এই ব্রাউজারে সরাসরি শেয়ার নেই। কার্ড ডাউনলোড করে ফেসবুকে পোস্ট করুন')}catch(e){}};
+  $(cp).onclick=async()=>{const d=get();if(d)toast(await copyTxt(cap(d))?'ক্যাপশন কপি হয়েছে, পোস্টে পেস্ট করুন':'কপি করা যায়নি')};
+}
+function openCard(d){if(!d)return;cardFor=d;document.body.classList.add('cop');drawTo($('scv'),d)}
+bindCard('scv','sdl','ssh','scp',()=>cardFor);
+$('cx').onclick=()=>document.body.classList.remove('cop');$('cw').onclick=e=>{if(e.target.id==='cw')document.body.classList.remove('cop')};
+
+if(location.hash==='#new')tab('form');
+load();
+</script>
+<script src="pwa.js" defer></script>
+</body>
+</html>

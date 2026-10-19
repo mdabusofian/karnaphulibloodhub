@@ -1,0 +1,25 @@
+{
+  "id": "/index.html",
+  "name": "কর্ণফুলী ব্লাড হাব",
+  "short_name": "ব্লাড হাব",
+  "description": "চট্টগ্রামে রক্ত দরকার? ডোনার খুঁজুন, রক্তের অনুরোধ দিন, ডোনার হিসেবে নিবন্ধন করুন।",
+  "lang": "bn",
+  "dir": "ltr",
+  "start_url": "./index.html?src=pwa",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#fff5f6",
+  "theme_color": "#e11d2e",
+  "categories": ["health", "medical", "lifestyle"],
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "ডোনার খুঁজুন", "short_name": "ডোনার", "url": "./all-donors.html?src=shortcut", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "রক্ত চাই", "short_name": "রক্ত চাই", "url": "./blood_requests.html?src=shortcut#new", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "ডোনার হোন", "short_name": "ডোনার হোন", "url": "./donor_registration.html?src=shortcut", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] }
+  ]
+}
