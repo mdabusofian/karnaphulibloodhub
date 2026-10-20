@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>কর্ণফুলী ব্লাড হাব — উদ্বোধন</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--rose:#e11d48;--rose2:#fb4a6a;--ink:#14090c;--gold:#d4a95f}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:'Hind Siliguri',system-ui,sans-serif;color:#fff;background:linear-gradient(160deg,#ff5a64 0%,#f23545 50%,#c8102a 100%);min-height:100vh;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:env(safe-area-inset-top) 20px env(safe-area-inset-bottom)}
+.bgglow{position:absolute;width:70vmax;height:70vmax;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.22),transparent 60%);top:50%;left:50%;transform:translate(-50%,-50%);animation:breathe 6s ease-in-out infinite;pointer-events:none}
+@keyframes breathe{50%{transform:translate(-50%,-50%) scale(1.12)}}
+.ring{position:absolute;border-radius:50%;border:1.5px solid rgba(255,255,255,.22);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none}
+.ring.r1{width:min(90vmin,640px);height:min(90vmin,640px);animation:spin 40s linear infinite}
+.ring.r2{width:min(120vmin,860px);height:min(120vmin,860px);animation:spin 60s linear infinite reverse;border-style:dashed}
+@keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+.card{position:relative;z-index:2;text-align:center;max-width:560px;width:100%;transition:opacity .6s ease,transform .6s ease}
+.drop{width:120px;height:160px;margin:0 auto 22px;animation:float 3.2s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(-10px)}}
+.brand{font-size:clamp(34px,7vw,52px);font-weight:700;line-height:1.2}
+.sub{font-size:clamp(16px,3.5vw,20px);opacity:.9;margin:10px 0 36px;letter-spacing:.5px}
+.launch{position:relative;overflow:hidden;appearance:none;border:0;cursor:pointer;background:#fff;color:var(--rose);font:700 clamp(18px,4vw,22px) 'Hind Siliguri',sans-serif;padding:20px 44px;border-radius:999px;box-shadow:0 22px 50px -14px rgba(90,0,20,.55);transition:transform .25s ease,box-shadow .25s ease}
+.launch:hover{transform:translateY(-3px);box-shadow:0 28px 60px -14px rgba(90,0,20,.6)}
+.launch:active{transform:scale(.96)}
+.launch:focus-visible{outline:3px solid #fff;outline-offset:4px}
+.launch::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 35%,rgba(225,29,72,.14) 50%,transparent 65%);transform:translateX(-120%);animation:sheen 3.5s ease-in-out infinite}
+@keyframes sheen{0%,40%{transform:translateX(-120%)}100%{transform:translateX(120%)}}
+.hint{margin-top:18px;font-size:14px;opacity:.75}
+.pulse{position:absolute;inset:-14px;border-radius:999px;border:2px solid rgba(255,255,255,.6);animation:pulse 2.2s ease-out infinite;pointer-events:none}
+@keyframes pulse{0%{transform:scale(.92);opacity:.9}100%{transform:scale(1.25);opacity:0}}
+/* opening sequence */
+.open-layer{position:fixed;inset:0;background:#fff;z-index:50;clip-path:circle(0 at 50% 50%);display:none}
+.open-layer.go{display:block;animation:reveal 1.4s cubic-bezier(.7,0,.2,1) forwards}
+@keyframes reveal{to{clip-path:circle(150% at 50% 50%)}}
+.open-msg{position:fixed;inset:0;z-index:60;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--rose);text-align:center;opacity:0;pointer-events:none;padding:20px}
+.open-msg.show{animation:msgin .9s ease .9s forwards}
+@keyframes msgin{to{opacity:1}}
+.open-msg h2{font-size:clamp(34px,8vw,64px);font-weight:700}
+.open-msg p{font-size:clamp(16px,3.6vw,22px);color:#5b3a40;margin-top:12px}
+.check{width:96px;height:96px;border-radius:50%;background:var(--rose);display:flex;align-items:center;justify-content:center;margin-bottom:22px;transform:scale(0)}
+.open-msg.show .check{animation:pop .7s cubic-bezier(.3,1.5,.5,1) .9s forwards}
+@keyframes pop{to{transform:scale(1)}}
+.check svg{width:48px;height:48px;stroke:#fff;fill:none;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:60;stroke-dashoffset:60}
+.open-msg.show .check svg{animation:draw .6s ease 1.5s forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+canvas#confetti{position:fixed;inset:0;width:100%;height:100%;z-index:55;pointer-events:none}
+.skip{position:fixed;bottom:16px;right:16px;z-index:70;background:none;border:0;color:#5b3a40;font:500 14px 'Hind Siliguri',sans-serif;opacity:0;transition:opacity .4s;cursor:pointer;display:none}
+.skip.show{opacity:.8;display:block}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.open-layer.go{clip-path:circle(150% at 50% 50%)}.open-msg{opacity:1}.check{transform:scale(1)}.check svg{stroke-dashoffset:0}}
+</style>
+</head>
+<body>
+<div class="bgglow"></div>
+<div class="ring r1"></div>
+<div class="ring r2"></div>
+
+<main class="card" id="card">
+  <svg class="drop" viewBox="0 0 110 150" aria-hidden="true">
+    <path d="M55 4C55 4 6 62 6 98a49 49 0 0 0 98 0C104 62 55 4 55 4z" fill="#fff"/>
+    <path d="M55 62c-10-12-22-6-22 4 0 9 12 17 22 25 10-8 22-16 22-25 0-10-12-16-22-4z" fill="#e11d2e"/>
+  </svg>
+  <h1 class="brand">কর্ণফুলী ব্লাড হাব</h1>
+  <p class="sub">রক্তের বন্ধনে গড়ি সুন্দর পৃথিবী</p>
+  <div style="position:relative;display:inline-block">
+    <span class="pulse"></span>
+    <button class="launch" id="launchBtn" type="button">ওয়েবসাইট উদ্বোধন করুন</button>
+  </div>
+  <p class="hint">বাটনে ক্লিক করলে ওয়েবসাইট খুলবে</p>
+</main>
+
+<div class="open-layer" id="layer"></div>
+<canvas id="confetti"></canvas>
+<div class="open-msg" id="msg">
+  <div class="check"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+  <h2>উদ্বোধিত হলো</h2>
+  <p>কর্ণফুলী ব্লাড হাবে আপনাকে স্বাগতম</p>
+</div>
+<button class="skip" id="skip" type="button">এখনই যান →</button>
+
+<script>
+/* ==== কনফিগারেশন ==== */
+const CONFIG = {
+  target: 'index.html',   // উদ্বোধনের পর যে পেজে যাবে
+  redirectDelay: 3200,    // ms, অ্যানিমেশনের পর রিডাইরেক্ট
+  confetti: true
+};
+
+const btn = document.getElementById('launchBtn');
+const layer = document.getElementById('layer');
+const msg = document.getElementById('msg');
+const skip = document.getElementById('skip');
+const card = document.getElementById('card');
+const cvs = document.getElementById('confetti');
+const ctx = cvs.getContext('2d');
+let launched = false;
+
+function resize(){ cvs.width = innerWidth * devicePixelRatio; cvs.height = innerHeight * devicePixelRatio; ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0); }
+addEventListener('resize', resize); resize();
+
+function burst(){
+  const pieces = Array.from({length: 140}, () => ({
+    x: innerWidth/2, y: innerHeight/2,
+    vx: (Math.random()-0.5) * 18, vy: -Math.random()*16 - 4,
+    s: 6 + Math.random()*8, r: Math.random()*6, vr: (Math.random()-0.5)*0.3,
+    c: ['#e11d48','#fb4a6a','#d4a95f','#ffffff','#ffb3bd'][Math.floor(Math.random()*5)]
+  }));
+  let frames = 0;
+  (function step(){
+    ctx.clearRect(0,0,innerWidth,innerHeight);
+    pieces.forEach(p => {
+      p.vy += 0.42; p.vx *= 0.99; p.x += p.vx; p.y += p.vy; p.r += p.vr;
+      ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.r);
+      ctx.fillStyle = p.c; ctx.fillRect(-p.s/2, -p.s/4, p.s, p.s/2);
+      ctx.restore();
+    });
+    frames++;
+    if(frames < 220) requestAnimationFrame(step); else ctx.clearRect(0,0,innerWidth,innerHeight);
+  })();
+}
+
+function launch(){
+  if(launched) return;
+  launched = true;
+  btn.disabled = true;
+  btn.textContent = 'উদ্বোধন হচ্ছে…';
+  card.style.opacity = '0';
+  card.style.transform = 'scale(.96)';
+  // ডট থেকে ছড়িয়ে পড়া সাদা রিভিল
+  layer.style.clipPath = `circle(0 at ${btn.getBoundingClientRect().left + btn.offsetWidth/2}px ${btn.getBoundingClientRect().top + btn.offsetHeight/2}px)`;
+  layer.classList.add('go');
+  if (CONFIG.confetti) setTimeout(burst, 350);
+  setTimeout(() => msg.classList.add('show'), 200);
+  setTimeout(() => skip.classList.add('show'), 1200);
+  setTimeout(go, CONFIG.redirectDelay);
+  if (navigator.vibrate) navigator.vibrate([30, 40, 80]);
+}
+function go(){ location.href = CONFIG.target; }
+
+btn.addEventListener('click', launch);
+skip.addEventListener('click', go);
+</script>
+</body>
+</html>
