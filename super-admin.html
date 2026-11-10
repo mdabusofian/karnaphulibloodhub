@@ -41,6 +41,22 @@ nav{display:grid;gap:6px}.nav-btn{border:0;background:transparent;color:#c8cfdb;
 .panel h2{font-size:17px;margin:0 0 7px}.panel p{color:var(--muted);font-size:13px;margin:0;line-height:1.7}
 .notice{border-left:3px solid var(--amber);background:#fffbeb;padding:12px 14px;border-radius:8px;margin-top:16px;color:#854d0e;font-size:12px;line-height:1.65}
 .error{background:#fff1f2;color:#9f1239;border:1px solid #fecdd3;padding:14px;border-radius:12px;margin:20px 0;display:none}
+.workspace{display:none}.workspace-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:4px 0 18px}
+.workspace-head h1{font-size:23px;margin:0}.workspace-head p{font-size:13px;color:var(--muted);margin:3px 0 0}
+.toolbar{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:14px}
+.search{min-width:220px;flex:1;border:1px solid var(--line);border-radius:10px;padding:10px 12px;font:inherit;outline:none}
+.filter{border:1px solid var(--line);border-radius:10px;padding:9px 12px;background:#fff;font:inherit;color:var(--ink)}
+.table-wrap{overflow:auto;background:#fff;border:1px solid var(--line);border-radius:14px}
+.data-table{width:100%;border-collapse:collapse;min-width:760px;font-size:13px}
+.data-table th,.data-table td{padding:12px 14px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}
+.data-table th{background:#f8fafc;color:#64748b;font-weight:600}
+.data-table tr:last-child td{border-bottom:0}
+.pill{display:inline-block;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600;background:#f1f5f9;color:#475569}
+.pill.pending{background:#fff7ed;color:#c2410c}.pill.approved{background:#ecfdf5;color:#047857}.pill.rejected{background:#fff1f2;color:#be123c}.pill.suspended{background:#f1f5f9;color:#475569}
+.empty{padding:32px;text-align:center;color:var(--muted)}
+.small-btn{border:1px solid var(--line);background:#fff;border-radius:8px;padding:6px 10px;color:#334155;font:inherit}
+.result-count{font-size:12px;color:var(--muted);margin:8px 2px}
+
 .loading{padding:35px;text-align:center;color:var(--muted)}
 .mobile-menu{display:none;border:0;background:transparent;font-size:23px}
 @media(max-width:1050px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.modules{grid-template-columns:repeat(2,minmax(0,1fr))}}
@@ -105,6 +121,18 @@ nav{display:grid;gap:6px}.nav-btn{border:0;background:transparent;color:#c8cfdb;
         <div class="module"><div class="module-icon">🛡️</div><div><h3>Audit & Security</h3><p>গুরুত্বপূর্ণ কার্যক্রম ও প্রশাসনিক পরিবর্তনের লগ।</p><span class="module-tag">AUDIT LOGS</span></div></div>
       </div>
       <div class="panel"><h2>পরবর্তী ধাপ: Management Actions</h2><p>এই প্রথম সংস্করণে Super Admin authentication, role verification এবং database overview যুক্ত আছে। প্রতিটি মডিউলের Create/Update/Delete/Approve action আলাদা নিরাপদ RPC ও permission policy দিয়ে যুক্ত করতে হবে—শুধু frontend button দিয়ে নিরাপত্তা নিশ্চিত করা হয় না।</p><div class="notice">নিরাপত্তা: এই প্যানেল কেবল <b>super_admin</b> role থাকা লগইন করা ইউজারকে দেখাবে। Browser থেকে role পরিবর্তনের কোনো সুবিধা রাখা হয়নি। কোনো টেবিলের ডেটা লোড না হলে সেই metric-এ “—” দেখাবে; RLS বা schema error Console-এ দেখা যাবে।</div></div>
+      <section class="workspace" id="donorWorkspace">
+        <div class="workspace-head"><div><h1 id="workspaceTitle">Donor Management</h1><p id="workspaceDesc">নিবন্ধিত ডোনারদের তথ্য ও আবেদন স্ট্যাটাস</p></div><button class="refresh" id="loadDonorsBtn">↻ ডেটা রিলোড</button></div>
+        <div class="toolbar">
+          <input class="search" id="donorSearch" placeholder="নাম, Donor ID, রক্তের গ্রুপ বা এলাকা দিয়ে খুঁজুন...">
+          <select class="filter" id="statusFilter"><option value="">সকল স্ট্যাটাস</option><option value="pending">Pending</option><option value="approved">Approved</option><option value="rejected">Rejected</option><option value="suspended">Suspended</option></select>
+          <select class="filter" id="bloodFilter"><option value="">সকল Blood Group</option><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>AB+</option><option>AB-</option><option>O+</option><option>O-</option></select>
+        </div>
+        <div class="table-wrap"><table class="data-table"><thead><tr><th>Donor ID</th><th>নাম</th><th>Blood Group</th><th>জেলা</th><th>উপজেলা</th><th>স্ট্যাটাস</th></tr></thead><tbody id="donorRows"><tr><td colspan="6" class="empty">ডেটা লোড হয়নি</td></tr></tbody></table></div>
+        <div class="result-count" id="donorResultCount"></div>
+        <div class="notice">এই তালিকা Supabase-এর donor_profiles ও profiles টেবিল থেকে সরাসরি পড়বে। Approve/Reject action পরবর্তী ধাপে বিদ্যমান review_donor RPC-এর সঠিক signature অনুযায়ী যুক্ত হবে—ভুল parameter দিয়ে approval workflow পরিবর্তন করা হবে না।</div>
+      </section>
+
     </div>
   </div>
 </main>
@@ -140,7 +168,12 @@ async function init(){
   try{
     const {data:{session},error:sessionError}=await db.auth.getSession();
     if(sessionError) throw sessionError;
-    if(!session){location.href='donor_registration.html';return;}
+    if(!session){
+      $('loading').style.display='none';
+      $('denied').style.display='block';
+      $('denied').innerHTML='আপনি এখনো লগইন করেননি অথবা এই ব্রাউজারে আপনার Supabase session পাওয়া যায়নি। প্রথমে <a href="donor_registration.html" style="color:#be123c;font-weight:700;text-decoration:underline">Donor Registration / Login</a> পেজে গিয়ে Super Admin account দিয়ে লগইন করুন। তারপর একই domain ও browser থেকে এই Dashboard-এ ফিরে আসুন।';
+      return;
+    }
     const {data:roleRows,error:roleError}=await db.from('user_roles').select('role').eq('user_id',session.user.id);
     if(roleError) throw roleError;
     const roles=(roleRows||[]).map(x=>x.role);
@@ -154,10 +187,61 @@ $('refreshBtn').addEventListener('click',loadMetrics);
 $('logoutBtn').addEventListener('click',async()=>{await db.auth.signOut();location.href='donor_registration.html';});
 $('menuBtn').addEventListener('click',()=>$('sidebar').classList.toggle('open'));
 const titles={overview:'Dashboard Overview',donors:'Donor Management',applications:'Application Review',donations:'Donation Records',cards:'Donor ID Cards',requests:'Blood Requests',staff:'Staff & Permissions',notifications:'Notifications',reports:'Reports & Analytics',logs:'Audit Logs',settings:'Website Settings'};
-document.querySelectorAll('.nav-btn').forEach(btn=>btn.addEventListener('click',()=>{
+let donorCache=[];
+function safeText(value){return value===null||value===undefined||value===''?'—':String(value);}
+function renderDonors(){
+  const q=$('donorSearch').value.trim().toLowerCase(), status=$('statusFilter').value, blood=$('bloodFilter').value;
+  const filtered=donorCache.filter(d=>{
+    const hay=[d.donor_code,d.full_name,d.phone,d.blood_group,d.district,d.upazila,d.area].map(x=>String(x||'').toLowerCase()).join(' ');
+    return (!q||hay.includes(q))&&(!status||d.donor_status===status)&&(!blood||d.blood_group===blood);
+  });
+  const tbody=$('donorRows');tbody.replaceChildren();
+  if(!filtered.length){const tr=document.createElement('tr'),td=document.createElement('td');td.colSpan=6;td.className='empty';td.textContent=donorCache.length?'কোনো matching donor পাওয়া যায়নি।':'এখনো কোনো donor application পাওয়া যায়নি।';tr.append(td);tbody.append(tr);}
+  filtered.forEach(d=>{
+    const tr=document.createElement('tr');
+    [d.donor_code,d.full_name,d.blood_group,d.district,d.upazila].forEach(v=>{const td=document.createElement('td');td.textContent=safeText(v);tr.append(td);});
+    const td=document.createElement('td'),badge=document.createElement('span');badge.className='pill '+(d.donor_status||'');badge.textContent=safeText(d.donor_status);td.append(badge);tr.append(td);tbody.append(tr);
+  });
+  $('donorResultCount').textContent=`মোট ${donorCache.length} জনের মধ্যে ${filtered.length} জন দেখানো হচ্ছে`;
+}
+async function loadDonors(){
+  $('donorRows').innerHTML='<tr><td colspan="6" class="empty">ডেটা লোড হচ্ছে...</td></tr>';
+  const {data:donors,error}=await db.from('donor_profiles').select('*');
+  if(error){console.error(error);$('donorRows').innerHTML='';const tr=document.createElement('tr'),td=document.createElement('td');td.colSpan=6;td.className='empty';td.textContent='Donor data load হয়নি: '+error.message;tr.append(td);$('donorRows').append(tr);$('donorResultCount').textContent='RLS policy বা table permission যাচাই করুন।';return;}
+  const rows=donors||[];
+  const ids=[...new Set(rows.map(x=>x.user_id).filter(Boolean))];
+  let profileMap={};
+  if(ids.length){
+    const {data:profiles,error:profileError}=await db.from('profiles').select('user_id,full_name,phone').in('user_id',ids);
+    if(profileError) console.warn('Profile details unavailable:',profileError.message);
+    (profiles||[]).forEach(p=>profileMap[p.user_id]=p);
+  }
+  donorCache=rows.map(d=>({...d,full_name:profileMap[d.user_id]?.full_name||d.full_name||'',phone:profileMap[d.user_id]?.phone||''}));
+  renderDonors();
+}
+$('loadDonorsBtn').addEventListener('click',loadDonors);
+$('donorSearch').addEventListener('input',renderDonors);
+$('statusFilter').addEventListener('change',renderDonors);
+$('bloodFilter').addEventListener('change',renderDonors);
+document.querySelectorAll('.nav-btn').forEach(btn=>btn.addEventListener('click',async()=>{
   document.querySelectorAll('.nav-btn').forEach(x=>x.classList.remove('active'));btn.classList.add('active');
   const key=btn.dataset.section;$('pageTitle').textContent=titles[key]||'Dashboard';
-  if(key!=='overview') alert('এই মডিউলটি পরবর্তী ধাপে database schema অনুযায়ী যুক্ত করা হবে। আপাতত Dashboard Overview চালু আছে।');
+  const overview=key==='overview';
+  $('donorWorkspace').style.display=(!overview&&(key==='donors'||key==='applications'))?'block':'none';
+  document.querySelector('.welcome').style.display=overview?'flex':'none';
+  document.querySelector('.status').style.display=overview?'flex':'none';
+  document.querySelector('.stats').style.display=overview?'grid':'none';
+  document.querySelector('.section-title').style.display=overview?'block':'none';
+  document.querySelector('.modules').style.display=overview?'grid':'none';
+  document.querySelector('.panel').style.display=overview?'block':'none';
+  if(key==='donors'||key==='applications'){
+    $('workspaceTitle').textContent=key==='applications'?'Application Review':'Donor Management';
+    $('workspaceDesc').textContent=key==='applications'?'Pending ও অন্যান্য আবেদন একসঙ্গে দেখুন; status filter দিয়ে Pending বাছাই করুন।':'নিবন্ধিত ডোনারদের তথ্য, রক্তের গ্রুপ ও স্ট্যাটাস অনুসন্ধান করুন।';
+    $('statusFilter').value=key==='applications'?'pending':'';
+    await loadDonors();
+  } else if(!overview){
+    alert('এই মডিউলটি পরবর্তী ধাপে যুক্ত করা হবে। Donor Management ও Application Review-এর live donor list এখন চালু।');
+  }
   $('sidebar').classList.remove('open');
 }));
 init();
