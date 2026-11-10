@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="bn"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#e11d2e"><title>আবেদনের অবস্থা ও কার্ড — কর্ণফুলী ব্লাড হাব</title><link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet"><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script><script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<style>
+:root{--red:#e11d2e;--ink:#202027;--muted:#6b7280;--line:#f5cfd3;--bg:#fff5f6}*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:'Hind Siliguri',sans-serif;color:var(--ink)}.wrap{max-width:680px;margin:auto;padding:18px}.top{display:flex;justify-content:space-between;align-items:center}.brand{font-size:20px;font-weight:700}.brand span{color:var(--red)}a{color:var(--red);text-decoration:none}.hero{margin:18px 0;background:linear-gradient(135deg,#ff5965,#d7192b);color:white;padding:22px;border-radius:22px}.hero h1{margin:0;font-size:26px}.panel{background:white;border:1px solid var(--line);border-radius:20px;padding:19px;margin:14px 0}.panel h2{margin:0 0 12px;font-size:20px}.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}label{display:block;font-weight:600;margin:0 0 5px}input,select{width:100%;padding:13px;border:1.5px solid var(--line);border-radius:12px;font:inherit;font-size:16px;margin-bottom:12px;background:#fff} .checkrow{display:flex;gap:9px;align-items:flex-start;font-size:14px;margin:10px 0}.checkrow input{width:20px;margin:3px 0 0;flex:none;accent-color:var(--red)}button{width:100%;background:var(--red);color:white;border:0;border-radius:12px;padding:13px;font:700 16px 'Hind Siliguri';cursor:pointer}.msg{display:none;padding:12px;border-radius:12px;margin-top:12px}.error{background:#fff0f0;color:#b91c1c}.success{background:#f0fff4;color:#166534}.status{display:none}.pill{display:inline-block;padding:4px 12px;border-radius:99px;background:#fff0f1;color:var(--red);font-weight:700}.card{display:none;margin-top:16px;background:linear-gradient(135deg,#f04452,#b91024);color:white;border-radius:18px;padding:22px;position:relative;overflow:hidden;min-height:230px}.card:after{content:"";position:absolute;width:250px;height:250px;border:2px solid #ffffff25;border-radius:50%;right:-90px;top:-100px}.cardhead{display:flex;justify-content:space-between;align-items:center;gap:10px}.cardhead strong{font-size:20px}.blood{background:white;color:var(--red);border-radius:14px;padding:8px 16px;font-size:27px;font-weight:700}.cname{font-size:23px;font-weight:700;margin:24px 0 8px}.meta{font-size:13px;opacity:.95}.cardtools{display:flex;align-items:center;gap:9px;margin:12px 0 8px;padding:11px 13px;border:1px solid var(--line);border-radius:12px;background:#fff;font-size:14px}.cardtools input{width:18px;height:18px;margin:0;accent-color:var(--red)}.cardphone{font-size:14px;font-weight:600;margin-top:7px}.cardfoot{display:flex;justify-content:space-between;align-items:end;margin-top:22px;gap:12px}.qr{background:white;padding:7px;border-radius:8px;width:88px;height:88px;display:flex;align-items:center;justify-content:center}.small{font-size:12px;opacity:.85}.download{margin-top:12px}.note{font-size:13px;color:var(--muted)}@media(max-width:520px){.wrap{padding:13px}.row{grid-template-columns:1fr}.panel{padding:15px}}
+</style><meta name="theme-color" content="#e11d2e">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/favicon-48.png" type="image/png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+</head><body><main class="wrap">
+<div class="top"><div class="brand">♥ <span>কর্ণফুলী ব্লাড হাব</span></div><a href="index.html">হোম পেজ</a></div>
+<section class="hero"><h1>আবেদনের অবস্থা ও ID Card</h1><p>আবেদনের অবস্থা দেখতে Application Number ও নিবন্ধিত মোবাইল নম্বর দিন। Approved হলে এখান থেকেই কার্ড ডাউনলোড করতে পারবেন।</p></section>
+<section class="panel"><h2>আবেদনের অবস্থা দেখুন</h2><label for="app">Application Number</label><input id="app" placeholder="যেমন: KBH-XXXXXXXXXX" autocomplete="off"><label for="phone1">নিবন্ধিত মোবাইল নম্বর</label><input id="phone1" inputmode="numeric" placeholder="01XXXXXXXXX"><button id="check">আবেদনের অবস্থা দেখুন</button><div class="msg error" id="err1"></div><div class="status" id="status"></div></section>
+<section class="panel" id="resubmitPanel" style="display:none">
+<h2>Rejected আবেদন সংশোধন করুন</h2>
+<p class="note">আপনার আগের Application Number একই থাকবে। সংশোধিত আবেদন আবার Pending হবে এবং Admin পুনরায় যাচাই করবেন।</p>
+<form id="resubmitForm">
+<label for="rsName">পুরো নাম</label><input id="rsName" required minlength="3" maxlength="100">
+<label for="rsPhone">মোবাইল নম্বর</label><input id="rsPhone" inputmode="numeric" required placeholder="01XXXXXXXXX" maxlength="14">
+<div class="row"><div><label for="rsGender">লিঙ্গ</label><select id="rsGender"><option value="Male">পুরুষ</option><option value="Female">মহিলা</option><option value="Other">অন্যান্য</option></select></div><div><label for="rsBlood">রক্তের গ্রুপ</label><select id="rsBlood"><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>AB+</option><option>AB-</option><option>O+</option><option>O-</option></select></div></div>
+<label for="rsDistrict">জেলা</label><input id="rsDistrict" required>
+<label for="rsUpazila">উপজেলা / থানা</label><input id="rsUpazila" required>
+<label for="rsArea">ইউনিয়ন / গ্রাম / এলাকা</label><input id="rsArea" required>
+<label for="rsCount">এ পর্যন্ত কতবার রক্ত দিয়েছেন?</label><select id="rsCount"><option value="০">নতুন</option><option value="১-৩">১–৩ বার</option><option value="৪-১০">৪–১০ বার</option><option value="১০+">১০+ বার</option></select>
+<label for="rsLastDate">শেষ রক্তদানের তারিখ (ঐচ্ছিক)</label><input id="rsLastDate" type="date">
+<label class="checkrow"><input id="rsListing" type="checkbox"><span>আমার নাম, রক্তের গ্রুপ ও এলাকা Public Donor List-এ দেখানো যাবে।</span></label>
+<label class="checkrow"><input id="rsContact" type="checkbox"><span>আমার মোবাইল নম্বরও Public Donor List-এ দেখানো যাবে (ঐচ্ছিক)।</span></label>
+<label class="checkrow"><input id="rsPolicy" type="checkbox" required><span>আমি স্বেচ্ছায় রক্তদান এবং কর্ণফুলী ব্লাড হাবের নীতিমালা মেনে চলতে সম্মত।</span></label>
+<div class="msg error" id="resubmitError"></div>
+<button id="resubmitBtn" type="submit">সংশোধিত আবেদন পুনরায় জমা দিন</button>
+</form></section>
+<section class="panel"><h2>কার্ড পুনরায় ডাউনলোড</h2><p class="note">কার্ড নম্বর ও নিবন্ধিত মোবাইল নম্বর—দুটিই দিতে হবে। শুধু মোবাইল নম্বর দিয়ে অন্যের কার্ড দেখা যাবে না।</p><label for="cardno">Donor Card Number</label><input id="cardno" placeholder="যেমন: KH-XXXXXXXX"><label for="phone2">নিবন্ধিত মোবাইল নম্বর</label><input id="phone2" inputmode="numeric" placeholder="01XXXXXXXXX"><button id="findcard">কার্ড খুঁজুন</button><div class="msg error" id="err2"></div></section>
+<section class="panel" id="cardPanel" style="display:none"><h2>আপনার Donor ID Card</h2><div class="card" id="idcard"><div class="cardhead"><div><strong>♥ কর্ণফুলী ব্লাড হাব</strong><div class="small">OFFICIAL DONOR ID CARD</div></div><div class="blood" id="blood"></div></div><div class="cname" id="cname"></div><div class="meta" id="cno"></div><div class="meta" id="cloc"></div><div class="cardphone" id="cphone"></div><div class="cardfoot"><div><div class="small">VOLUNTARY BLOOD DONOR</div><div class="small">সেবাই আমাদের অঙ্গীকার</div></div><div class="qr" id="qr"></div></div></div><label class="cardtools" id="cardPhoneControl" style="display:none"><input type="checkbox" id="showCardPhone" checked><span>কার্ডে মোবাইল নম্বর দেখান</span></label><button class="download" id="download">ID Card Download (PNG)</button><p class="note">QR Code স্ক্যান করে কার্ডের বৈধতা যাচাই করা যাবে।</p></section>
+</main>
+<script>
+const SUPABASE_URL='https://bwbsguoictrzvyyhbney.supabase.co';
+const SUPABASE_PUBLISHABLE_KEY='sb_publishable_EfF5jhFMS4nrI3xrFhauOQ_-wFpoiKv';
+const db=supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
+const $=id=>document.getElementById(id);
+const localToday=()=>{const d=new Date();d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,10)};let currentCard=null;
+const digits=s=>String(s||'').replace(/[০-৯]/g,d=>'০১২৩৪৫৬৭৮৯'.indexOf(d)).replace(/\D/g,'').replace(/^88/,'');
+function err(id,msg){$(id).textContent=msg;$(id).style.display='block'}
+function statusCard(d){
+ const s=$('status');s.style.display='block';s.innerHTML='';
+ const title=document.createElement('h3');title.textContent=d.full_name||'আবেদন';s.append(title);
+ const badge=document.createElement('span');badge.className='pill';badge.textContent=({pending:'Pending — যাচাই চলছে',approved:'Approved — অনুমোদিত',rejected:'Rejected — আবেদন বাতিল',suspended:'Suspended — সাময়িক স্থগিত'})[d.donor_status]||d.donor_status;s.append(badge);
+ const p=document.createElement('p');p.textContent='Application Number: '+d.application_number;s.append(p);
+ if(d.donor_status==='rejected'){
+  if(d.rejection_reason){const r=document.createElement('p');r.textContent='কারণ: '+d.rejection_reason;s.append(r)}
+  const b=document.createElement('button');b.textContent='আবেদন সংশোধন করে পুনরায় জমা দিন';b.style.marginTop='12px';b.onclick=openResubmit;s.append(b);
+ }
+ if(d.donor_status==='approved'&&d.card_number){const c=document.createElement('p');c.textContent='আপনার Donor Card Number: '+d.card_number;s.append(c);const b=document.createElement('button');b.textContent='কার্ড দেখুন ও ডাউনলোড করুন';b.onclick=()=>showCard(d);s.append(b)}
+ if(d.donor_status==='approved'&&!d.card_number){const p2=document.createElement('p');p2.textContent='আবেদন Approved হয়েছে; কার্ড ইস্যু প্রক্রিয়াধীন।';s.append(p2)}
+}
+async function openResubmit(){
+ $('resubmitError').style.display='none';
+ const app=$('app').value.trim(),phone=digits($('phone1').value);
+ if(!app||!phone){err('err1','Application Number ও নিবন্ধিত মোবাইল নম্বর দিন।');return}
+ try{
+  const {data,error}=await db.rpc('get_public_resubmission_data',{p_application_number:app,p_phone:phone});
+  if(error)throw error;if(!data?.length)throw new Error('Rejected আবেদনটি পাওয়া যায়নি অথবা তথ্য মেলেনি');
+  const d=data[0];$('rsName').value=d.full_name||'';$('rsPhone').value=d.phone||phone;
+  $('rsGender').value=d.gender||'Male';$('rsBlood').value=d.blood_group||'A+';
+  $('rsDistrict').value=d.district||'Chattogram';$('rsUpazila').value=d.upazila||'';$('rsArea').value=d.area||'';
+  $('rsCount').value=d.donation_count_band||'০';$('rsLastDate').value=d.last_donation_date||'';
+  $('rsListing').checked=!!d.public_listing_consent;$('rsContact').checked=!!d.public_contact_consent;$('rsPolicy').checked=false;
+  $('rsLastDate').max=localToday();
+  $('resubmitPanel').style.display='block';$('resubmitPanel').scrollIntoView({behavior:'smooth',block:'start'});
+ }catch(e){err('err1',e.message||'সংশোধনের তথ্য লোড করা যায়নি')}
+}
+$('resubmitForm').onsubmit=async e=>{
+ e.preventDefault();$('resubmitError').style.display='none';
+ const oldPhone=digits($('phone1').value),newPhone=digits($('rsPhone').value);
+ if(!/^01[3-9]\d{8}$/.test(newPhone))return err('resubmitError','সঠিক ১১ সংখ্যার মোবাইল নম্বর দিন।');
+ if($('rsContact').checked&&!$('rsListing').checked)return err('resubmitError','মোবাইল প্রকাশ করতে হলে Public Listing সম্মতি দিতে হবে।');
+ if(!$('rsPolicy').checked)return err('resubmitError','নীতিমালায় সম্মতি আবশ্যক।');
+ const b=$('resubmitBtn');b.disabled=true;b.textContent='আবেদন জমা হচ্ছে…';
+ const args={p_application_number:$('app').value.trim(),p_phone:oldPhone,p_new_phone:newPhone,p_full_name:$('rsName').value.trim(),p_blood_group:$('rsBlood').value,p_district:$('rsDistrict').value.trim(),p_upazila:$('rsUpazila').value.trim(),p_area:$('rsArea').value.trim(),p_gender:$('rsGender').value,p_public_listing_consent:$('rsListing').checked,p_public_contact_consent:$('rsContact').checked,p_last_donation_date:$('rsLastDate').value||null,p_donation_count_band:$('rsCount').value,p_policy_consent:true};
+ try{const {data,error}=await db.rpc('resubmit_public_donor_application',args);if(error)throw error;if(!data)throw new Error('Application Number পাওয়া যায়নি');$('phone1').value=newPhone;$('resubmitPanel').style.display='none';$('status').style.display='none';$('check').click();alert('সংশোধিত আবেদন Pending অবস্থায় জমা হয়েছে।');}
+ catch(e){err('resubmitError',e.message||'আবেদন পুনরায় জমা হয়নি')}
+ finally{b.disabled=false;b.textContent='সংশোধিত আবেদন পুনরায় জমা দিন'}
+};
+function showCard(d){
+ currentCard=d;$('cardPanel').style.display='block';$('idcard').style.display='block';
+ $('blood').textContent=d.blood_group;$('cname').textContent=d.full_name;$('cno').textContent='Card No: '+d.card_number;$('cloc').textContent=[d.upazila,d.district].filter(Boolean).join(', ');$('cphone').textContent=d.phone?'মোবাইল: '+d.phone:'';$('cardPhoneControl').style.display=d.phone?'flex':'none';$('showCardPhone').checked=true;$('cphone').style.display=d.phone?'block':'none';
+ $('qr').innerHTML='';const verifyUrl=location.origin+location.pathname.replace(/application-status\.html.*/,'')+'verify-donor.html?t='+encodeURIComponent(d.qr_token||'');
+ $('qr').innerHTML='';
+ if(d.qr_token){new QRCode($('qr'),{text:verifyUrl,width:74,height:74,colorDark:'#111827',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M});}
+ else{$('qr').textContent='QR unavailable';}
+ $('cardPanel').scrollIntoView({behavior:'smooth',block:'center'});
+}
+$('check').onclick=async()=>{
+ $('err1').style.display='none';$('status').style.display='none';
+ if(!$('app').value.trim()||!$('phone1').value.trim()){err('err1','Application Number ও মোবাইল নম্বর দিন।');return}
+ const b=$('check');b.disabled=true;b.textContent='খোঁজা হচ্ছে…';
+ try{const {data,error}=await db.rpc('get_public_application_status',{p_application_number:$('app').value.trim(),p_phone:digits($('phone1').value)});if(error)throw error;if(!data?.length){err('err1','তথ্য মেলেনি। Application Number ও নিবন্ধিত মোবাইল নম্বর যাচাই করুন।');return}statusCard(data[0]);}
+ catch(e){err('err1',e.message||'আবেদন খুঁজে পাওয়া যায়নি।')}finally{b.disabled=false;b.textContent='আবেদনের অবস্থা দেখুন'}
+};
+$('findcard').onclick=async()=>{
+ $('err2').style.display='none';$('cardPanel').style.display='none';
+ if(!$('cardno').value.trim()||!$('phone2').value.trim()){err('err2','কার্ড নম্বর ও নিবন্ধিত মোবাইল নম্বর দিন।');return}
+ const b=$('findcard');b.disabled=true;b.textContent='কার্ড খোঁজা হচ্ছে…';
+ try{const {data,error}=await db.rpc('get_public_donor_card',{p_card_number:$('cardno').value.trim(),p_phone:digits($('phone2').value)});if(error)throw error;if(!data?.length){err('err2','কার্ড পাওয়া যায়নি। নম্বর দুটি যাচাই করুন অথবা Admin-এর সঙ্গে যোগাযোগ করুন।');return}const d=data[0];showCard({...d,donor_status:'approved'});}
+ catch(e){err('err2',e.message||'কার্ড খুঁজে পাওয়া যায়নি।')}finally{b.disabled=false;b.textContent='কার্ড খুঁজুন'}
+};
+$('showCardPhone').onchange=()=>{$('cphone').style.display=$('showCardPhone').checked&&currentCard?.phone?'block':'none'};
+$('download').onclick=async()=>{
+ if(!currentCard)return;const b=$('download');b.disabled=true;b.textContent='তৈরি হচ্ছে…';
+ try{await document.fonts.ready;const canvas=await html2canvas($('idcard'),{scale:3,backgroundColor:null,useCORS:true});const a=document.createElement('a');a.download='Karnaphuli-Blood-Hub-'+currentCard.card_number+'.png';a.href=canvas.toDataURL('image/png');a.click();}
+ catch(e){alert('কার্ড ডাউনলোড করা যায়নি। আবার চেষ্টা করুন।')}finally{b.disabled=false;b.textContent='ID Card Download (PNG)'}
+};
+</script><script src="pwa.js" defer></script>
+</body></html>

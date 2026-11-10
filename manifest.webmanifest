@@ -1,0 +1,43 @@
+{
+  "id": "./",
+  "name": "কর্ণফুলী ব্লাড হাব",
+  "short_name": "ব্লাড হাব",
+  "description": "রক্তদাতা খুঁজুন, রক্তের আবেদন করুন এবং জরুরি রক্তসেবায় যুক্ত থাকুন।",
+  "lang": "bn-BD",
+  "dir": "ltr",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": [
+    "standalone",
+    "minimal-ui"
+  ],
+  "orientation": "portrait-primary",
+  "background_color": "#fff5f6",
+  "theme_color": "#e11d2e",
+  "categories": [
+    "health",
+    "medical",
+    "social"
+  ],
+  "icons": [
+    {
+      "src": "./icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

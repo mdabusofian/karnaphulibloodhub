@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="bn"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#e11d2e"><title>Admin Dashboard — Karnaphuli Blood Hub</title><link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet"><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{
+ --r:#e11d2e;--r2:#ff5a64;--ink:#24232a;--mut:#777580;--line:#f4dadd;
+ --bg:#fff5f6;--soft:#fff0f1;--white:#fff;--green:#087443;--amber:#956000;
+ --shadow:0 14px 38px rgba(117,25,39,.08);--grad:linear-gradient(135deg,#ff6870 0%,#e11d2e 100%);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:radial-gradient(circle at 90% 0%,#ffe5e8 0,transparent 28%),var(--bg);color:var(--ink);font-family:'Hind Siliguri',sans-serif;line-height:1.55}
+button,a,input,select,textarea{font:inherit}
+button{border:0;border-radius:12px;padding:10px 16px;font-weight:700;cursor:pointer;background:var(--r);color:#fff;transition:.18s ease}
+button:hover{filter:brightness(.96);transform:translateY(-1px)}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #ff9aa2;outline-offset:2px}
+a{color:inherit}
+.wrap{max-width:1440px;margin:auto;padding:24px clamp(14px,3vw,38px) 48px}
+.head{position:sticky;top:0;z-index:20;display:flex;justify-content:space-between;align-items:center;gap:16px;margin:-24px calc(clamp(14px,3vw,38px)*-1) 24px;padding:13px clamp(14px,3vw,38px);background:rgba(255,255,255,.9);backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}
+.brand{font-size:20px;font-weight:700;display:flex;align-items:center;gap:10px}
+.brand:first-letter{color:var(--r)}
+.brand span{color:var(--r)}
+.brand .muted{font-size:12px;font-weight:500;line-height:1.2;color:var(--mut)}
+.head .right{align-items:center}
+.head a{font-weight:700;background:var(--soft);border-radius:999px;padding:8px 15px}
+.login,.box{background:var(--white);border:1px solid var(--line);border-radius:22px;padding:22px;box-shadow:var(--shadow)}
+.login{max-width:440px;margin:9vh auto;padding:30px}
+.login h2{font-size:25px;margin-bottom:4px}
+.login:before{content:"♥";display:flex;width:54px;height:54px;border-radius:18px;align-items:center;justify-content:center;background:var(--grad);color:white;font-size:25px;margin-bottom:18px;box-shadow:0 10px 20px #e11d2e33}
+.field{margin:13px 0}
+label{display:block;font-weight:600;margin-bottom:6px}
+input,select,textarea{width:100%;padding:11px 13px;border:1px solid #eadde0;border-radius:12px;background:#fff;color:var(--ink);font:inherit;transition:.18s}
+input:focus,select:focus,textarea:focus{border-color:#f17a83;box-shadow:0 0 0 3px #e11d2e12;outline:0}
+textarea{resize:vertical}
+h1,h2,h3{margin-top:0;line-height:1.3}
+h2{font-size:21px;margin-bottom:14px}
+h3{font-size:17px}
+.muted{color:var(--mut);font-size:13px}
+#app>.box:first-child{position:relative;overflow:hidden;background:var(--grad);color:#fff;border:0;border-radius:25px;padding:26px 28px;box-shadow:0 18px 36px #e11d2e2a}
+#app>.box:first-child:after{content:"";position:absolute;width:230px;height:230px;border:1px solid #ffffff35;border-radius:50%;right:-65px;top:-125px;box-shadow:0 0 0 28px #ffffff0d,0 0 0 58px #ffffff0a;pointer-events:none}
+#app>.box:first-child h2{font-size:25px;margin-bottom:3px}
+#app>.box:first-child .muted{color:#fff;opacity:.88}
+#app>.box:first-child button{position:relative;z-index:1;background:#fff;color:var(--r);border-radius:999px;padding:10px 18px}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:18px 0}
+.stat{position:relative;overflow:hidden;background:#fff;border:1px solid var(--line);padding:17px 19px;border-radius:19px;box-shadow:0 8px 24px #8d24300a;color:var(--mut);font-size:13px;font-weight:600}
+.stat:after{content:"";position:absolute;width:62px;height:62px;border-radius:50%;right:-22px;top:-22px;background:var(--soft)}
+.stat b{display:block;font-size:30px;line-height:1.25;color:var(--r);margin-top:5px;font-weight:700}
+.tabs{display:flex;gap:8px;flex-wrap:nowrap;overflow-x:auto;margin:20px 0 14px;padding:7px;background:#fff;border:1px solid var(--line);border-radius:17px;box-shadow:0 7px 20px #8d243008;scrollbar-width:thin}
+.tabs button{flex:0 0 auto;background:transparent;color:#65616b;border:1px solid transparent;border-radius:11px;padding:9px 14px;font-size:14px;white-space:nowrap}
+.tabs button:hover{background:var(--soft);color:var(--r);transform:none}
+.tabs button.active{background:var(--grad);color:#fff;box-shadow:0 6px 14px #e11d2e30}
+#app>section.box{padding:22px;margin-top:0;border-radius:21px;min-height:210px}
+#app>section.box>h2{display:flex;align-items:center;gap:9px}
+#app>section.box>h2:before{content:"";width:5px;height:24px;border-radius:9px;background:var(--grad);display:inline-block}
+.toolbar{display:flex;gap:9px;flex-wrap:wrap;margin:14px 0}
+.toolbar input,.toolbar select{max-width:260px;min-width:170px}
+.btn2{background:var(--soft);color:var(--r);border:1px solid #ffd8dc}
+.btn2:hover{background:#ffe3e6}
+.tablewrap{overflow:auto;border:1px solid #f1e5e7;border-radius:15px;background:#fff}
+table{border-collapse:separate;border-spacing:0;width:100%;min-width:760px}
+th,td{text-align:left;padding:12px 12px;border-bottom:1px solid #f1e9ea;font-size:14px;vertical-align:middle}
+th{background:#fff5f6;color:#8d3039;font-weight:700;position:sticky;top:0;white-space:nowrap}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:hover td{background:#fffafb}
+.pill{display:inline-flex;align-items:center;padding:4px 10px;border-radius:30px;background:#f3f4f6;font-size:12px;font-weight:700;white-space:nowrap}
+.pending{background:#fff4d6;color:var(--amber)}
+.approved{background:#e8fff0;color:var(--green)}
+.rejected,.suspended{background:#ffe9eb;color:#b91c1c}
+.actions{display:flex;gap:6px;flex-wrap:wrap}
+.actions button{font-size:12px;padding:7px 10px;border-radius:9px}
+.hidden{display:none!important}
+.alert{padding:12px 14px;border-radius:12px;background:#fff0f0;color:#b91c1c;margin-top:12px;border:1px solid #ffd8dc}
+.modal{position:fixed;inset:0;background:#21111699;backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:15px;z-index:50}
+.modal.open{display:flex}
+.modalbox{background:white;border:1px solid var(--line);border-radius:22px;padding:24px;max-width:600px;width:100%;max-height:90vh;overflow:auto;box-shadow:0 24px 80px #0003}
+.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.formgrid .field{margin:0 0 8px}
+.right{display:flex;gap:8px;align-items:center}
+.empty{text-align:center;color:var(--mut);padding:28px}
+#donationAddPanel,#requestCreatePanel,#notificationSendPanel,#staff>.box{background:#fffafb;border:1px dashed #efc5ca;border-radius:17px;padding:18px}
+#reports .stats{margin-top:10px}
+#bloodReport,#monthlyReport{background:#fffafb;border:1px solid var(--line);border-radius:15px;padding:16px;margin:10px 0 18px}
+#settings .formgrid{margin-bottom:12px}
+#logout{background:#fff0f1;color:var(--r)}
+@media(max-width:900px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.tabs{position:sticky;top:66px;z-index:15}}
+@media(max-width:600px){
+ .wrap{padding:12px 12px 30px}
+ .head{margin:-12px -12px 16px;padding:10px 12px}
+ .brand{font-size:16px;gap:7px}.brand .muted{font-size:11px}
+ .head .right{gap:5px}.head a{padding:7px 10px;font-size:12px}
+ .login{margin:7vh auto;padding:23px}
+ #app>.box:first-child{padding:20px;border-radius:20px}
+ #app>.box:first-child h2{font-size:21px}
+ #app>.box:first-child>div{align-items:flex-start!important;flex-direction:column}
+ .stats{gap:9px;margin:12px 0}
+ .stat{padding:13px;border-radius:15px;font-size:12px}
+ .stat b{font-size:25px}
+ .tabs{top:58px;margin:12px 0;padding:5px;border-radius:14px;gap:5px}
+ .tabs button{font-size:12px;padding:8px 11px}
+ #app>section.box{padding:15px;border-radius:17px}
+ .toolbar{display:grid;grid-template-columns:1fr}
+ .toolbar input,.toolbar select{max-width:none;min-width:0;width:100%}
+ .formgrid{grid-template-columns:1fr}
+ .modalbox{padding:18px}
+ th,td{padding:10px;font-size:13px}
+}
+</style><meta name="theme-color" content="#e11d2e">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/favicon-48.png" type="image/png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+</head><body><main class="wrap">
+<header class="head"><div class="brand"><span style="display:inline-flex;width:38px;height:38px;align-items:center;justify-content:center;border-radius:13px;background:linear-gradient(135deg,#ff6870,#e11d2e);color:#fff;box-shadow:0 7px 15px #e11d2e30">♥</span><div><span>Karnaphuli Blood Hub</span><div class="muted">Unified Admin Dashboard</div></div></div><div class="right"><a href="index.html" style="align-self:center;color:#e11d2e;text-decoration:none">Website</a><button id="logout" class="btn2 hidden">Logout</button></div></header>
+<section id="login" class="login"><h2>Admin Login</h2><p class="muted">এই প্যানেল শুধু অনুমোদিত Admin-এর জন্য।</p><div class="field"><label>Email</label><input id="email" type="email" autocomplete="username"></div><div class="field"><label>Password</label><input id="password" type="password" autocomplete="current-password"></div><button id="loginBtn" style="width:100%">Login</button><div id="loginError" class="alert hidden"></div></section>
+<section id="app" class="hidden">
+<div class="box"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><div><div style="font-size:12px;font-weight:700;letter-spacing:.04em;opacity:.88;margin-bottom:5px">KARNAphuli BLOOD HUB · ADMIN PANEL</div><h2 style="margin-bottom:2px">Dashboard Overview</h2><div class="muted" id="who"></div><div style="font-size:13px;opacity:.9;margin-top:7px">ডোনার, আবেদন, রক্তদান ও ওয়েবসাইটের কার্যক্রম এক জায়গা থেকে পরিচালনা করুন।</div></div><button id="refresh" class="btn2">Refresh Data</button></div></div>
+<div class="stats"><div class="stat">মোট আবেদন<b id="total">—</b></div><div class="stat">Pending<b id="pending">—</b></div><div class="stat">Approved<b id="approved">—</b></div><div class="stat">Rejected<b id="rejected">—</b></div></div>
+<div class="tabs">
+<button class="active" data-tab="applications">Applications</button>
+<button data-tab="donors">Donor Management</button>
+<button data-tab="cards">ID Cards</button>
+<button data-tab="donations">রক্তদান</button>
+<button data-tab="requests">Blood Requests</button>
+<button data-tab="staff">Staff Permissions</button>
+<button data-tab="notifications">Notifications</button>
+<button data-tab="reports">Reports</button>
+<button data-tab="audit">Audit Logs</button>
+<button data-tab="settings">Website Settings</button>
+</div>
+<section class="box" id="applications"><h2>Application Review</h2><div class="toolbar"><input id="appSearch" placeholder="নাম / Application No / মোবাইল"><select id="appStatus"><option value="pending">Pending</option><option value="">সব স্ট্যাটাস</option><option value="approved">Approved</option><option value="rejected">Rejected</option><option value="suspended">Suspended</option></select><button id="reloadApps" class="btn2">লোড করুন</button></div><div class="tablewrap"><table><thead><tr><th>Application</th><th>নাম</th><th>মোবাইল</th><th>রক্ত</th><th>এলাকা</th><th>স্ট্যাটাস</th><th>Action</th></tr></thead><tbody id="appRows"><tr><td colspan="7" class="empty">লোড হচ্ছে…</td></tr></tbody></table></div></section>
+<section class="box hidden" id="donors"><h2>Donor Management</h2><div class="toolbar"><input id="donorSearch" placeholder="নাম / কার্ড / মোবাইল"><select id="donorStatus"><option value="approved">Approved</option><option value="suspended">Suspended</option><option value="">সব স্ট্যাটাস</option><option value="pending">Pending</option><option value="rejected">Rejected</option></select><button id="reloadDonors" class="btn2">লোড করুন</button></div><div class="tablewrap"><table><thead><tr><th>Donor ID</th><th>নাম</th><th>মোবাইল</th><th>রক্ত</th><th>জেলা</th><th>উপজেলা</th><th>স্ট্যাটাস</th><th>Action</th></tr></thead><tbody id="donorRows"></tbody></table></div></section>
+<section class="box hidden" id="cards"><h2>Donor ID Cards</h2><div class="tablewrap"><table><thead><tr><th>Card Number</th><th>Donor</th><th>রক্ত</th><th>Issued</th><th>Status</th></tr></thead><tbody id="cardRows"></tbody></table></div></section>
+
+<section class="box hidden" id="donations">
+<h2>Donation Management & Verification</h2>
+<div class="toolbar"><select id="donationFilter"><option value="">সব রেকর্ড</option><option value="pending">Pending</option><option value="verified">Verified</option><option value="rejected">Rejected</option></select><button id="reloadDonations" class="btn2">Refresh</button></div>
+<div class="box" id="donationAddPanel" style="box-shadow:none;margin:12px 0">
+<h3>নতুন রক্তদানের রেকর্ড যোগ করুন</h3>
+<div class="formgrid">
+<div class="field"><label>Approved Donor</label><select id="donationDonor"><option value="">ডোনার নির্বাচন করুন</option></select></div>
+<div class="field"><label>রক্তদানের তারিখ</label><input type="date" id="donationDate"></div>
+<div class="field"><label>হাসপাতাল / ব্লাড ব্যাংক</label><input id="donationFacility" placeholder="প্রতিষ্ঠানের নাম"></div>
+<div class="field"><label>নোট</label><input id="donationNotes" placeholder="ঐচ্ছিক"></div>
+</div><button id="addDonation">রেকর্ড যোগ করুন (Pending)</button><div class="muted">নতুন রেকর্ড প্রথমে Pending থাকবে; যাচাইয়ের পর Verified হবে।</div>
+</div>
+<div class="tablewrap"><table><thead><tr><th>Donor</th><th>তারিখ</th><th>প্রতিষ্ঠান</th><th>নোট</th><th>Status</th><th>Action</th></tr></thead><tbody id="donationRows"></tbody></table></div>
+</section>
+
+<section class="box hidden" id="requests">
+<h2>Blood Request Management</h2>
+<div class="box" id="requestCreatePanel" style="box-shadow:none;margin:12px 0">
+<h3>নতুন Blood Request তৈরি</h3>
+<div class="formgrid">
+<div class="field"><label>রোগীর নাম</label><input id="rPatient"></div><div class="field"><label>রক্তের গ্রুপ</label><select id="rBlood"><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>AB+</option><option>AB-</option><option>O+</option><option>O-</option></select></div>
+<div class="field"><label>পরিমাণ (Unit)</label><input id="rUnits" type="number" min="1" max="10" value="1"></div><div class="field"><label>হাসপাতাল</label><input id="rHospital"></div>
+<div class="field"><label>জেলা</label><input id="rDistrict" value="Chattogram"></div><div class="field"><label>এলাকা</label><input id="rArea"></div>
+<div class="field"><label>যোগাযোগ নম্বর</label><input id="rPhone" inputmode="numeric"></div><div class="field"><label>রক্ত প্রয়োজনের তারিখ</label><input id="rDate" type="date"></div>
+<div class="field" style="grid-column:1/-1"><label>অতিরিক্ত তথ্য</label><input id="rNotes"></div>
+<div class="field" style="grid-column:1/-1"><label style="display:flex;gap:8px;align-items:flex-start"><input id="rPublicConsent" type="checkbox" style="width:auto;margin-top:5px">যোগাযোগ নম্বরটি পাবলিক তালিকায় দেখানোর অনুমতি নেওয়া হয়েছে</label></div>
+</div><button id="createRequest">Request তৈরি করুন (Pending)</button>
+</div>
+<div class="toolbar"><select id="requestFilter"><option value="">সব স্ট্যাটাস</option><option>pending</option><option>live</option><option>closed</option><option>rejected</option></select><button id="reloadRequests" class="btn2">Refresh</button></div>
+<div class="tablewrap"><table><thead><tr><th>Patient</th><th>Blood</th><th>Units</th><th>Hospital</th><th>Contact</th><th>Public Consent</th><th>Needed By</th><th>Status</th><th>Action</th></tr></thead><tbody id="requestRows"></tbody></table></div>
+</section>
+
+<section class="box hidden" id="staff">
+<h2>Staff & Permission Management</h2><p class="muted">নতুন Staff-কে Email invitation পাঠান, তারপর প্রয়োজনীয় Permission দিন। Staff account তৈরি ও role assignment নিরাপদ server-side Edge Function দিয়ে হয়; Service Role Key কখনো Browser-এ থাকে না।</p>
+<div class="box" style="box-shadow:none;margin:12px 0">
+<h3>নতুন Staff আমন্ত্রণ</h3>
+<div class="formgrid">
+<div class="field"><label>পূর্ণ নাম</label><input id="staffInviteName" maxlength="100" placeholder="Staff-এর নাম"></div>
+<div class="field"><label>Email</label><input id="staffInviteEmail" type="email" autocomplete="off" placeholder="staff@example.com"></div>
+<div class="field"><label>মোবাইল (ঐচ্ছিক)</label><input id="staffInvitePhone" inputmode="numeric" placeholder="01XXXXXXXXX" maxlength="14"></div>
+</div>
+<button id="inviteStaffBtn">Staff Invitation পাঠান</button><div id="staffInviteMsg" class="muted" style="margin-top:8px"></div>
+</div>
+<div class="tablewrap"><table><thead><tr><th>Staff</th><th>Permission</th><th>Granted</th></tr></thead><tbody id="staffRows"></tbody></table></div>
+</section>
+
+<section class="box hidden" id="notifications">
+<h2>Admin Notifications</h2><p class="muted">এই নোটিফিকেশন কেবল Auth-linked donor account-এ যাবে। নতুন Login-free public donor-দের জন্য SMS/WhatsApp gateway যুক্ত না থাকায় এই মুহূর্তে সরাসরি বার্তা পাঠানো যাবে না।</p>
+<div class="box" id="notificationSendPanel" style="box-shadow:none;margin:12px 0">
+<div class="field"><label>প্রাপক (Auth-linked donor)</label><select id="notifyUser"><option value="">প্রাপক নির্বাচন করুন</option></select></div>
+<div class="field"><label>শিরোনাম</label><input id="notifyTitle" maxlength="120"></div>
+<div class="field"><label>বার্তা</label><input id="notifyBody" maxlength="1000"></div>
+<button id="sendNotification">নোটিফিকেশন পাঠান</button>
+</div>
+<h3>এই Admin Account-এর Notifications</h3>
+<div class="tablewrap"><table><thead><tr><th>সময়</th><th>শিরোনাম</th><th>বার্তা</th><th>Status</th></tr></thead><tbody id="notificationRows"></tbody></table></div>
+</section>
+
+<section class="box hidden" id="reports">
+<h2>Reports & Analytics</h2>
+<div class="stats">
+<div class="stat">মোট ডোনার<b id="repDonors">—</b></div><div class="stat">Verified Donations<b id="repVerified">—</b></div><div class="stat">Pending Donations<b id="repPendingDonations">—</b></div><div class="stat">Live Requests<b id="repLiveRequests">—</b></div>
+</div>
+<h3>Blood Group Distribution</h3><div id="bloodReport"></div>
+<h3 style="margin-top:20px">শেষ ৬ মাসের Verified Donations</h3><div id="monthlyReport"></div>
+</section>
+
+<section class="box hidden" id="audit">
+<h2>Audit Logs (সর্বশেষ ১০০টি)</h2>
+<div class="tablewrap"><table><thead><tr><th>সময়</th><th>Actor</th><th>Action</th><th>Entity</th><th>Details</th></tr></thead><tbody id="auditRows"></tbody></table></div>
+</section>
+
+<section class="box hidden" id="settings">
+<h2>Website Settings</h2><p class="muted">Setting value অবশ্যই বৈধ JSON হতে হবে। যেমন: "Karnaphuli Blood Hub" অথবা {"phone":"01XXXXXXXXX"}।</p>
+<div class="formgrid">
+<div class="field"><label>Setting Key</label><input id="settingKey" placeholder="site_name"></div>
+<div class="field"><label>Public setting?</label><select id="settingPublic"><option value="true">হ্যাঁ</option><option value="false">না (Admin only)</option></select></div>
+<div class="field" style="grid-column:1/-1"><label>Setting Value (JSON)</label><textarea id="settingValue" rows="4" style="width:100%;padding:11px;border:1px solid var(--line);border-radius:10px;font:inherit"></textarea></div>
+</div><button id="saveSetting">Setting Save করুন</button>
+<div class="tablewrap" style="margin-top:16px"><table><thead><tr><th>Key</th><th>Value</th><th>Public</th><th>Updated</th><th>Action</th></tr></thead><tbody id="settingRows"></tbody></table></div>
+</section>
+
+</section></main>
+<div class="modal" id="editModal"><div class="modalbox"><h2>ডোনারের তথ্য</h2><div class="formgrid">
+<div class="field"><label>পুরো নাম</label><input id="eName"></div><div class="field"><label>মোবাইল</label><input id="ePhone"></div>
+<div class="field"><label>রক্তের গ্রুপ</label><select id="eBlood"><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>AB+</option><option>AB-</option><option>O+</option><option>O-</option></select></div>
+<div class="field"><label>জেলা</label><input id="eDistrict"></div><div class="field"><label>উপজেলা</label><input id="eUpazila"></div><div class="field"><label>এলাকা</label><input id="eArea"></div>
+<div class="field"><label>লিঙ্গ</label><select id="eGender"><option value="Male">পুরুষ</option><option value="Female">মহিলা</option><option value="Other">অন্যান্য</option></select></div>
+<div class="field"><label>রক্তদানের সংখ্যা</label><select id="eCount"><option>০</option><option>১-৩</option><option>৪-১০</option><option>১০+</option></select></div>
+</div><div class="right" style="margin-top:15px"><button id="saveEdit">Save</button><button id="closeEdit" class="btn2">বন্ধ</button></div><div id="editError" class="alert hidden"></div></div></div>
+<script>
+const SUPABASE_URL='https://bwbsguoictrzvyyhbney.supabase.co';
+const SUPABASE_PUBLISHABLE_KEY='sb_publishable_EfF5jhFMS4nrI3xrFhauOQ_-wFpoiKv';
+const db=supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY),$=id=>document.getElementById(id);
+const localToday=()=>{const d=new Date();d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,10)};
+let rows=[],active=null,currentAdmin=null,currentRole=null,currentPermissions=new Set(),donationData=[],requestData=[],staffUsers=[],permissionList=[];
+const ADMIN_ROLES=['admin','super_admin'];
+const can=permission=>ADMIN_ROLES.includes(currentRole)||currentPermissions.has(permission);
+const canReports=()=>can('donors.view')&&can('donations.view')&&can('requests.view');
+function msg(id,t){$(id).textContent=t;$(id).classList.remove('hidden')}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+async function start(){
+ const {data:{session},error:sessionError}=await db.auth.getSession();
+ if(sessionError)throw sessionError;
+ if(!session){currentAdmin=null;currentRole=null;currentPermissions.clear();$('login').classList.remove('hidden');$('app').classList.add('hidden');$('logout').classList.add('hidden');return}
+ const {data:rr,error}=await db.from('user_roles').select('role').eq('user_id',session.user.id);
+ if(error)throw error;const roles=(rr||[]).map(x=>x.role);
+ currentRole=roles.includes('super_admin')?'super_admin':roles.includes('admin')?'admin':roles.includes('staff')?'staff':null;
+ currentPermissions.clear();
+ if(currentRole==='staff'){
+   const {data:perms,error:permError}=await db.from('employee_permissions').select('permission_key').eq('user_id',session.user.id);
+   if(permError)throw permError;(perms||[]).forEach(x=>currentPermissions.add(x.permission_key));
+   if(!currentPermissions.size){await db.auth.signOut();throw new Error('এই Staff account-এ এখনো কোনো Permission দেওয়া হয়নি। Admin-এর সঙ্গে যোগাযোগ করুন।')}
+ }else if(!ADMIN_ROLES.includes(currentRole)){
+   await db.auth.signOut();throw new Error('এই অ্যাকাউন্টের Admin/Staff permission নেই।');
+ }
+ currentAdmin=session.user;$('login').classList.add('hidden');$('app').classList.remove('hidden');$('logout').classList.remove('hidden');
+ $('who').textContent=(session.user.email||'Account')+' · '+(currentRole==='staff'?'Staff':'Admin');
+ configureAccess();await refreshAll();
+}
+$('loginBtn').onclick=async()=>{ $('loginError').classList.add('hidden');$('loginBtn').disabled=true;try{const {error}=await db.auth.signInWithPassword({email:$('email').value.trim(),password:$('password').value});if(error)throw error;await start()}catch(e){msg('loginError',e.message||'Login failed')}finally{$('loginBtn').disabled=false}};
+$('logout').onclick=async()=>{await db.auth.signOut();currentAdmin=null;currentRole=null;currentPermissions.clear();start()};
+async function refreshAll(){
+ const jobs=[];
+ if(can('donors.view'))jobs.push(loadApps(),loadDonors(),metrics());
+ if(can('cards.view')&&can('donors.view'))jobs.push(loadCards());
+ if(can('donations.view')&&can('donors.view'))jobs.push(loadDonations());
+ if(can('requests.view'))jobs.push(loadRequests());
+ if(can('staff.permissions.manage')&&can('staff.roles.manage')&&can('donors.view'))jobs.push(loadStaff());
+ if(can('notifications.send')&&can('donors.view'))jobs.push(loadNotifications());
+ if(canReports())jobs.push(loadReports());
+ if(can('security.logs.view'))jobs.push(loadAudit());
+ if(can('settings.manage'))jobs.push(loadSettings());
+ await Promise.allSettled(jobs);
+}
+function configureAccess(){
+ const rules={applications:()=>can('donors.view'),donors:()=>can('donors.view'),cards:()=>can('cards.view')&&can('donors.view'),donations:()=>can('donations.view')&&can('donors.view'),requests:()=>can('requests.view'),staff:()=>can('staff.permissions.manage')&&can('staff.roles.manage')&&can('donors.view'),notifications:()=>can('notifications.send')&&can('donors.view'),reports:canReports,audit:()=>can('security.logs.view'),settings:()=>can('settings.manage')};
+ document.querySelectorAll('.tabs button[data-tab]').forEach(b=>{const allowed=!!rules[b.dataset.tab]?.();b.classList.toggle('hidden',!allowed);});
+ document.querySelectorAll('#app > section.box[id]').forEach(sec=>{if(rules[sec.id]&&!rules[sec.id]())sec.classList.add('hidden')});
+ $('donationAddPanel').classList.toggle('hidden',!can('donations.verify'));
+ $('requestCreatePanel').classList.toggle('hidden',!can('requests.manage'));
+ $('notificationSendPanel').classList.toggle('hidden',!can('notifications.send'));
+ const first=document.querySelector('.tabs button[data-tab]:not(.hidden)');
+ if(first){document.querySelectorAll('.tabs button').forEach(x=>x.classList.toggle('active',x===first));['applications','donors','cards','donations','requests','staff','notifications','reports','audit','settings'].forEach(id=>$(id).classList.toggle('hidden',id!==first.dataset.tab));}
+}
+$('refresh').onclick=refreshAll;$('reloadApps').onclick=loadApps;$('reloadDonors').onclick=loadDonors;
+async function metrics(){for(const [id,filter] of [['total',null],['pending','pending'],['approved','approved'],['rejected','rejected']]){let q=db.from('donor_profiles').select('id',{count:'exact',head:true});if(filter)q=q.eq('donor_status',filter);const {count,error}=await q;if(error)console.warn(error);$(id).textContent=count??'—'}}
+function badge(s){return `<span class="pill ${esc(s)}">${esc(s)}</span>`}
+async function loadApps(){
+ const {data,error}=await db.from('donor_profiles').select('*').order('created_at',{ascending:false});
+ if(error){$('appRows').innerHTML=`<tr><td colspan="7">${esc(error.message)}</td></tr>`;return}
+ rows=data||[];const q=$('appSearch').value.trim().toLowerCase(),st=$('appStatus').value;
+ const list=rows.filter(d=>(!st||d.donor_status===st)&&(!q||[d.application_number,d.donor_code,d.full_name,d.phone,d.blood_group].join(' ').toLowerCase().includes(q)));
+ $('appRows').innerHTML=list.map(d=>`<tr><td>${esc(d.application_number||d.donor_code)}</td><td>${esc(d.full_name)}</td><td>${esc(d.phone)}</td><td>${esc(d.blood_group)}</td><td>${esc(d.upazila)}, ${esc(d.district)}</td><td>${badge(d.donor_status)}</td><td class="actions">${d.donor_status==='pending'&&can('donors.approve')?`<button data-act="approve" data-id="${d.id}">Approve</button>`:''}${d.donor_status==='pending'&&can('donors.reject')?`<button class="btn2" data-act="reject" data-id="${d.id}">Reject</button>`:''}${can('donors.edit')?`<button class="btn2" data-act="edit" data-id="${d.id}">Details/Edit</button>`:''}</td></tr>`).join('')||'<tr><td colspan="7" class="empty">কোনো আবেদন পাওয়া যায়নি।</td></tr>';
+}
+$('appSearch').oninput=loadApps;$('appStatus').onchange=loadApps;
+$('appRows').onclick=async e=>{const b=e.target.closest('button[data-act]');if(!b)return;const d=rows.find(x=>x.id===b.dataset.id);if(!d)return;if(b.dataset.act==='edit'){openEdit(d);return}let reason=null;if(b.dataset.act==='reject'){reason=prompt('Reject করার কারণ লিখুন (বাধ্যতামূলক):');if(reason===null)return;if(!reason.trim()){alert('কারণ লিখতে হবে');return}}else if(!confirm(d.full_name+'-এর আবেদন Approve করবেন?'))return;b.disabled=true;try{const {error}=await db.rpc('review_donor',{p_donor_profile_id:d.id,p_decision:b.dataset.act==='approve'?'approved':'rejected',p_reason:reason});if(error)throw error;alert(b.dataset.act==='approve'?'আবেদন Approved হয়েছে এবং কার্ড ইস্যু হয়েছে।':'আবেদন Reject হয়েছে।');await refreshAll()}catch(err){alert(err.message||'Action failed')}finally{b.disabled=false}};
+async function loadDonors(){
+ const {data,error}=await db.from('donor_profiles').select('*').order('created_at',{ascending:false});
+ if(error){$('donorRows').innerHTML=`<tr><td colspan="8">${esc(error.message)}</td></tr>`;return}
+ const q=$('donorSearch').value.trim().toLowerCase(),st=$('donorStatus').value;
+ const list=(data||[]).filter(d=>(!st||d.donor_status===st)&&(!q||[d.donor_code,d.full_name,d.phone,d.blood_group].join(' ').toLowerCase().includes(q)));
+ $('donorRows').innerHTML=list.map(d=>`<tr><td>${esc(d.donor_code)}</td><td>${esc(d.full_name)}</td><td>${esc(d.phone)}</td><td>${esc(d.blood_group)}</td><td>${esc(d.district)}</td><td>${esc(d.upazila)}</td><td>${badge(d.donor_status)}</td><td class="actions">${can('donors.edit')?`<button class="btn2" data-edit="${d.id}">Edit</button>`:''}${can('donors.suspend')&&d.donor_status==='approved'?`<button data-status="suspend" data-id="${d.id}">Suspend</button>`:''}${can('donors.suspend')&&d.donor_status==='suspended'?`<button data-status="reactivate" data-id="${d.id}">Reactivate</button>`:''}</td></tr>`).join('')||'<tr><td colspan="8" class="empty">কোনো ডোনার নেই।</td></tr>';
+ $('donorRows').dataset.ids=JSON.stringify(list.map(d=>d.id));
+}
+$('donorSearch').oninput=loadDonors;$('donorStatus').onchange=loadDonors;
+$('donorRows').onclick=async e=>{const edit=e.target.closest('[data-edit]');if(edit){const {data,error}=await db.from('donor_profiles').select('*').eq('id',edit.dataset.edit).single();if(error)return alert(error.message);openEdit(data);return}const b=e.target.closest('[data-status]');if(!b)return;const reason=prompt(b.dataset.status==='suspend'?'Suspend করার কারণ লিখুন:':'Reactivate করার কারণ লিখুন:');if(reason===null||!reason.trim())return;try{const {error}=await db.rpc('manage_donor_status',{p_donor_profile_id:b.dataset.id,p_action:b.dataset.status,p_reason:reason.trim()});if(error)throw error;await refreshAll();alert('স্ট্যাটাস আপডেট হয়েছে।')}catch(err){alert(err.message||'Status update failed')}};
+async function loadCards(){const {data,error}=await db.from('donor_cards').select('card_number,issued_at,revoked_at,donor_profile_id').order('issued_at',{ascending:false});if(error){$('cardRows').innerHTML=`<tr><td colspan="5">${esc(error.message)}</td></tr>`;return}const ids=[...new Set((data||[]).map(x=>x.donor_profile_id).filter(Boolean))];let dm={};if(ids.length){const {data:ds}=await db.from('donor_profiles').select('id,full_name,blood_group').in('id',ids);(ds||[]).forEach(d=>dm[d.id]=d)}$('cardRows').innerHTML=(data||[]).map(c=>`<tr><td>${esc(c.card_number)}</td><td>${esc(dm[c.donor_profile_id]?.full_name||'—')}</td><td>${esc(dm[c.donor_profile_id]?.blood_group||'—')}</td><td>${new Date(c.issued_at).toLocaleDateString('bn-BD')}</td><td>${c.revoked_at?'Revoked':'Active'}</td></tr>`).join('')||'<tr><td colspan="5" class="empty">কোনো কার্ড নেই।</td></tr>'}
+function openEdit(d){active=d;$('eName').value=d.full_name||'';$('ePhone').value=d.phone||'';$('eBlood').value=d.blood_group||'A+';$('eDistrict').value=d.district||'';$('eUpazila').value=d.upazila||'';$('eArea').value=d.area||'';$('eGender').value=d.gender||'Male';$('eCount').value=d.donation_count_band||'০';$('editError').classList.add('hidden');$('editModal').classList.add('open')}
+$('closeEdit').onclick=()=>$('editModal').classList.remove('open');
+$('saveEdit').onclick=async()=>{if(!active)return;const b=$('saveEdit');b.disabled=true;try{const {error}=await db.rpc('admin_update_donor_profile',{p_donor_profile_id:active.id,p_full_name:$('eName').value.trim(),p_phone:$('ePhone').value.trim(),p_blood_group:$('eBlood').value,p_district:$('eDistrict').value.trim(),p_upazila:$('eUpazila').value.trim(),p_area:$('eArea').value.trim(),p_gender:$('eGender').value,p_donation_count_band:$('eCount').value});if(error)throw error;$('editModal').classList.remove('open');await refreshAll();alert('ডোনারের তথ্য আপডেট হয়েছে।')}catch(e){msg('editError',e.message||'Save failed')}finally{b.disabled=false}};
+document.querySelectorAll('.tabs button').forEach(b=>b.onclick=async()=>{
+ if(b.classList.contains('hidden'))return;
+ document.querySelectorAll('.tabs button').forEach(x=>x.classList.toggle('active',x===b));
+ ['applications','donors','cards','donations','requests','staff','notifications','reports','audit','settings'].forEach(id=>$(id).classList.toggle('hidden',id!==b.dataset.tab));
+ const loaders={applications:loadApps,donors:loadDonors,cards:loadCards,donations:loadDonations,requests:loadRequests,staff:loadStaff,notifications:loadNotifications,reports:loadReports,audit:loadAudit,settings:loadSettings};
+ if(loaders[b.dataset.tab])await loaders[b.dataset.tab]();
+});
+
+// ---------------- Donation management ----------------
+async function loadDonations(){
+ const {data,error}=await db.from('donation_records').select('id,donor_profile_id,donor_user_id,donated_on,facility,notes,verification_status,created_at').order('donated_on',{ascending:false}).limit(300);
+ if(error){$('donationRows').innerHTML=`<tr><td colspan="6">${esc(error.message)}</td></tr>`;return}
+ donationData=data||[];const ids=[...new Set(donationData.map(x=>x.donor_profile_id).filter(Boolean))];let dm={};
+ if(ids.length){const {data:ds}=await db.from('donor_profiles').select('id,full_name,donor_code,blood_group').in('id',ids);(ds||[]).forEach(d=>dm[d.id]=d)}
+ const f=$('donationFilter').value;
+ const list=donationData.filter(x=>!f||x.verification_status===f);
+ $('donationRows').innerHTML=list.map(x=>{const d=dm[x.donor_profile_id]||{};return `<tr><td>${esc(d.full_name||d.donor_code||x.donor_user_id||'—')}<div class="muted">${esc(d.blood_group||'')}</div></td><td>${esc(x.donated_on)}</td><td>${esc(x.facility||'—')}</td><td>${esc(x.notes||'—')}</td><td>${badge(x.verification_status)}</td><td class="actions">${x.verification_status==='pending'&&can('donations.verify')?`<button data-donation="verified" data-id="${x.id}">Verify</button><button class="btn2" data-donation="rejected" data-id="${x.id}">Reject</button>`:''}</td></tr>`}).join('')||'<tr><td colspan="6" class="empty">কোনো রেকর্ড নেই।</td></tr>';
+ if(can('donations.verify')){const {data:donors}=await db.from('donor_profiles').select('id,full_name,donor_code,blood_group').eq('donor_status','approved').order('full_name');
+ $('donationDonor').innerHTML='<option value="">ডোনার নির্বাচন করুন</option>'+(donors||[]).map(d=>`<option value="${d.id}">${esc(d.full_name||d.donor_code)} · ${esc(d.blood_group)}</option>`).join('');}
+}
+$('reloadDonations').onclick=loadDonations;$('donationFilter').onchange=loadDonations;
+$('donationRows').onclick=async e=>{const b=e.target.closest('[data-donation]');if(!b)return;let reason=null;if(b.dataset.donation==='rejected'){reason=prompt('রেকর্ড Reject করার কারণ লিখুন:');if(reason===null||!reason.trim())return}else if(!confirm('এই রক্তদানের রেকর্ড Verify করবেন?'))return;b.disabled=true;try{const {error}=await db.rpc('admin_review_donation',{p_donation_record_id:b.dataset.id,p_decision:b.dataset.donation,p_reason:reason});if(error)throw error;alert('রেকর্ড আপডেট হয়েছে।');await refreshAll()}catch(e){alert(e.message||'Update failed')}finally{b.disabled=false}};
+$('addDonation').onclick=async()=>{const donor=$('donationDonor').value,date=$('donationDate').value;if(!donor||!date)return alert('ডোনার ও তারিখ নির্বাচন করুন।');try{const {error}=await db.rpc('admin_add_donation_record',{p_donor_profile_id:donor,p_donated_on:date,p_facility:$('donationFacility').value.trim(),p_notes:$('donationNotes').value.trim()});if(error)throw error;$('donationDate').value='';$('donationFacility').value='';$('donationNotes').value='';alert('Pending রেকর্ড যোগ হয়েছে।');await refreshAll()}catch(e){alert(e.message||'রেকর্ড যোগ হয়নি')}};
+
+// ---------------- Blood request management ----------------
+async function loadRequests(){
+ const {data,error}=await db.from('blood_requests').select('*').order('created_at',{ascending:false}).limit(300);
+ if(error){$('requestRows').innerHTML=`<tr><td colspan="9">${esc(error.message)}</td></tr>`;return}
+ requestData=data||[];const f=$('requestFilter').value;const list=requestData.filter(r=>!f||r.request_status===f);
+ $('requestRows').innerHTML=list.map(r=>`<tr><td>${esc(r.patient_name)}</td><td>${esc(r.blood_group)}</td><td>${esc(r.units)}</td><td>${esc(r.hospital)}<div class="muted">${esc(r.district)}, ${esc(r.area)}</div></td><td>${esc(r.contact_phone)}</td><td>${r.contact_public_consent?'Yes':'No — প্রকাশ নয়'}</td><td>${esc(r.needed_by)}</td><td>${badge(r.request_status)}</td><td class="actions">${can('requests.manage')&&r.request_status==='pending'&&r.contact_public_consent?`<button data-request="live" data-id="${r.id}">Publish</button><button class="btn2" data-request="rejected" data-id="${r.id}">Reject</button>`:can('requests.manage')&&r.request_status==='pending'?'<span class="muted">Consent required</span>':''}${can('requests.manage')&&r.request_status==='live'?`<button class="btn2" data-request="closed" data-id="${r.id}">Close</button>`:''}${can('requests.manage')&&r.request_status==='closed'?`<button class="btn2" data-request="live" data-id="${r.id}">Reopen</button>`:''}</td></tr>`).join('')||'<tr><td colspan="9" class="empty">কোনো Blood Request নেই।</td></tr>';
+}
+$('reloadRequests').onclick=loadRequests;$('requestFilter').onchange=loadRequests;
+$('requestRows').onclick=async e=>{const b=e.target.closest('[data-request]');if(!b)return;const reason=b.dataset.request==='rejected'?prompt('Reject করার কারণ লিখুন:'):null;if(b.dataset.request==='rejected'&&(reason===null||!reason.trim()))return;if(!confirm('Blood Request-এর status পরিবর্তন করবেন?'))return;try{const {error}=await db.rpc('admin_update_blood_request',{p_request_id:b.dataset.id,p_new_status:b.dataset.request,p_reason:reason});if(error)throw error;await refreshAll()}catch(e){alert(e.message||'Request update failed')}};
+$('createRequest').onclick=async()=>{const patient=$('rPatient').value.trim(),units=Number($('rUnits').value),hospital=$('rHospital').value.trim(),district=$('rDistrict').value.trim(),area=$('rArea').value.trim(),phone=$('rPhone').value.trim(),neededBy=$('rDate').value,notes=$('rNotes').value.trim()||null,consent=$('rPublicConsent').checked;if(patient.length<2||hospital.length<2||!district||!area||!/^01[0-9]{9}$/.test(phone)||!neededBy||!Number.isInteger(units)||units<1||units>10||!consent)return alert('সব তথ্য সঠিকভাবে পূরণ করুন এবং নম্বর প্রকাশের সম্মতি নিশ্চিত করুন।');const b=$('createRequest');b.disabled=true;b.textContent='Request তৈরি হচ্ছে…';try{const {data,error}=await db.rpc('admin_create_blood_request',{p_blood_group:$('rBlood').value,p_units:units,p_patient_name:patient,p_hospital:hospital,p_district:district,p_area:area,p_contact_phone:phone,p_needed_by:neededBy,p_notes:notes,p_contact_public_consent:consent});if(error)throw error;if(!data)throw new Error('Request ID পাওয়া যায়নি');alert('Blood Request Pending অবস্থায় তৈরি হয়েছে এবং Audit Log-এ সংরক্ষিত হয়েছে।');['rPatient','rHospital','rArea','rPhone','rDate','rNotes'].forEach(id=>$(id).value='');$('rPublicConsent').checked=false;await refreshAll()}catch(e){alert(e.message||'Request তৈরি হয়নি')}finally{b.disabled=false;b.textContent='Request তৈরি করুন (Pending)'}};
+
+// ---------------- Staff permissions ----------------
+async function loadStaff(){
+ const [{data:roles,error:rErr},{data:perms,error:pErr},{data:catalog,error:cErr}]=await Promise.all([
+  db.from('user_roles').select('user_id,role').eq('role','staff'),
+  db.from('employee_permissions').select('user_id,permission_key,granted_at'),
+  db.from('permission_catalog').select('permission_key,label,description').order('permission_key')
+ ]);
+ if(rErr||pErr||cErr){$('staffRows').innerHTML=`<tr><td colspan="3">${esc((rErr||pErr||cErr).message)}</td></tr>`;return}
+ staffUsers=roles||[];permissionList=catalog||[];const ids=staffUsers.map(x=>x.user_id);let profs={};if(ids.length){const {data}=await db.from('profiles').select('id,full_name,phone').in('id',ids);(data||[]).forEach(x=>profs[x.id]=x)}
+ const granted=new Set((perms||[]).map(x=>x.user_id+'|'+x.permission_key));
+ $('staffRows').innerHTML=staffUsers.map(u=>{const p=profs[u.user_id]||{};return `<tr><td>${esc(p.full_name||u.user_id.slice(0,8))}<div class="muted">${esc(p.phone||u.user_id)}</div></td><td>${permissionList.map(k=>{const restricted=currentRole==='staff'&&(u.user_id===currentAdmin.id||['staff.permissions.manage','staff.roles.manage','security.logs.view','settings.manage'].includes(k.permission_key));return `<label style="display:flex;align-items:center;gap:7px;font-weight:400;margin:5px 0"><input style="width:auto" type="checkbox" data-staff="${u.user_id}" data-perm="${esc(k.permission_key)}" ${restricted?'disabled':''} ${granted.has(u.user_id+'|'+k.permission_key)?'checked':''}>${esc(k.label||k.permission_key)}</label>`}).join('')}</td><td>${(perms||[]).filter(x=>x.user_id===u.user_id).length} permissions</td></tr>`}).join('')||'<tr><td colspan="3" class="empty">এখনো কোনো Staff role account নেই।</td></tr>';
+}
+$('inviteStaffBtn').onclick=async()=>{
+ const b=$('inviteStaffBtn'),email=$('staffInviteEmail').value.trim(),full_name=$('staffInviteName').value.trim(),phone=$('staffInvitePhone').value.trim();
+ if(!email||full_name.length<2)return alert('Staff-এর নাম ও Email দিন।');
+ b.disabled=true;b.textContent='Invitation পাঠানো হচ্ছে…';$('staffInviteMsg').textContent='';
+ try{const {data,error}=await db.functions.invoke('invite-staff',{body:{email,full_name,phone}});if(error)throw error;if(data?.error)throw new Error(data.error);$('staffInviteMsg').textContent=data?.message||'Invitation পাঠানো হয়েছে।';$('staffInviteName').value='';$('staffInviteEmail').value='';$('staffInvitePhone').value='';await loadStaff();}
+ catch(e){$('staffInviteMsg').textContent=e.message||'Invitation পাঠানো যায়নি';}
+ finally{b.disabled=false;b.textContent='Staff Invitation পাঠান'}
+};
+$('staffRows').onchange=async e=>{const c=e.target.closest('input[data-staff]');if(!c)return;const obj={user_id:c.dataset.staff,permission_key:c.dataset.perm,granted_by:currentAdmin?.id||null};try{const result=c.checked?await db.from('employee_permissions').insert(obj):await db.from('employee_permissions').delete().eq('user_id',obj.user_id).eq('permission_key',obj.permission_key);if(result.error)throw result.error;await loadStaff()}catch(e){c.checked=!c.checked;alert(e.message||'Permission update failed')}};
+
+// ---------------- Notifications ----------------
+async function loadNotifications(){
+ const [{data:ns,error},{data:ds}]=await Promise.all([
+  db.from('notifications').select('id,title,body,notification_type,read_at,created_at').eq('user_id',currentAdmin?.id||'00000000-0000-0000-0000-000000000000').order('created_at',{ascending:false}).limit(50),
+  db.from('donor_profiles').select('user_id,full_name,donor_code,blood_group').not('user_id','is',null).eq('donor_status','approved')
+ ]);
+ if(error){$('notificationRows').innerHTML=`<tr><td colspan="4">${esc(error.message)}</td></tr>`;return}
+ $('notificationRows').innerHTML=(ns||[]).map(n=>`<tr><td>${new Date(n.created_at).toLocaleString('bn-BD')}</td><td>${esc(n.title)}</td><td>${esc(n.body)}</td><td>${n.read_at?'Read':'Unread'}</td></tr>`).join('')||'<tr><td colspan="4" class="empty">কোনো নোটিফিকেশন নেই।</td></tr>';
+ $('notifyUser').innerHTML='<option value="">প্রাপক নির্বাচন করুন</option>'+(ds||[]).map(d=>`<option value="${d.user_id}">${esc(d.full_name||d.donor_code)} · ${esc(d.blood_group)}</option>`).join('');
+}
+$('sendNotification').onclick=async()=>{const uid=$('notifyUser').value,title=$('notifyTitle').value.trim(),body=$('notifyBody').value.trim();if(!uid||!title||!body)return alert('প্রাপক, শিরোনাম ও বার্তা পূরণ করুন।');try{const {error}=await db.rpc('admin_send_notification',{p_user_id:uid,p_title:title,p_body:body,p_notification_type:'admin_message'});if(error)throw error;alert('নোটিফিকেশন পাঠানো হয়েছে।');$('notifyTitle').value='';$('notifyBody').value='';await loadNotifications()}catch(e){alert(e.message||'পাঠানো যায়নি')}};
+
+// ---------------- Reports ----------------
+async function loadReports(){
+ const [d,v,p,l]=await Promise.all([
+  db.from('donor_profiles').select('id,blood_group',{count:'exact',head:false}),
+  db.from('donation_records').select('id,donated_on',{count:'exact'}).eq('verification_status','verified'),
+  db.from('donation_records').select('id',{count:'exact',head:true}).eq('verification_status','pending'),
+  db.from('blood_requests').select('id',{count:'exact',head:true}).eq('request_status','live')
+ ]);
+ $('repDonors').textContent=d.count??(d.data||[]).length;$('repVerified').textContent=v.count??(v.data||[]).length;$('repPendingDonations').textContent=p.count??'—';$('repLiveRequests').textContent=l.count??'—';
+ if(d.error||v.error||p.error||l.error){$('bloodReport').textContent=(d.error||v.error||p.error||l.error).message;return}
+ const groups={};(d.data||[]).forEach(x=>groups[x.blood_group]=(groups[x.blood_group]||0)+1);const max=Math.max(1,...Object.values(groups));
+ $('bloodReport').innerHTML=Object.entries(groups).sort((a,b)=>b[1]-a[1]).map(([g,n])=>`<div style="display:grid;grid-template-columns:55px 1fr 40px;gap:8px;align-items:center;margin:7px 0"><b>${esc(g)}</b><div style="height:12px;background:#fce4e6;border-radius:9px;overflow:hidden"><div style="height:100%;width:${n/max*100}%;background:#e11d2e"></div></div><span>${n}</span></div>`).join('')||'ডেটা নেই';
+ const now=new Date(),months=[];for(let i=5;i>=0;i--){const dt=new Date(now.getFullYear(),now.getMonth()-i,1);months.push({key:dt.getFullYear()+'-'+String(dt.getMonth()+1).padStart(2,'0'),label:dt.toLocaleDateString('bn-BD',{month:'short',year:'2-digit'}),n:0})}
+ const start=months[0].key+'-01';const {data:md,error:me}=await db.from('donation_records').select('donated_on').eq('verification_status','verified').gte('donated_on',start);
+ if(me){$('monthlyReport').textContent=me.message;return}
+ (md||[]).forEach(x=>{const k=String(x.donated_on).slice(0,7),m=months.find(y=>y.key===k);if(m)m.n++});
+ const mmax=Math.max(1,...months.map(x=>x.n));$('monthlyReport').innerHTML=months.map(m=>`<div style="display:grid;grid-template-columns:80px 1fr 35px;gap:8px;align-items:center;margin:7px 0"><span>${m.label}</span><div style="height:12px;background:#fce4e6;border-radius:9px;overflow:hidden"><div style="height:100%;width:${m.n/mmax*100}%;background:#e11d2e"></div></div><b>${m.n}</b></div>`).join('');
+}
+
+// ---------------- Audit logs ----------------
+async function loadAudit(){
+ const {data,error}=await db.from('audit_logs').select('id,actor_user_id,action,entity_type,entity_id,details,created_at').order('created_at',{ascending:false}).limit(100);
+ if(error){$('auditRows').innerHTML=`<tr><td colspan="5">${esc(error.message)}</td></tr>`;return}
+ $('auditRows').innerHTML=(data||[]).map(x=>`<tr><td>${new Date(x.created_at).toLocaleString('bn-BD')}</td><td>${esc(x.actor_user_id||'System/Public')}</td><td>${esc(x.action)}</td><td>${esc(x.entity_type)}<div class="muted">${esc(x.entity_id||'')}</div></td><td><code>${esc(JSON.stringify(x.details||{}))}</code></td></tr>`).join('')||'<tr><td colspan="5" class="empty">কোনো Log নেই।</td></tr>';
+}
+
+// ---------------- Website settings ----------------
+async function loadSettings(){
+ const {data,error}=await db.from('site_settings').select('setting_key,setting_value,is_public,updated_at').order('setting_key');
+ if(error){$('settingRows').innerHTML=`<tr><td colspan="5">${esc(error.message)}</td></tr>`;return}
+ $('settingRows').innerHTML=(data||[]).map(x=>`<tr><td>${esc(x.setting_key)}</td><td><code>${esc(JSON.stringify(x.setting_value))}</code></td><td>${x.is_public?'Yes':'No'}</td><td>${new Date(x.updated_at).toLocaleDateString('bn-BD')}</td><td>${can('settings.manage')?`<button class="btn2" data-setting="${esc(x.setting_key)}" data-value="${esc(JSON.stringify(x.setting_value))}" data-public="${x.is_public}">Edit</button>`:''}</td></tr>`).join('')||'<tr><td colspan="5" class="empty">কোনো Setting নেই।</td></tr>';
+}
+$('settingRows').onclick=e=>{const b=e.target.closest('[data-setting]');if(!b)return;$('settingKey').value=b.dataset.setting;$('settingValue').value=b.dataset.value;$('settingPublic').value=b.dataset.public};
+$('saveSetting').onclick=async()=>{const key=$('settingKey').value.trim();if(!/^[a-z][a-z0-9_.-]{1,79}$/.test(key))return alert('Setting key: a-z, 0-9, underscore, dot বা hyphen ব্যবহার করুন।');let value;try{value=JSON.parse($('settingValue').value)}catch{return alert('Setting Value বৈধ JSON নয়।')}try{const {error}=await db.rpc('admin_save_site_setting',{p_setting_key:key,p_setting_value:value,p_is_public:$('settingPublic').value==='true'});if(error)throw error;alert('Setting সংরক্ষণ হয়েছে।');await loadSettings()}catch(e){alert(e.message||'Setting save failed')}};
+
+
+if($('rDate'))$('rDate').min=localToday();
+if($('donationDate'))$('donationDate').max=localToday();
+start().catch(e=>{msg('loginError',e.message||'Dashboard চালু করা যায়নি');$('login').classList.remove('hidden');$('app').classList.add('hidden')});
+</script><script src="pwa.js" defer></script>
+</body></html>
