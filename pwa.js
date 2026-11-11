@@ -1,84 +1,80 @@
 
-let deferredInstallPrompt = null;
+'use strict';
 
-const installBtn = document.getElementById("installBtn");
-const pwaText = document.getElementById("pwaText");
+let deferredPrompt = null;
 
-// Service Worker চালু
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", async () => {
-    try {
-      await navigator.serviceWorker.register("./sw.js");
-      console.log("PWA Service Worker registered");
-    } catch (error) {
-      console.error("Service Worker registration failed:", error);
-    }
+const popup = document.getElementById('installPopup');
+const installBtn = document.getElementById('installBtn');
+const closeBtn = document.getElementById('closeInstallPopup');
+
+function isInstalled() {
+  return (
+    window.matchMedia('(display-mode: standalone)').matches ||
+    window.navigator.standalone === true
+  );
+}
+
+function showInstallPopup() {
+  if (!popup || isInstalled()) return;
+  popup.style.display = 'flex';
+}
+
+function hideInstallPopup() {
+  if (popup) popup.style.display = 'none';
+}
+
+// Register Service Worker
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js')
+      .catch(error => console.error('SW error:', error));
   });
 }
 
-// আগে থেকেই ইনস্টল করা আছে কি না
-function isAppInstalled() {
-  return window.matchMedia("(display-mode: standalone)").matches ||
-    window.navigator.standalone === true;
-}
-
-if (isAppInstalled()) {
-  if (installBtn) installBtn.hidden = true;
-  if (pwaText) pwaText.textContent = "অ্যাপটি ইতোমধ্যে ইনস্টল করা আছে";
-}
-
-// Android / Chrome Install Prompt
-window.addEventListener("beforeinstallprompt", (event) => {
+// Chrome Install Prompt
+window.addEventListener('beforeinstallprompt', (event) => {
   event.preventDefault();
-  deferredInstallPrompt = event;
+  deferredPrompt = event;
 
-  if (installBtn && !isAppInstalled()) {
-    installBtn.hidden = false;
-    installBtn.textContent = "Install App";
-  }
-
-  if (pwaText) {
-    pwaText.textContent = "এক ক্লিকেই অ্যাপটি ইনস্টল করুন";
-  }
+  // Show custom popup
+  showInstallPopup();
 });
 
-// Install Button
+// Install button
 if (installBtn) {
-  installBtn.addEventListener("click", async () => {
-    if (!deferredInstallPrompt) return;
-
-    deferredInstallPrompt.prompt();
-
-    const result = await deferredInstallPrompt.userChoice;
-
-    if (result.outcome === "accepted") {
-      installBtn.hidden = true;
-      if (pwaText) {
-        pwaText.textContent = "ইনস্টল সম্পন্ন হলে অ্যাপ খুলুন";
-      }
+  installBtn.addEventListener('click', async () => {
+    if (!deferredPrompt) {
+      alert('Chrome-এর Install অপশন এখন প্রস্তুত নয়। কিছুক্ষণ পরে আবার চেষ্টা করুন।');
+      return;
     }
 
-    deferredInstallPrompt = null;
+    deferredPrompt.prompt();
+
+    const result = await deferredPrompt.userChoice;
+
+    if (result.outcome === 'accepted') {
+      console.log('App installation accepted');
+    }
+
+    deferredPrompt = null;
+    hideInstallPopup();
   });
 }
 
-// ইনস্টল সম্পন্ন হলে
-window.addEventListener("appinstalled", () => {
-  if (installBtn) installBtn.hidden = true;
+// Close button
+if (closeBtn) {
+  closeBtn.addEventListener('click', hideInstallPopup);
+}
 
-  if (pwaText) {
-    pwaText.textContent = "অ্যাপটি সফলভাবে ইনস্টল হয়েছে";
-  }
-
-  deferredInstallPrompt = null;
+// Installed successfully
+window.addEventListener('appinstalled', () => {
+  hideInstallPopup();
+  deferredPrompt = null;
 });
 
-// iPhone / iPad নির্দেশনা
-const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
-
-if (isIOS && !isAppInstalled()) {
-  if (pwaText) {
-    pwaText.textContent =
-      "Safari-এর Share মেনু থেকে Add to Home Screen নির্বাচন করুন";
-  }
+// iPhone instructions
+if (/iphone|ipad|ipod/i.test(navigator.userAgent) && !isInstalled()) {
+  setTimeout(() => {
+    showInstallPopup();
+  }, 2000);
 }
