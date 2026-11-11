@@ -281,5 +281,79 @@ function quiz(){const b=$('qb');$('qp').style.width=qi/Q.length*100+'%';
 quiz();
 </script>
 <script src="pwa.js" defer></script>
+
+
+<div id="installPopup" style="
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:99999;
+  background:rgba(0,0,0,.65);
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+">
+  <div style="
+    width:100%;
+    max-width:380px;
+    background:#fff;
+    border-radius:22px;
+    padding:25px;
+    text-align:center;
+    position:relative;
+    color:#222;
+    box-shadow:0 15px 50px rgba(0,0,0,.25);
+  ">
+    <button id="closeInstallPopup" style="
+      position:absolute;
+      top:12px;
+      right:15px;
+      border:0;
+      background:#f3f3f3;
+      border-radius:50%;
+      width:32px;
+      height:32px;
+      font-size:20px;
+      cursor:pointer;
+    ">×</button>
+
+    <img src="./icons/icon-192.png"
+      alt="Karnaphuli Blood Hub"
+      style="width:76px;height:76px;border-radius:18px;">
+
+    <h2 style="margin:16px 0 8px;color:#e11d2e;">
+      Karnaphuli Blood Hub
+    </h2>
+
+    <p style="font-size:14px;color:#666;line-height:1.7;">
+      রক্তদাতা খুঁজুন, জরুরি রক্তের আবেদন করুন এবং
+      রক্তসেবার সঙ্গে সবসময় যুক্ত থাকুন।
+    </p>
+
+    <button id="installBtn" style="
+      width:100%;
+      border:0;
+      padding:15px;
+      border-radius:12px;
+      background:#e11d2e;
+      color:white;
+      font-size:16px;
+      font-weight:700;
+      cursor:pointer;
+      margin-top:12px;
+    ">
+      Install App
+    </button>
+
+    <p style="font-size:12px;color:#999;margin-top:14px;">
+      পরে ইনস্টল করব
+    </p>
+  </div>
+</div>
+
+<script src="./pwa.js" defer></script>
+</body>
+
+
 </body>
 </html>
