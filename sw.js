@@ -7,8 +7,8 @@ const APP_SHELL = [
   './donor-registration.html', './donor_registration.html',
   './download.html', './verify-donor.html', './admin.html',
   './manifest.webmanifest', './pwa.js',
-  './icons/favicon-48.png', './icons/apple-touch-icon.png',
-  './icons/icon-192.png', './icons/icon-512.png', './icons/icon-maskable-512.png'
+  './favicon-48.png', './apple-touch-icon.png',
+  './icon-192.png', './icon-512.png', './icon-maskable-512.png'
 ];
 self.addEventListener('install', (event) => {
   event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(APP_SHELL)).then(() => self.skipWaiting()));
