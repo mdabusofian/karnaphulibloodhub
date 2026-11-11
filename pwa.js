@@ -9,101 +9,97 @@ const closeBtn = document.getElementById('closeInstallPopup');
 const laterBtn = document.getElementById('closeInstallLater');
 
 function isInstalled() {
-  return (
-    window.matchMedia('(display-mode: standalone)').matches ||
-    window.navigator.standalone === true
-  );
+  return window.matchMedia('(display-mode: standalone)').matches ||
+    window.navigator.standalone === true;
 }
 
-// Show popup
-function showInstallPopup() {
-  if (!popup || isInstalled()) return;
-  popup.style.display = 'flex';
-}
-
-// Hide popup
-function hideInstallPopup() {
-  if (popup) {
-    popup.style.display = 'none';
+function showPopup() {
+  if (popup && !isInstalled()) {
+    popup.style.display = 'flex';
   }
 }
 
-// Register Service Worker
+function hidePopup() {
+  if (popup) popup.style.display = 'none';
+}
+
+// Service Worker
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js')
-      .then(registration => {
-        console.log('Service Worker registered:', registration.scope);
-      })
-      .catch(error => {
-        console.error('Service Worker error:', error);
-      });
+  window.addEventListener('load', async () => {
+    try {
+      const registration = await navigator.serviceWorker.register('./sw.js');
+      console.log('KBH Service Worker active:', registration.scope);
+    } catch (error) {
+      console.error('Service Worker error:', error);
+    }
   });
 }
 
 // Chrome install event
-window.addEventListener('beforeinstallprompt', event => {
-  console.log('PWA install event received');
-
+window.addEventListener('beforeinstallprompt', (event) => {
   event.preventDefault();
+
   deferredPrompt = event;
 
-  showInstallPopup();
+  console.log('KBH: Install event received');
+
+  if (!isInstalled()) showPopup();
 });
 
 // Install button
 if (installBtn) {
-  installBtn.addEventListener('click', () => {
-    console.log('Install button clicked');
+  installBtn.addEventListener('click', async () => {
+    console.log('KBH: Install button clicked');
 
     if (!deferredPrompt) {
       alert(
-        'Chrome-এর Install Prompt এখন প্রস্তুত নয়। ' +
-        'কিছুক্ষণ পরে আবার চেষ্টা করুন অথবা Chrome Menu থেকে Install App ব্যবহার করুন।'
+        'Chrome-এর Install Prompt এখন পাওয়া যাচ্ছে না। ' +
+        'পেজটি Refresh করে আবার চেষ্টা করুন।'
       );
       return;
     }
 
-    const installEvent = deferredPrompt;
+    const promptEvent = deferredPrompt;
     deferredPrompt = null;
 
-    // Call prompt directly from the button click
-    const choicePromise = installEvent.userChoice;
-    installEvent.prompt();
+    try {
+      await promptEvent.prompt();
 
-    choicePromise.then(result => {
-      console.log('Installation result:', result.outcome);
+      const result = await promptEvent.userChoice;
+
+      console.log('KBH installation result:', result.outcome);
 
       if (result.outcome === 'accepted') {
-        hideInstallPopup();
+        hidePopup();
+      } else {
+        console.log('User cancelled installation');
       }
-    }).catch(error => {
-      console.error('Installation failed:', error);
-    });
+    } catch (error) {
+      console.error('KBH install error:', error);
+      alert('ইনস্টল করতে সমস্যা হয়েছে। আবার চেষ্টা করুন।');
+    }
   });
 } else {
-  console.error('Install button not found');
+  console.error('KBH: installBtn not found');
 }
 
-// Close button
+// Close popup
 if (closeBtn) {
-  closeBtn.addEventListener('click', hideInstallPopup);
+  closeBtn.addEventListener('click', hidePopup);
 }
 
-// Later button
 if (laterBtn) {
-  laterBtn.addEventListener('click', hideInstallPopup);
+  laterBtn.addEventListener('click', hidePopup);
 }
 
-// App installed successfully
+// Successfully installed
 window.addEventListener('appinstalled', () => {
-  console.log('Karnaphuli Blood Hub installed successfully');
-
+  console.log('KBH: App installed successfully');
   deferredPrompt = null;
-  hideInstallPopup();
+  hidePopup();
 });
 
-// Initial check
+// Already installed
 if (isInstalled()) {
-  hideInstallPopup();
+  hidePopup();
 }
