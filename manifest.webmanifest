@@ -1,3 +1,4 @@
+
 {
   "id": "./",
   "name": "Karnaphuli Blood Hub",
@@ -5,7 +6,7 @@
   "description": "রক্তদাতা খুঁজুন, রক্তের আবেদন করুন এবং জরুরি রক্তসেবায় যুক্ত থাকুন।",
   "lang": "bn-BD",
   "dir": "ltr",
-  "start_url": "./index.html",
+  "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "display_override": [
