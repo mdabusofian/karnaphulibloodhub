@@ -2,7 +2,6 @@
 (() => {
   'use strict';
 
-  // Prevent duplicate initialization
   if (window.KBH_PWA_INITIALIZED) return;
   window.KBH_PWA_INITIALIZED = true;
 
@@ -18,67 +17,78 @@
       window.navigator.standalone === true;
   }
 
+  function hidePopup() {
+    if (popup) popup.style.display = 'none';
+  }
+
   function showPopup() {
     if (popup && !isInstalled()) {
       popup.style.display = 'flex';
     }
   }
 
-  function hidePopup() {
-    if (popup) popup.style.display = 'none';
-  }
-
-  // Service Worker
+  // Register Service Worker
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./sw.js')
       .then(reg => console.log('KBH SW active:', reg.scope))
       .catch(err => console.error('KBH SW error:', err));
   }
 
-  // Receive Chrome install event
+  // Receive native install event
   window.addEventListener('beforeinstallprompt', event => {
     event.preventDefault();
+
     deferredPrompt = event;
 
     console.log('KBH: Install event received');
 
+    if (installBtn) installBtn.hidden = false;
+
     showPopup();
   });
 
-  // Install button
+  // Install button click
   if (installBtn) {
-    installBtn.addEventListener('click', async () => {
+    installBtn.addEventListener('click', () => {
       console.log('KBH: Install button clicked');
 
       if (!deferredPrompt) {
-        alert('Chrome Install Prompt এখন প্রস্তুত নয়। পেজ Refresh করে আবার চেষ্টা করুন।');
+        alert('Install Prompt এখন পাওয়া যাচ্ছে না। পেজ Refresh করে আবার চেষ্টা করুন।');
         return;
       }
 
-      const promptEvent = deferredPrompt;
+      const installEvent = deferredPrompt;
       deferredPrompt = null;
 
+      // Call prompt directly inside the click event
       try {
-        await promptEvent.prompt();
+        const promptPromise = installEvent.prompt();
 
-        const result = await promptEvent.userChoice;
+        promptPromise.then(async () => {
+          const result = await installEvent.userChoice;
 
-        console.log('KBH Install result:', result.outcome);
+          console.log('KBH installation result:', result.outcome);
 
-        if (result.outcome === 'accepted') {
-          hidePopup();
-        }
+          if (result.outcome === 'accepted') {
+            hidePopup();
+          }
+        }).catch(error => {
+          console.error('KBH Install error:', error);
+        });
+
       } catch (error) {
         console.error('KBH Install error:', error);
-        alert('ইনস্টল করতে সমস্যা হয়েছে। আবার চেষ্টা করুন।');
       }
     });
-  } else {
-    console.error('KBH: Install button not found');
   }
 
-  if (closeBtn) closeBtn.addEventListener('click', hidePopup);
-  if (laterBtn) laterBtn.addEventListener('click', hidePopup);
+  if (closeBtn) {
+    closeBtn.addEventListener('click', hidePopup);
+  }
+
+  if (laterBtn) {
+    laterBtn.addEventListener('click', hidePopup);
+  }
 
   window.addEventListener('appinstalled', () => {
     console.log('KBH: App installed successfully');
