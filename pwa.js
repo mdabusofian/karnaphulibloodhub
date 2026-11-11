@@ -6,66 +6,80 @@ let deferredPrompt = null;
 const popup = document.getElementById('installPopup');
 const installBtn = document.getElementById('installBtn');
 const closeBtn = document.getElementById('closeInstallPopup');
+const laterBtn = document.getElementById('closeInstallLater');
 
 function isInstalled() {
-  return window.matchMedia('(display-mode: standalone)').matches ||
-    window.navigator.standalone === true;
+  return (
+    window.matchMedia('(display-mode: standalone)').matches ||
+    window.navigator.standalone === true
+  );
 }
 
-function showPopup() {
-  if (popup && !isInstalled()) {
-    popup.style.display = 'flex';
+// Show popup
+function showInstallPopup() {
+  if (!popup || isInstalled()) return;
+  popup.style.display = 'flex';
+}
+
+// Hide popup
+function hideInstallPopup() {
+  if (popup) {
+    popup.style.display = 'none';
   }
-}
-
-function hidePopup() {
-  if (popup) popup.style.display = 'none';
 }
 
 // Register Service Worker
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('./sw.js')
-    .then(() => console.log('Service Worker registered'))
-    .catch(error => console.error('Service Worker:', error));
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js')
+      .then(registration => {
+        console.log('Service Worker registered:', registration.scope);
+      })
+      .catch(error => {
+        console.error('Service Worker error:', error);
+      });
+  });
 }
 
 // Chrome install event
-window.addEventListener('beforeinstallprompt', (event) => {
-  console.log('Install event received');
+window.addEventListener('beforeinstallprompt', event => {
+  console.log('PWA install event received');
 
   event.preventDefault();
   deferredPrompt = event;
 
-  showPopup();
+  showInstallPopup();
 });
 
 // Install button
 if (installBtn) {
-  installBtn.addEventListener('click', async () => {
+  installBtn.addEventListener('click', () => {
     console.log('Install button clicked');
 
     if (!deferredPrompt) {
-      alert('Chrome এখনো Install Prompt দেয়নি। Chrome-এর তিন ডট মেনু থেকে Install App অপশন ব্যবহার করো।');
+      alert(
+        'Chrome-এর Install Prompt এখন প্রস্তুত নয়। ' +
+        'কিছুক্ষণ পরে আবার চেষ্টা করুন অথবা Chrome Menu থেকে Install App ব্যবহার করুন।'
+      );
       return;
     }
 
-    const promptEvent = deferredPrompt;
+    const installEvent = deferredPrompt;
     deferredPrompt = null;
 
-    try {
-      await promptEvent.prompt();
+    // Call prompt directly from the button click
+    const choicePromise = installEvent.userChoice;
+    installEvent.prompt();
 
-      const result = await promptEvent.userChoice;
-
-      console.log('Install result:', result.outcome);
+    choicePromise.then(result => {
+      console.log('Installation result:', result.outcome);
 
       if (result.outcome === 'accepted') {
-        hidePopup();
+        hideInstallPopup();
       }
-    } catch (error) {
-      console.error('Install error:', error);
-      alert('Install করতে সমস্যা হয়েছে। আবার চেষ্টা করো।');
-    }
+    }).catch(error => {
+      console.error('Installation failed:', error);
+    });
   });
 } else {
   console.error('Install button not found');
@@ -73,12 +87,23 @@ if (installBtn) {
 
 // Close button
 if (closeBtn) {
-  closeBtn.addEventListener('click', hidePopup);
+  closeBtn.addEventListener('click', hideInstallPopup);
 }
 
-// App installed
+// Later button
+if (laterBtn) {
+  laterBtn.addEventListener('click', hideInstallPopup);
+}
+
+// App installed successfully
 window.addEventListener('appinstalled', () => {
-  console.log('App successfully installed');
-  hidePopup();
+  console.log('Karnaphuli Blood Hub installed successfully');
+
   deferredPrompt = null;
+  hideInstallPopup();
 });
+
+// Initial check
+if (isInstalled()) {
+  hideInstallPopup();
+}
