@@ -1,21 +1,11 @@
 
-/* Karnaphuli Blood Hub - Fixed PWA Service Worker */
 'use strict';
 
-const CACHE_NAME = 'kbh-pwa-v4';
+const CACHE_NAME = 'kbh-pwa-v5';
 
 const APP_SHELL = [
   './',
   './index.html',
-  './about.html',
-  './all-donors.html',
-  './application-status.html',
-  './blood_requests.html',
-  './donor-registration.html',
-  './donor_registration.html',
-  './download.html',
-  './verify-donor.html',
-  './admin.html',
   './manifest.webmanifest',
   './pwa.js'
 ];
@@ -28,33 +18,39 @@ const ICON_PATHS = [
   './icons/icon-maskable-512.png'
 ];
 
-function isValidPNG(response) {
-  return (
-    response &&
-    response.ok &&
-    response.headers.get('content-type')?.toLowerCase().includes('image/png')
-  );
-}
-
 // Install
 self.addEventListener('install', (event) => {
   event.waitUntil(
     (async () => {
       const cache = await caches.open(CACHE_NAME);
 
-      await cache.addAll(APP_SHELL);
-
-      // Cache only actual PNG images
-      for (const path of ICON_PATHS) {
+      // Cache files individually so one missing file
+      // cannot prevent the Service Worker from installing.
+      for (const path of [...APP_SHELL, ...ICON_PATHS]) {
         try {
-          const url = new URL(path, self.registration.scope);
-          const response = await fetch(url, { cache: 'reload' });
+          const response = await fetch(path, {
+            cache: 'reload'
+          });
 
-          if (isValidPNG(response)) {
-            await cache.put(url, response.clone());
+          if (!response.ok) {
+            console.warn('Cache skipped:', path);
+            continue;
           }
+
+          if (
+            path.includes('/icons/') &&
+            !response.headers
+              .get('content-type')
+              ?.toLowerCase()
+              .includes('image/png')
+          ) {
+            console.warn('Invalid PNG skipped:', path);
+            continue;
+          }
+
+          await cache.put(path, response.clone());
         } catch (error) {
-          console.warn('Icon cache skipped:', path, error);
+          console.warn('Cache skipped:', path, error);
         }
       }
 
@@ -63,7 +59,7 @@ self.addEventListener('install', (event) => {
   );
 });
 
-// Activate and remove old caches
+// Activate
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     (async () => {
@@ -94,7 +90,7 @@ self.addEventListener('fetch', (event) => {
 
   if (url.origin !== self.location.origin) return;
 
-  // Icons: Network first, accept PNG only
+  // Icon requests
   if (url.pathname.includes('/icons/')) {
     event.respondWith(
       (async () => {
@@ -105,7 +101,13 @@ self.addEventListener('fetch', (event) => {
             cache: 'no-store'
           });
 
-          if (isValidPNG(response)) {
+          if (
+            response.ok &&
+            response.headers
+              .get('content-type')
+              ?.toLowerCase()
+              .includes('image/png')
+          ) {
             await cache.put(request, response.clone());
             return response;
           }
@@ -115,9 +117,7 @@ self.addEventListener('fetch', (event) => {
 
         const cached = await cache.match(request);
 
-        if (isValidPNG(cached)) {
-          return cached;
-        }
+        if (cached) return cached;
 
         return new Response('Icon not found', {
           status: 404,
@@ -131,14 +131,14 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // HTML navigation: Network first
+  // HTML navigation: network first
   if (request.mode === 'navigate') {
     event.respondWith(
       (async () => {
         try {
           const response = await fetch(request);
 
-          if (response && response.ok) {
+          if (response.ok) {
             const cache = await caches.open(CACHE_NAME);
             await cache.put(request, response.clone());
           }
@@ -157,7 +157,7 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Other assets: Cache first
+  // Other same-origin files: cache first
   event.respondWith(
     (async () => {
       const cached = await caches.match(request);
@@ -166,7 +166,7 @@ self.addEventListener('fetch', (event) => {
 
       const response = await fetch(request);
 
-      if (response && response.ok && response.type === 'basic') {
+      if (response.ok && response.type === 'basic') {
         const cache = await caches.open(CACHE_NAME);
         await cache.put(request, response.clone());
       }
