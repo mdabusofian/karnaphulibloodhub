@@ -222,6 +222,7 @@ nav a{white-space:nowrap;font-size:11px}
 .ft .cl{flex:1 1 auto;min-width:0}
 .ft .cd,.ft .sh,.ft .wa{width:46px;flex:none}
 .ft .cd svg.i,.ft .sh svg.i,.ft .wa svg.i,.ft .cl svg.i{width:20px;height:20px}
+.cv-note{font-size:13px;color:var(--mut);margin:0 0 6px;text-align:center}
 </style>
 <style>/* page content (scoped to main) */
 main .w{max-width:480px;margin:0 auto;padding:0 16px}
@@ -428,6 +429,7 @@ footer{font-size:14px}
 <div id="cw" role="dialog" aria-modal="true" aria-label="শেয়ার কার্ড"><div>
   <div class="cwh"><h3>ফেসবুকে শেয়ার কার্ড</h3><button class="ib" id="cx" aria-label="বন্ধ করুন"><svg class="i"><use href="#close"/></svg></button></div>
   <canvas class="cv" id="scv" width="1080" height="1350" aria-label="রক্তের অনুরোধ কার্ড"></canvas>
+  <p class="cv-note" id="snote" hidden>ছবিটি চেপে ধরে রেখে “সেভ” বা “ডাউনলোড” করুন।</p>
   <button class="btn" id="sdl"><svg class="i"><use href="#img"/></svg>কার্ড ডাউনলোড করুন</button>
   <div class="two" style="margin-top:10px"><button class="btn dark sm" id="ssh" style="margin-top:0"><svg class="i"><use href="#share"/></svg>শেয়ার</button><button class="btn ghost sm" id="scp" style="margin-top:0">ক্যাপশন কপি</button></div>
 </div></div>
@@ -711,16 +713,38 @@ async function drawTo(cv,d){
   const warn='রক্তের জন্য টাকা দেবেন না। সরাসরি ডোনারের সঙ্গে কথা বলুন।';fit(x,warn,960,32,22,600,F);x.fillText(warn,W/2,1279);
   fit(x,location.host,900,38,24,700,F);x.fillText(location.host,W/2,1325)}
 async function copyTxt(t){try{await navigator.clipboard.writeText(t);return true}catch(_){try{const a=document.createElement('textarea');a.value=t;a.style.cssText='position:fixed;opacity:0';document.body.appendChild(a);a.select();const ok=document.execCommand('copy');a.remove();return ok}catch(e){return false}}}
+let cardDraw=Promise.resolve();
+const INAPP=/FBAN|FBAV|FB_IAB|FBIOS|Messenger|Instagram|Line\/|MicroMessenger|LinkedInApp|Twitter/i.test(navigator.userAgent||'');
+function showPreview(cvId){
+  const cv=$(cvId); if(!cv) return;
+  let im=document.getElementById(cvId+'-prev');
+  if(!im){im=document.createElement('img');im.id=cvId+'-prev';im.className='cv';im.alt='রক্তের অনুরোধ কার্ড';cv.after(im)}
+  im.src=cv.toDataURL('image/png');
+  if(cvId==='scv'){const n=$('snote');if(n)n.hidden=false}
+  im.scrollIntoView({behavior:'smooth',block:'center'});
+}
 function bindCard(cvId,dl,sh,cp,get){
-  const blob=()=>new Promise(r=>$(cvId).toBlob(r,'image/png')),fn=()=>`KBH_Blood_${String((get()||{}).g||'').replace('+','pos').replace('-','neg')}.png`;
-  $(dl).onclick=async()=>{const b=await blob();if(!b)return toast('কার্ড তৈরি হয়নি, আবার চেষ্টা করুন');const u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download=fn();document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),4000);toast('কার্ড ডাউনলোড হয়েছে। এবার ফেসবুকে পোস্ট করুন')};
+  const ready=()=>cvId==='scv'?cardDraw:Promise.resolve();
+  const blob=async()=>{await ready();return new Promise(r=>$(cvId).toBlob(r,'image/png'))},
+        fn=()=>`KBH_Blood_${String((get()||{}).g||'').replace('+','pos').replace('-','neg')}.png`;
+  $(dl).onclick=async()=>{
+    const b=await blob();
+    if(!b){showPreview(cvId);return toast('কার্ড তৈরি হচ্ছে, একটু পরে আবার চাপুন')}
+    if(INAPP){showPreview(cvId);return toast('ছবিটি চেপে ধরে রেখে সেভ করুন')}
+    try{
+      const u=URL.createObjectURL(b),a=document.createElement('a');
+      a.href=u;a.download=fn();a.rel='noopener';document.body.appendChild(a);a.click();a.remove();
+      setTimeout(()=>URL.revokeObjectURL(u),4000);
+      toast('কার্ড ডাউনলোড শুরু হয়েছে');
+    }catch(e){showPreview(cvId);toast('ছবিটি চেপে ধরে রেখে সেভ করুন')}
+  };
   $(sh).onclick=async()=>{const d=get();if(!d)return;try{const b=await blob(),f=new File([b],fn(),{type:'image/png'});
     if(navigator.canShare&&navigator.canShare({files:[f]}))await navigator.share({files:[f],text:cap(d)});
     else if(navigator.share)await navigator.share({text:cap(d),url:SITE});
     else toast('এই ব্রাউজারে সরাসরি শেয়ার নেই। কার্ড ডাউনলোড করে ফেসবুকে পোস্ট করুন')}catch(e){}};
   $(cp).onclick=async()=>{const d=get();if(d)toast(await copyTxt(cap(d))?'ক্যাপশন কপি হয়েছে, পোস্টে পেস্ট করুন':'কপি করা যায়নি')};
 }
-function openCard(d){if(!d)return;cardFor=d;document.body.classList.add('cop');drawTo($('scv'),d)}
+function openCard(d){if(!d)return;cardFor=d;document.body.classList.add('cop');const old=document.getElementById('scv-prev');if(old)old.remove();$('snote').hidden=true;cardDraw=drawTo($('scv'),d).catch(()=>{})}
 bindCard('scv','sdl','ssh','scp',()=>cardFor);
 $('cx').onclick=()=>document.body.classList.remove('cop');$('cw').onclick=e=>{if(e.target.id==='cw')document.body.classList.remove('cop')};
 
