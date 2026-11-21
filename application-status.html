@@ -14,12 +14,9 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Karnaphuli Blood Hub">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<title>আবেদনের অবস্থা ও কার্ড — কর্ণফুলী ব্লাড হাব</title>
+<title>ডোনার নিবন্ধন — কর্ণফুলী ব্লাড হাব</title>
 <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<!-- Required libraries for donor QR code and PNG card download -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
 :root{--r:#9b0f1f;--r2:#c4202f;--ink:#2a0910;--mut:#6b6b76;--bg:#fdf1f2;--ln:#f4cdd2;--g:linear-gradient(135deg,#c4202f,#9b0f1f)}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
@@ -214,42 +211,155 @@ nav a{white-space:nowrap;font-size:11px}
 #pwaBox button{min-height:44px;padding:10px 16px;border-radius:14px}
 @media(max-width:360px){#pwaBox{flex-wrap:wrap}#pwaBox button{width:100%}}
 
+
+/* ---- post-registration: WhatsApp group + Facebook page ---- */
+.join{margin:18px auto 0;max-width:520px;background:#fff;border:1px solid #ecdcdf;border-radius:20px;padding:18px 18px 20px;box-shadow:0 12px 26px -20px rgba(42,9,16,.5);text-align:center}
+.join h3{margin:0 0 6px;font-size:18px;color:#9b0f1f}
+.join p{margin:0 0 14px;font-size:14px;color:#6b4a52;line-height:1.6}
+.jbtns{display:flex;flex-direction:column;gap:10px}
+.jbtns a{display:block;padding:14px 16px;border-radius:14px;font-weight:700;font-size:15px;text-decoration:none;color:#fff}
+.jbtns .jw{background:#25D366;box-shadow:0 12px 22px -14px rgba(37,211,102,.9)}
+.jbtns .jf{background:#1877F2;box-shadow:0 12px 22px -14px rgba(24,119,242,.9)}
+
+/* ---- application progress after submit ---- */
+.apg{display:flex;align-items:flex-start;justify-content:center;margin:16px auto 4px;max-width:520px}
+.apgs{display:flex;flex-direction:column;align-items:center;gap:6px;min-width:76px;text-align:center}
+.apgs i{width:30px;height:30px;border-radius:50%;background:#f4d6da;color:#9b0f1f;display:grid;place-items:center;font-style:normal;font-weight:700;font-size:13px}
+.apgs span{font-size:11.5px;color:#8a6f75;line-height:1.3;white-space:nowrap}
+.apgs.done i{background:#9b0f1f;color:#fff}
+.apgs.now i{background:#c4202f;color:#fff;box-shadow:0 0 0 5px rgba(196,32,47,.18)}
+.apgs.done span,.apgs.now span{color:#2f1a1f;font-weight:600}
+.apgl{flex:1;height:3px;background:#f0d3d8;margin:14px 4px 0;border-radius:3px}
+.apgl.done{background:#9b0f1f}
+.apgn{text-align:center;font-size:13.5px;color:#6b4a52;margin:10px auto 6px;max-width:520px;line-height:1.6}
+.apgn b{color:#9b0f1f}
+
+/* ---- success: gentle entrance ---- */
+.appName{text-align:center;font-size:15px;color:#6b4a52;margin:4px 0 10px}
+.appName b{color:#2f1a1f}
+#okSec{animation:okIn .7s cubic-bezier(.2,.8,.2,1) both}
+#okSec .tk{animation:tkPop .8s cubic-bezier(.2,.9,.3,1.25) .15s both}
+#okSec .apgs.now i{animation:nowPulse 2s ease-in-out infinite}
+.card-shortcut .sc-ico{animation:scFloat 2.6s ease-in-out infinite}
+@keyframes okIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes tkPop{0%{opacity:0;transform:scale(.6)}100%{opacity:1;transform:scale(1)}}
+@keyframes nowPulse{0%,100%{box-shadow:0 0 0 0 rgba(196,32,47,.35)}50%{box-shadow:0 0 0 7px rgba(196,32,47,0)}}
+@keyframes scFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+@media (prefers-reduced-motion:reduce){#okSec,#okSec .tk,#okSec .apgs.now i,.card-shortcut .sc-ico{animation:none!important}}
 </style>
 <style>/* page content (scoped to main) */
-main .wrap{max-width:680px;margin:auto;padding:18px}
-main .top{display:flex;justify-content:space-between;align-items:center}
-main .brand{font-size:20px;font-weight:700}
-main .brand span{color:var(--red)}
-main .hero{margin:18px 0;background:linear-gradient(135deg,#ff5965,#d7192b);color:white;padding:22px;border-radius:22px}
-main .hero h1{margin:0;font-size:26px}
-main .panel{background:white;border:1px solid var(--line);border-radius:20px;padding:19px;margin:14px 0}
-main .panel h2{margin:0 0 12px;font-size:20px}
-main .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-main label{display:block;font-weight:600;margin:0 0 5px}
-main input,main select{width:100%;padding:13px;border:1.5px solid var(--line);border-radius:12px;font:inherit;font-size:16px;margin-bottom:12px;background:#fff}
-main .checkrow{display:flex;gap:9px;align-items:flex-start;font-size:14px;margin:10px 0}
-main .checkrow input{width:20px;margin:3px 0 0;flex:none;accent-color:var(--red)}
-main .msg{display:none;padding:12px;border-radius:12px;margin-top:12px}
-main .error{background:#fff0f0;color:#b91c1c}
-main .success{background:#f0fff4;color:#166534}
-main .status{display:none}
-main .pill{display:inline-block;padding:4px 12px;border-radius:99px;background:#fbe3e6;color:var(--red);font-weight:700}
-main .card{display:none;margin-top:16px;background:linear-gradient(135deg,#f04452,#b91024);color:white;border-radius:18px;padding:22px;position:relative;overflow:hidden;min-height:230px}
-main .card:after{content:"";position:absolute;width:250px;height:250px;border:2px solid #ffffff25;border-radius:50%;right:-90px;top:-100px}
-main .cardhead{display:flex;justify-content:space-between;align-items:center;gap:10px}
-main .cardhead strong{font-size:20px}
-main .blood{background:white;color:var(--r);border-radius:14px;padding:8px 16px;font-size:27px;font-weight:700}
-main .cname{font-size:23px;font-weight:700;margin:24px 0 8px}
-main .meta{font-size:13px;opacity:.95}
-main .cardtools{display:flex;align-items:center;gap:9px;margin:12px 0 8px;padding:11px 13px;border:1px solid var(--line);border-radius:12px;background:#fff;font-size:14px}
-main .cardtools input{width:18px;height:18px;margin:0;accent-color:var(--red)}
-main .cardphone{font-size:14px;font-weight:600;margin-top:7px}
-main .cardfoot{display:flex;justify-content:space-between;align-items:end;margin-top:22px;gap:12px}
-main .qr{background:white;padding:7px;border-radius:8px;width:88px;height:88px;display:flex;align-items:center;justify-content:center}
-main .small{font-size:12px;opacity:.85}
-main .download{margin-top:12px}
-main .note{font-size:13px;color:var(--muted)}
-@media(max-width:520px){.wrap{padding:13px}.row{grid-template-columns:1fr}.panel{padding:15px}}
+main .w{max-width:480px;margin:0 auto;padding:0 16px}
+main .hero{margin-top:16px;border-radius:26px;background:var(--g);color:#fff;padding:20px;position:relative;overflow:hidden;box-shadow:0 22px 40px -22px rgba(140,12,26,.7)}
+main .hero:before{content:"";position:absolute;width:240px;height:240px;border-radius:50%;border:2px solid rgba(255,255,255,.22);right:-70px;top:-70px}
+main .hero h2{font-size:24px;line-height:1.3;position:relative}
+main .hero p{opacity:.95;font-size:14px;margin-top:4px;position:relative}
+main .hero .ch{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;position:relative}
+main .hero .ch span{background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.5);border-radius:999px;padding:2px 12px;font-size:12.5px;font-weight:600}
+main .rc{margin-top:14px;background:#fff;border:1px solid var(--ln);border-radius:20px;padding:12px 14px}
+main .rc summary{list-style:none;cursor:pointer;display:flex;gap:10px;align-items:center;font-weight:600;font-size:14px}
+main .rc summary::-webkit-details-marker{display:none}
+main .rc summary svg{color:var(--r)}
+main .rc .row{display:flex;gap:8px;margin-top:10px}
+main .rc input{margin:0}
+main .sv{margin-top:14px;display:none;background:#fff;border:1px solid var(--ln);border-radius:20px;padding:12px 14px;align-items:center;gap:12px;font-size:14px;font-weight:600}
+main .sv.on{display:flex}
+main .sv span{flex:1}
+main .sv button{background:var(--r);color:#fff;border-radius:12px;padding:8px 14px;font-weight:700}
+main .steps{display:flex;align-items:center;margin:22px 4px 6px}
+main .steps div{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:12px;font-weight:600;color:var(--mut);width:70px}
+main .steps b{width:34px;height:34px;border-radius:50%;background:#fff;border:2px solid var(--ln);display:flex;align-items:center;justify-content:center;font-size:15px}
+main .steps .on{color:var(--r)}
+main .steps .on b{border-color:var(--r);background:var(--r);color:#fff}
+main .steps .dn b{border-color:var(--r);background:#fbe3e6;color:var(--r)}
+main .steps hr{flex:1;border:0;height:3px;background:var(--ln);margin-bottom:18px;border-radius:2px}
+main .steps hr.on{background:var(--r)}
+main .card{background:#fff;border:1px solid var(--ln);border-radius:26px;padding:20px;box-shadow:0 14px 30px -22px rgba(140,12,26,.6)}
+main .card h3{font-size:18px}
+main .card>p.sb{font-size:13.5px;color:var(--mut);margin:2px 0 16px}
+main .f{margin-bottom:16px}
+main .f>label,main .f>.lb{display:block;font-size:13.5px;font-weight:600;margin-bottom:6px}
+main input[type=text],main input[type=tel],main input[type=email],main input[type=password],main input[type=date],main select{width:100%;font:inherit;font-size:16px;padding:13px 14px;border:2px solid var(--ln);border-radius:14px;background:#fff7f8;color:var(--ink);appearance:none;-webkit-appearance:none}
+main select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23e11d2e' stroke-width='3' stroke-linecap='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center}
+main input:focus,main select:focus{border-color:var(--r);outline:0;background:#fff}
+main .er{color:var(--r);font-size:12.5px;margin-top:4px;display:none}
+main .bad .er{display:block}
+main .bad input,main .bad select{border-color:var(--r)}
+main .bad .seg{outline:2px solid var(--r);outline-offset:3px}
+main .seg{display:grid;gap:8px}
+main .s2{grid-template-columns:1fr 1fr}
+main .s4{grid-template-columns:repeat(4,1fr)}
+main .seg button{padding:12px 4px;border-radius:14px;background:#fbe3e6;color:var(--r);font-weight:700;border:2px solid transparent;font-size:15px}
+main .seg button.on{background:var(--r);color:#fff;box-shadow:0 10px 18px -10px rgba(140,12,26,.8)}
+main .seg.bg button{font-size:18px;padding:14px 0}
+main .lc{display:grid;gap:10px}
+main .lc button{text-align:left;padding:13px 14px;border-radius:16px;border:2px solid var(--ln);background:#fff7f8;display:flex;gap:12px;align-items:center;font-weight:600}
+main .lc button.on{border-color:var(--r);background:#fbe3e6}
+main .lc em{width:22px;height:22px;border-radius:50%;border:2px solid var(--ln);flex:none;background:#fff}
+main .lc .on em{border:7px solid var(--r)}
+main .nt{background:#fff8e6;border:1px solid #fde4a0;border-radius:14px;padding:10px 12px;font-size:13px;margin:-4px 0 14px;display:none}
+main .nt.on{display:block}
+main .ck{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;margin:4px 0 18px}
+main .ck input{width:22px;height:22px;accent-color:var(--r);flex:none;margin-top:2px}
+main .nav2{display:flex;gap:10px;margin-top:6px}
+main .nav2 button{border-radius:16px;padding:14px;font-weight:700;font-size:16px}
+main .bk{background:#fbe3e6;color:var(--r);flex:0 0 34%}
+main .nx{flex:1;background:var(--g);color:#fff;display:flex;justify-content:center;align-items:center;gap:8px;box-shadow:0 14px 24px -12px rgba(140,12,26,.8)}
+main .nx:disabled{opacity:.7}
+main .go{background:var(--g);color:#fff;border-radius:14px;padding:12px 16px;font-weight:700}
+main .ok{text-align:center;margin-top:20px}
+main .ok .tk{width:72px;height:72px;border-radius:50%;background:var(--g);color:#fff;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;animation:pp .6s cubic-bezier(.3,1.6,.5,1)}
+main .ok .tk svg{width:38px;height:38px;stroke-width:3}
+main .ok h2{font-size:24px}
+main .ok p{color:var(--mut);font-size:14px}
+main #cv{width:100%;border-radius:22px;margin:16px 0 6px;box-shadow:0 26px 40px -22px rgba(140,12,26,.8);display:block}
+main .act{display:grid;gap:10px;margin-top:12px}
+main .act button,main .act a{display:flex;gap:8px;align-items:center;justify-content:center;border-radius:16px;padding:14px;font-weight:700}
+main .idb{display:flex;align-items:center;gap:10px;justify-content:center;flex-wrap:wrap;margin:14px 0 2px;background:#fff;border:2px dashed var(--r);border-radius:16px;padding:10px 14px}
+main .idb span{font-size:13.5px;color:var(--mut);font-weight:600}
+main .idb b{font-size:24px;letter-spacing:1px;color:var(--r)}
+main .idb button{background:var(--r);color:#fff;border-radius:10px;padding:5px 14px;font-weight:700;font-size:14px}
+main .p1{background:var(--g);color:#fff}
+main .p2{background:#2a0910;color:#fff}
+main .p3{background:#fff;border:2px solid var(--ln);color:var(--r)}
+main .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+main .tip{margin-top:14px;background:#fff;border:1px solid var(--ln);border-radius:18px;padding:12px 14px;font-size:13.5px;color:#444;text-align:left;display:flex;gap:10px}
+main .tip svg{color:var(--r);margin-top:2px}
+main nav{position:fixed;left:0;right:0;bottom:0;z-index:40;background:rgba(255,255,255,.95);backdrop-filter:blur(16px);border-top:1px solid var(--ln);padding-bottom:env(safe-area-inset-bottom,0px)}
+main nav .w{display:flex;justify-content:space-around;align-items:center;height:68px}
+main nav a,main nav button{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11.5px;font-weight:600;color:var(--mut);min-width:60px}
+main nav .fab{width:58px;height:58px;border-radius:50%;background:var(--g);color:#fff;justify-content:center;margin-top:-26px;box-shadow:0 14px 26px -8px rgba(140,12,26,.7);border:4px solid #fff}
+main #dw{position:fixed;inset:0;z-index:60;background:rgba(0,0,0,.45);opacity:0;pointer-events:none;transition:opacity .3s}
+main #dw>div{position:absolute;left:0;right:0;bottom:0;max-width:480px;margin:0 auto;background:#fff;border-radius:28px 28px 0 0;padding:22px 20px calc(24px + env(safe-area-inset-bottom,0px));transform:translateY(100%);transition:transform .35s}
+main .op #dw{opacity:1;pointer-events:auto}
+main .op #dw>div{transform:none}
+main #dw a{display:flex;align-items:center;gap:12px;padding:13px 4px;border-bottom:1px solid var(--ln);font-weight:600}
+main #dw a svg{color:var(--r)}
+main #ts{position:fixed;left:16px;right:16px;bottom:calc(92px + env(safe-area-inset-bottom,0px));z-index:70;max-width:448px;margin:0 auto;background:#2a0910;color:#fff;border-radius:16px;padding:12px 16px;font-size:14px;transform:translateY(30px);opacity:0;pointer-events:none;transition:.3s}
+main #ts.on{transform:none;opacity:1}
+main .h{display:none!important}
+main .authbox{margin-top:16px;background:#fff;border:1px solid var(--ln);border-radius:22px;padding:18px;box-shadow:0 14px 30px -22px rgba(140,12,26,.6)}
+main .authbox h3{font-size:19px;margin-bottom:4px}
+main .authbox p{color:var(--mut);font-size:13.5px;margin-bottom:14px}
+main .authswitch{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+main .authswitch button{padding:10px;border-radius:12px;background:#fbe3e6;color:var(--r);font-weight:700}
+main .authswitch button.on{background:var(--r);color:white}
+main .statusbox{margin-top:16px;background:#fff;border:1px solid var(--ln);border-radius:22px;padding:20px;text-align:center}
+main .statusbox h2{font-size:22px}
+main .statusbox p{color:var(--mut);font-size:14px;margin-top:6px}
+main .statusbox .reason{margin-top:12px;padding:12px;background:#fff8e6;border:1px solid #fde4a0;border-radius:14px;text-align:left;color:#6b4a00}
+main .smallbtn{background:#fbe3e6;color:var(--r);border-radius:12px;padding:10px 14px;font-weight:700}
+main .authactions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+main .authactions button{flex:1}
+main input[type=date]{color-scheme:light}
+main .card-shortcut{margin-top:14px;background:#fff;border:1px solid var(--ln);border-radius:18px;padding:13px;box-shadow:0 10px 24px -20px rgba(140,12,26,.55)}
+main .card-shortcut a{display:flex;align-items:center;gap:12px;color:var(--r);font-weight:700}
+main .card-shortcut .sc-ico{width:42px;height:42px;display:flex;align-items:center;justify-content:center;flex:none;border-radius:13px;background:#fbe3e6}
+main .card-shortcut .sc-copy{flex:1;min-width:0}
+main .card-shortcut strong{display:block;font-size:15px}
+main .card-shortcut small{display:block;color:var(--mut);font-size:12.5px;font-weight:500;line-height:1.35;margin-top:1px}
+main .card-shortcut .sc-arrow{width:20px;height:20px;flex:none}
+@keyframes pp{from{transform:scale(.2);opacity:0}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 <style>
 /* Bengali typography: Hind Siliguri for Bangla, comfortable app-like sizes */
@@ -264,31 +374,6 @@ nav a,nav button{font-size:12px;line-height:1.3}
 input,textarea,select{font-size:16px}
 .tag{font-size:12px}
 footer{font-size:14px}
-</style>
-<style>
-/* ---- redesigned application status page ---- */
-main>.top{display:none}
-main .panel{background:#fff;border:1px solid var(--ln);border-radius:24px;padding:20px;margin-top:14px;box-shadow:0 14px 28px -22px rgba(140,12,26,.6)}
-main .panel h2{font-size:18px;margin-bottom:4px}
-main label{display:block;font-size:14px;font-weight:600;color:#2a0910;margin-top:14px}
-main input:not([type=checkbox]),main select{width:100%;margin-top:6px;padding:14px 16px;border-radius:14px;border:1.5px solid #f0d3d8;background:#fffafa;font-size:16px;color:#2a0910;transition:border-color .2s,box-shadow .2s;font-family:inherit}
-main input:focus,main select:focus{outline:none;border-color:#c4202f;box-shadow:0 0 0 4px rgba(196,32,47,.12)}
-main .checkrow{display:flex;gap:10px;align-items:flex-start;font-weight:500;font-size:14px;color:#444;margin-top:12px;line-height:1.5}
-main .checkrow input{width:20px;height:20px;margin-top:2px;accent-color:#9b0f1f;flex:none}
-main .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-main button{width:100%;margin-top:16px;min-height:52px;padding:0 18px;border-radius:16px;background:linear-gradient(135deg,#c4202f,#7e0a1c);color:#fff;font-weight:700;font-size:16px;box-shadow:0 14px 24px -14px rgba(140,12,26,.9);transition:transform .15s,opacity .2s}
-main button:active{transform:scale(.98)}
-main button:disabled{opacity:.6}
-main .msg.error{margin-top:12px;border-radius:14px;padding:12px 14px;font-size:14px}
-.prog{background:#fff;border:1px solid var(--ln);border-radius:22px;padding:16px;margin:14px 0 0;box-shadow:0 14px 28px -22px rgba(140,12,26,.6)}
-.pg-line{height:6px;border-radius:9px;background:#f4cdd2;overflow:hidden}
-.pg-line i{display:block;height:100%;background:linear-gradient(90deg,#c4202f,#9b0f1f);border-radius:9px;transition:width .4s}
-.pg-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:12px}
-.pg-s{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:12px;color:var(--mut);text-align:center;line-height:1.3}
-.pg-s b{width:30px;height:30px;border-radius:50%;background:#f4cdd2;color:#9b0f1f;display:grid;place-items:center;font-size:13px}
-.pg-s.done b{background:#9b0f1f;color:#fff}
-.pg-s.now span{color:#2a0910;font-weight:700}
-.pg-note{margin-top:12px;font-size:13px;color:#9b0f1f;font-weight:600}
 </style>
 </head>
 <body>
@@ -310,7 +395,21 @@ main .msg.error{margin-top:12px;border-radius:14px;padding:12px 14px;font-size:1
 <symbol id="bank" viewBox="0 0 24 24"><path d="M3 21h18M5 21V9l7-5 7 5v12"/><path d="M10 21v-6h4v6"/></symbol>
 <symbol id="act" viewBox="0 0 24 24"><path d="M3 12h4l3-8 4 16 3-8h4"/></symbol>
 <symbol id="warn" viewBox="0 0 24 24"><path d="M12 3 2 21h20z"/><path d="M12 10v5M12 18h.01"/></symbol>
+<symbol id="back" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+<symbol id="check" viewBox="0 0 24 24"><path d="m5 12 5 5 9-10"/></symbol>
+<symbol id="arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+<symbol id="dl" viewBox="0 0 24 24"><path d="M12 3v12M7 11l5 5 5-5M5 21h14"/></symbol>
+<symbol id="info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></symbol>
+<symbol id="msg" viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.800 7L4 20l1.200-4.500A8 8 0 1 1 21 12z"/></symbol>
+<symbol id="id" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M6 16c.5-2 5.500-2 6 0M14 10h4M14 14h3"/></symbol>
 </defs></svg>
+
+
+
+
+
+
+
 <header id="top"><div class="w">
  <div class="lg">
   <b><svg class="i"><use href="#drop"/></svg></b>
@@ -324,30 +423,71 @@ main .msg.error{margin-top:12px;border-radius:14px;padding:12px 14px;font-size:1
 </div></header>
 <main class="w">
 
-<div class="top"><div class="brand">♥ <span>কর্ণফুলী ব্লাড হাব</span></div><a href="index.html">হোম পেজ</a></div>
-<section class="hero"><h1>আবেদনের অবস্থা ও ID Card</h1><p>আবেদনের অবস্থা দেখতে Application ID অথবা নিবন্ধিত মোবাইল নম্বর দিন। Approved হলে এখান থেকেই কার্ড ডাউনলোড করতে পারবেন।</p></section><div class="prog" id="prog" aria-live="polite"></div>
-<section class="panel"><h2>আবেদনের অবস্থা দেখুন</h2><label for="app">Application ID / নিবন্ধিত মোবাইল নম্বর</label><input id="app" placeholder="Application ID অথবা 01XXXXXXXXX" autocomplete="off"><button id="check">আবেদনের অবস্থা দেখুন</button><div class="msg error" id="err1"></div><div class="status" id="status"></div></section>
-<section class="panel" id="resubmitPanel" style="display:none">
-<h2>Rejected আবেদন সংশোধন করুন</h2>
-<p class="note">আপনার আগের Application Number একই থাকবে। সংশোধিত আবেদন আবার Pending হবে এবং Admin পুনরায় যাচাই করবেন।</p>
-<form id="resubmitForm">
-<label for="rsName">পুরো নাম</label><input id="rsName" required minlength="3" maxlength="100">
-<label for="rsPhone">মোবাইল নম্বর</label><input id="rsPhone" inputmode="numeric" required placeholder="01XXXXXXXXX" maxlength="14">
-<div class="row"><div><label for="rsGender">লিঙ্গ</label><select id="rsGender"><option value="Male">পুরুষ</option><option value="Female">মহিলা</option><option value="Other">অন্যান্য</option></select></div><div><label for="rsBlood">রক্তের গ্রুপ</label><select id="rsBlood"><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>AB+</option><option>AB-</option><option>O+</option><option>O-</option></select></div></div>
-<label for="rsDistrict">জেলা</label><input id="rsDistrict" required>
-<label for="rsUpazila">উপজেলা / থানা</label><input id="rsUpazila" required>
-<label for="rsArea">ইউনিয়ন / গ্রাম / এলাকা</label><input id="rsArea" required>
-<label for="rsCount">এ পর্যন্ত কতবার রক্ত দিয়েছেন?</label><select id="rsCount"><option value="০">নতুন</option><option value="১-৩">১–৩ বার</option><option value="৪-১০">৪–১০ বার</option><option value="১০+">১০+ বার</option></select>
-<label for="rsLastDate">শেষ রক্তদানের তারিখ (ঐচ্ছিক)</label><input id="rsLastDate" type="date">
-<label class="checkrow"><input id="rsListing" type="checkbox"><span>আমার নাম, রক্তের গ্রুপ ও এলাকা Public Donor List-এ দেখানো যাবে।</span></label>
-<label class="checkrow"><input id="rsContact" type="checkbox"><span>আমার মোবাইল নম্বরও Public Donor List-এ দেখানো যাবে (ঐচ্ছিক)।</span></label>
-<label class="checkrow"><input id="rsPolicy" type="checkbox" required><span>আমি স্বেচ্ছায় রক্তদান এবং কর্ণফুলী ব্লাড হাবের নীতিমালা মেনে চলতে সম্মত।</span></label>
-<div class="msg error" id="resubmitError"></div>
-<button id="resubmitBtn" type="submit">সংশোধিত আবেদন পুনরায় জমা দিন</button>
-</form></section>
-<section class="panel"><h2>কার্ড পুনরায় ডাউনলোড</h2><p class="note">Application ID অথবা নিবন্ধিত মোবাইল নম্বর—যেকোনো একটি দিয়ে আপনার অনুমোদিত Donor Card খুঁজুন।</p><label for="cardno">Application ID / নিবন্ধিত মোবাইল নম্বর</label><input id="cardno" placeholder="Application ID অথবা 01XXXXXXXXX" autocomplete="off"><button id="findcard">কার্ড খুঁজুন</button><div class="msg error" id="err2"></div></section>
-<section class="panel" id="cardPanel" style="display:none"><h2>আপনার Donor ID Card</h2><div class="card" id="idcard"><div class="cardhead"><div><strong>♥ কর্ণফুলী ব্লাড হাব</strong><div class="small">OFFICIAL DONOR ID CARD</div></div><div class="blood" id="blood"></div></div><div class="cname" id="cname"></div><div class="meta" id="cno"></div><div class="meta" id="cloc"></div><div class="cardphone" id="cphone"></div><div class="cardfoot"><div><div class="small">VOLUNTARY BLOOD DONOR</div><div class="small">সেবাই আমাদের অঙ্গীকার</div></div><div class="qr" id="qr"></div></div></div><label class="cardtools" id="cardPhoneControl" style="display:none"><input type="checkbox" id="showCardPhone" checked><span>কার্ডে মোবাইল নম্বর দেখান</span></label><button class="download" id="download">ID Card Download (PNG)</button><p class="note">QR Code স্ক্যান করে কার্ডের বৈধতা যাচাই করা যাবে।</p></section>
+ <section class="card-shortcut" aria-label="আগের ডোনারের আইডি কার্ড">
+  <a href="application-status.html">
+   <span class="sc-ico"><svg class="i"><use href="#id"/></svg></span>
+   <span class="sc-copy"><strong>আগের ডোনার? আইডি কার্ড ডাউনলোড করুন</strong><small>Card Number / Donor ID ও নিবন্ধিত মোবাইল নম্বর দিয়ে</small></span>
+   <svg class="i sc-arrow"><use href="#arrow"/></svg>
+  </a>
+ </section>
+<section class="hero"><h2>ডোনার হিসেবে যুক্ত হোন</h2><p>কোনো Login বা Account ছাড়াই আবেদন করুন। Admin অনুমোদন করলে আপনার Donor ID Card তৈরি হবে।</p><div class="ch"><span>বিনামূল্যে</span><span>Login প্রয়োজন নেই</span><span>অনুমোদনের পর আইডি কার্ড</span></div></section>
+<section id="appPanel">
+ <div id="formSec">
+  <div class="steps" id="stp"><div class="on"><b>১</b>ব্যক্তিগত</div><hr><div><b>২</b>ঠিকানা</div><hr><div><b>৩</b>রক্তদান</div></div>
+  <form class="card" id="fm" novalidate>
+   <div data-s="0"><h3>ব্যক্তিগত তথ্য</h3><p class="sb">আপনার নাম, মোবাইল ও রক্তের গ্রুপ দিন</p>
+    <div class="f" data-f="name"><label for="nm">পুরো নাম</label><input type="text" id="nm" placeholder="যেমন: মোঃ রহিম উদ্দিন" autocomplete="name"><div class="er">আপনার নাম লিখুন</div></div>
+    <div class="f" data-f="phone"><label for="ph">মোবাইল নম্বর</label><input type="tel" id="ph" inputmode="numeric" placeholder="01XXXXXXXXX" autocomplete="tel" maxlength="14"><div class="er">১১ সংখ্যার সঠিক মোবাইল নম্বর দিন</div></div>
+    <div class="f" data-f="gender"><div class="lb">লিঙ্গ</div><div class="seg s2" id="gd"><button type="button" data-v="Male">পুরুষ</button><button type="button" data-v="Female">মহিলা</button></div><div class="er">লিঙ্গ বেছে নিন</div></div>
+    <div class="f" data-f="group"><div class="lb">রক্তের গ্রুপ</div><div class="seg s4 bg" id="bgp"></div><div class="er">রক্তের গ্রুপ বেছে নিন</div></div>
+   </div>
+   <div data-s="1" class="h"><h3>ঠিকানা</h3><p class="sb">আপনার এলাকার ডোনার খুঁজে পেতে সাহায্য করবে</p>
+    <div class="f"><label for="di">জেলা</label><select id="di"><option value="Chattogram">চট্টগ্রাম</option></select></div>
+    <div class="f" data-f="upa"><label for="up">উপজেলা / থানা</label><select id="up"><option value="">নির্বাচন করুন</option></select><div class="er">উপজেলা বেছে নিন</div></div>
+    <div class="f" data-f="area"><label for="ar">ইউনিয়ন / গ্রাম / এলাকা</label><input type="text" id="ar" placeholder="যেমন: চরপাথরঘাটা" autocomplete="address-level3"><div class="er">এলাকার নাম লিখুন</div></div>
+   </div>
+   <div data-s="2" class="h"><h3>রক্তদানের তথ্য ও সম্মতি</h3><p class="sb">আপনার রক্তদানের অভিজ্ঞতা এবং গোপনীয়তার পছন্দ জানান</p>
+    <div class="f" data-f="tot"><div class="lb">এ পর্যন্ত কতবার রক্ত দিয়েছেন?</div><div class="seg s4" id="tt"><button type="button" data-v="০">নতুন</button><button type="button" data-v="১-৩">১–৩ বার</button><button type="button" data-v="৪-১০">৪–১০ বার</button><button type="button" data-v="১০+">১০+</button></div><div class="er">একটি বেছে নিন</div></div>
+    <div class="f" data-f="date"><label for="lastDate">শেষ রক্তদানের তারিখ (ঐচ্ছিক)</label><input type="date" id="lastDate"><div class="er">ভবিষ্যতের তারিখ দেওয়া যাবে না</div></div>
+    <div class="f" data-f="listing"><label class="ck"><input type="checkbox" id="listingConsent"><span>আমি চাই আমার নাম, রক্তের গ্রুপ ও এলাকা ডোনার তালিকায় প্রদর্শিত হোক।</span></label><div class="er">পছন্দ নির্বাচন করুন</div></div>
+    <div class="f" data-f="contact"><label class="ck"><input type="checkbox" id="contactConsent"><span>আমি স্বেচ্ছায় ডোনার হিসেবে নিবন্ধন করছি এবং রক্তের প্রয়োজনে আমার সঙ্গে যোগাযোগের জন্য প্রয়োজনীয় তথ্য প্রকাশে সম্মতি দিচ্ছি।।</span></label><div class="er">মোবাইল প্রকাশের সম্মতি দিতে হলে Public Listing চালু করুন</div></div>
+ <div class="f" data-f="policy"><label class="ck"><input type="checkbox" id="policyConsent"><span>আমি স্বেচ্ছায় রক্তদানে এবং কর্ণফুলী ব্লাড হাবের নীতিমালা মেনে চলতে রাজি।</span></label><div class="er">সম্মতি আবশ্যক</div></div>
+    <div class="tip"><svg class="i"><use href="#info"/></svg><span>আপনার আবেদন প্রথমে Pending থাকবে। Admin/অনুমতিপ্রাপ্ত Staff অনুমোদন করলে তবেই Donor ID Card পাবেন। শেষ রক্তদানের তারিখ যাচাই না হওয়া পর্যন্ত Public Profile-এ Verified Date হিসেবে দেখানো হবে না।</span></div>
+   </div>
+   <div class="nav2"><button type="button" class="bk h" id="bk">পেছনে</button><button type="button" class="nx" id="nx">পরবর্তী <svg class="i"><use href="#arrow"/></svg></button></div>
+  </form>
+ </div>
+</section>
+<section id="okSec" class="ok h">
+ <div class="tk"><svg class="i"><use href="#check"/></svg></div>
+ <h2>আবেদন জমা হয়েছে!</h2>
+ <p>আপনার আবেদনটি এখন <b>Pending</b> অবস্থায় আছে। Admin যাচাই করে অনুমোদন দিলে Donor List-এ যুক্ত হবেন এবং ID Card পাবেন।</p>
+ <p class="appName">আবেদনকারী: <b id="appName"></b></p>
+ <div class="apg" aria-label="আবেদনের ধাপ">
+  <div class="apgs done"><i>✓</i><span>আবেদন জমা</span></div>
+  <div class="apgl done"></div>
+  <div class="apgs now"><i>2</i><span>Admin যাচাই</span></div>
+  <div class="apgl"></div>
+  <div class="apgs"><i>3</i><span>তালিকায় যুক্ত</span></div>
+  <div class="apgl"></div>
+  <div class="apgs"><i>4</i><span>আইডি কার্ড</span></div>
+</div>
+<p class="apgn">এখন: <b>অ্যাডমিন যাচাই চলছে</b>। যাচাই শেষ হলে আপনার অবস্থা স্ট্যাটাস পেজে আপডেট হবে।</p>
+<div class="idb"><span>আপনার Application Number</span><b id="appNumber"></b><button type="button" id="copyApp">কপি</button></div>
+ <div class="act"><a class="p1" href="application-status.html">আবেদনের অবস্থা দেখুন</a><a class="p3" href="all-donors.html">ডোনার তালিকা</a><a class="p3" href="index.html">হোমপেজ</a></div>
+ <div class="tip"><svg class="i"><use href="#info"/></svg><span>Application Number ও নিবন্ধিত মোবাইল নম্বর সংরক্ষণ করুন। Status ও পরবর্তীতে ID Card পেতে এগুলো লাগবে।</span></div>
+<div class="join">
+  <h3>আমাদের সাথে যুক্ত থাকুন</h3>
+  <p>জরুরি রক্তের অনুরোধ ও রক্তদানের খবর পেতে WhatsApp গ্রুপে যোগ দিন এবং Facebook পেজ Follow করুন।</p>
+  <div class="jbtns">
+    <a class="jw" href="https://chat.whatsapp.com/L7ei1twrItcAD2yDMqOetD" target="_blank" rel="noopener">WhatsApp গ্রুপে যোগ দিন</a>
+    <a class="jf" href="https://www.facebook.com/karnaphulibloodhub/" target="_blank" rel="noopener">Facebook পেজ Follow করুন</a>
+  </div>
+</div>
 
+</section>
+
+<div id="ts" role="status"></div>
 </main>
 <footer><a href="application-status.html"><svg class="i"><use href="#id"/></svg>আবেদনের অবস্থা ও কার্ড</a>
   <a href="about.html">আমাদের সম্পর্কে</a> • <a href="https://www.facebook.com/khb">ফেসবুক পেজ</a><br>© <span>কর্ণফুলী ব্লাড হাব</span> • <span>সংস্করণ</span> 2.1</footer>
@@ -381,7 +521,7 @@ const ic=n=>`<svg class="i" style="width:15px;height:15px"><use href="#${n}"/></
 if($('hotN'))$('hotN').textContent=bn(CFG.hotline);
 // Bengali / English UI dictionary. Stored language applies across reloads.
 
-const I18N_EXTRA={"আবেদনের অবস্থা ও কার্ড — কর্ণফুলী ব্লাড হাব": "Application Status & Card — Karnaphuli Blood Hub", "রক্তদানে জীবন বাঁচান": "Save lives through blood donation", "বাংলা": "বাংলা", "কর্ণফুলী ব্লাড হাব": "Karnaphuli Blood Hub", "হোম পেজ": "Home page", "আবেদনের অবস্থা ও ID Card": "Application status & ID Card", "আবেদনের অবস্থা দেখতে Application ID অথবা নিবন্ধিত মোবাইল নম্বর দিন। Approved হলে এখান থেকেই কার্ড ডাউনলোড করতে পারবেন।": "Enter either your Application ID or registered mobile number to check status. Once approved, you can download your card from here.", "Application ID / নিবন্ধিত মোবাইল নম্বর": "Application ID / Registered Mobile Number", "Application ID অথবা 01XXXXXXXXX": "Application ID or 01XXXXXXXXX", "Application ID অথবা নিবন্ধিত মোবাইল নম্বর—যেকোনো একটি দিয়ে আপনার অনুমোদিত Donor Card খুঁজুন।": "Find your approved Donor Card using either your Application ID or registered mobile number.", "আবেদনের অবস্থা দেখুন": "Check application status", "নিবন্ধিত মোবাইল নম্বর": "Registered mobile number", "Rejected আবেদন সংশোধন করুন": "Correct a rejected application", "আপনার আগের Application Number একই থাকবে। সংশোধিত আবেদন আবার Pending হবে এবং Admin পুনরায় যাচাই করবেন।": "Your previous Application Number will stay the same. The corrected application will be pending again and the admin will verify it.", "পুরো নাম": "Full name", "মোবাইল নম্বর": "Mobile number", "লিঙ্গ": "Gender", "পুরুষ": "Male", "মহিলা": "Female", "অন্যান্য": "Other", "রক্তের গ্রুপ": "Blood group", "জেলা": "District", "উপজেলা / থানা": "Upazila / thana", "ইউনিয়ন / গ্রাম / এলাকা": "Union / village / area", "এ পর্যন্ত কতবার রক্ত দিয়েছেন?": "How many times have you donated blood so far?", "নতুন": "New", "১–৩ বার": "1–3 times", "৪–১০ বার": "4–10 times", "১০+ বার": "10+ times", "শেষ রক্তদানের তারিখ (ঐচ্ছিক)": "Last donation date (optional)", "আমার নাম, রক্তের গ্রুপ ও এলাকা Public Donor List-এ দেখানো যাবে।": "My name, blood group and area may be shown on the public Donor List.", "আমার মোবাইল নম্বরও Public Donor List-এ দেখানো যাবে (ঐচ্ছিক)।": "My mobile number may also be shown on the public Donor List (optional).", "আমি স্বেচ্ছায় রক্তদান এবং কর্ণফুলী ব্লাড হাবের নীতিমালা মেনে চলতে সম্মত।": "I agree to donate blood voluntarily and follow the Karnaphuli Blood Hub policies.", "সংশোধিত আবেদন পুনরায় জমা দিন": "Resubmit corrected application", "কার্ড পুনরায় ডাউনলোড": "Download card again", "কার্ড নম্বর ও নিবন্ধিত মোবাইল নম্বর—দুটিই দিতে হবে। শুধু মোবাইল নম্বর দিয়ে অন্যের কার্ড দেখা যাবে না।": "Both the card number and the registered mobile number are required. Someone else's card cannot be viewed with only a mobile number.", "কার্ড খুঁজুন": "Find card", "আপনার Donor ID Card": "Your Donor ID Card", "♥ কর্ণফুলী ব্লাড হাব": "♥ Karnaphuli Blood Hub", "সেবাই আমাদের অঙ্গীকার": "Service is our commitment", "কার্ডে মোবাইল নম্বর দেখান": "Show mobile number on card", "QR Code স্ক্যান করে কার্ডের বৈধতা যাচাই করা যাবে।": "Scan the QR code to verify the card.", "আবেদনের অবস্থা ও কার্ড": "Application Status & Card", "আমাদের সম্পর্কে": "About Us", "ফেসবুক পেজ": "Facebook Page", "সংস্করণ": "Version", "হোম": "Home", "ডোনার": "Donors", "নিবন্ধন": "Register", "অনুরোধ": "Request", "আবেদন": "Application", "ডোনার খুঁজুন": "Find donors", "ডোনার তালিকা": "Donor List", "ডোনার হোন": "Become a Donor", "রক্তের অনুরোধ": "Blood requests", "অ্যাপ ইনস্টলের নিয়ম": "App installation guide", "হটলাইন কল": "Call hotline", "চলমান রক্তের অনুরোধ": "Active blood requests", "যেমন: KBH-XXXXXXXXXX": "e.g. KBH-XXXXXXXXXX", "যেমন: KH-XXXXXXXX": "e.g. KH-XXXXXXXX", "আপনার আগের Application Number একই থাকবে। সংশোধিত আবেদন আবার Pending হবে এবং Admin পুনরায় যাচাই করবেন।": "Your previous Application Number will stay the same. The corrected application will be pending again and the admin will verify it.", "ইউনিয়ন / গ্রাম / এলাকা": "Union / village / area", "এ পর্যন্ত কতবার রক্ত দিয়েছেন?": "How many times have you donated blood so far?", "আমি স্বেচ্ছায় রক্তদান এবং কর্ণফুলী ব্লাড হাবের নীতিমালা মেনে চলতে সম্মত।": "I agree to donate blood voluntarily and follow the Karnaphuli Blood Hub policies.", "সংশোধিত আবেদন পুনরায় জমা দিন": "Resubmit corrected application", "কার্ড পুনরায় ডাউনলোড": "Download card again", "কার্ড নম্বর ও নিবন্ধিত মোবাইল নম্বর—দুটিই দিতে হবে। শুধু মোবাইল নম্বর দিয়ে অন্যের কার্ড দেখা যাবে না।": "Both the card number and the registered mobile number are required. Someone else's card cannot be viewed with only a mobile number."};
+const I18N_EXTRA={"ডোনার নিবন্ধন — কর্ণফুলী ব্লাড হাব": "Donor Registration — Karnaphuli Blood Hub", "রক্তদানে জীবন বাঁচান": "Save lives through blood donation", "বাংলা": "বাংলা", "আগের ডোনার? আইডি কার্ড ডাউনলোড করুন": "Previous donor? Download your ID card", "Card Number / Donor ID ও নিবন্ধিত মোবাইল নম্বর দিয়ে": "With Card Number / Donor ID and registered mobile number", "ডোনার হিসেবে যুক্ত হোন": "Join as a donor", "কোনো Login বা Account ছাড়াই আবেদন করুন। Admin অনুমোদন করলে আপনার Donor ID Card তৈরি হবে।": "Apply without any login or account. Once the admin approves, your Donor ID Card will be created.", "বিনামূল্যে": "Free", "Login প্রয়োজন নেই": "No login required", "অনুমোদনের পর আইডি কার্ড": "ID card after approval", "ব্যক্তিগত": "Personal", "ঠিকানা": "Address", "রক্তদান": "Blood donation", "ব্যক্তিগত তথ্য": "Personal information", "আপনার নাম, মোবাইল ও রক্তের গ্রুপ দিন": "Enter your name, mobile and blood group", "পুরো নাম": "Full name", "আপনার নাম লিখুন": "Enter your name", "মোবাইল নম্বর": "Mobile number", "১১ সংখ্যার সঠিক মোবাইল নম্বর দিন": "Enter a valid 11-digit mobile number", "লিঙ্গ": "Gender", "পুরুষ": "Male", "মহিলা": "Female", "লিঙ্গ বেছে নিন": "Choose gender", "রক্তের গ্রুপ": "Blood group", "রক্তের গ্রুপ বেছে নিন": "Choose blood group", "আপনার এলাকার ডোনার খুঁজে পেতে সাহায্য করবে": "Helps you find donors in your area", "জেলা": "District", "চট্টগ্রাম": "Chattogram", "উপজেলা / থানা": "Upazila / thana", "নির্বাচন করুন": "Select", "উপজেলা বেছে নিন": "Choose upazila", "ইউনিয়ন / গ্রাম / এলাকা": "Union / village / area", "এলাকার নাম লিখুন": "Enter area name", "রক্তদানের তথ্য ও সম্মতি": "Donation information & consent", "আপনার রক্তদানের অভিজ্ঞতা এবং গোপনীয়তার পছন্দ জানান": "Share your donation experience and privacy preference", "এ পর্যন্ত কতবার রক্ত দিয়েছেন?": "How many times have you donated blood so far?", "নতুন": "New", "১–৩ বার": "1–3 times", "৪–১০ বার": "4–10 times", "১০+": "10+", "একটি বেছে নিন": "Choose one", "শেষ রক্তদানের তারিখ (ঐচ্ছিক)": "Last donation date (optional)", "ভবিষ্যতের তারিখ দেওয়া যাবে না": "A future date cannot be entered", "আমি চাই আমার নাম, রক্তের গ্রুপ ও এলাকা ডোনার তালিকায় প্রদর্শিত হোক।": "I want my name, blood group and area to be shown in the donor list.", "পছন্দ নির্বাচন করুন": "Choose an option", "আমি স্বেচ্ছায় ডোনার হিসেবে নিবন্ধন করছি এবং রক্তের প্রয়োজনে আমার সঙ্গে যোগাযোগের জন্য প্রয়োজনীয় তথ্য প্রকাশে সম্মতি দিচ্ছি।।": "I am registering as a donor voluntarily and consent to disclosing the necessary information so that I can be contacted when blood is needed.", "মোবাইল প্রকাশের সম্মতি দিতে হলে Public Listing চালু করুন": "To consent to show your mobile number, turn on Public Listing", "আমি স্বেচ্ছায় রক্তদানে এবং কর্ণফুলী ব্লাড হাবের নীতিমালা মেনে চলতে রাজি।": "I agree to donate blood voluntarily and to follow the Karnaphuli Blood Hub policies.", "সম্মতি আবশ্যক": "Consent required", "আপনার আবেদন প্রথমে Pending থাকবে। Admin/অনুমতিপ্রাপ্ত Staff অনুমোদন করলে তবেই Donor ID Card পাবেন। শেষ রক্তদানের তারিখ যাচাই না হওয়া পর্যন্ত Public Profile-এ Verified Date হিসেবে দেখানো হবে না।": "Your application will be pending first. You will get the Donor ID Card only after the admin or authorised staff approves it. The last donation date will not show as a Verified Date on the public profile until it is verified.", "পেছনে": "Back", "পরবর্তী": "Next", "আবেদন জমা হয়েছে!": "Application submitted!", "আপনার আবেদনটি এখন": "Your application is currently", "অবস্থায় আছে। Admin যাচাই করে অনুমোদন দিলে Donor List-এ যুক্ত হবেন এবং ID Card পাবেন।": "is pending. Once the admin verifies and approves, you will be added to the Donor List and receive an ID Card.", "আপনার Application Number": "Your Application Number", "কপি": "Copy", "আবেদনের অবস্থা দেখুন": "Check application status", "ডোনার তালিকা": "Donor List", "হোমপেজ": "Home page", "Application Number ও নিবন্ধিত মোবাইল নম্বর সংরক্ষণ করুন। Status ও পরবর্তীতে ID Card পেতে এগুলো লাগবে।": "Keep your Application Number and registered mobile number. You need them to check status and get your ID Card later.", "আবেদনের অবস্থা ও কার্ড": "Application Status & Card", "আমাদের সম্পর্কে": "About Us", "ফেসবুক পেজ": "Facebook Page", "কর্ণফুলী ব্লাড হাব": "Karnaphuli Blood Hub", "সংস্করণ": "Version", "হোম": "Home", "ডোনার": "Donors", "নিবন্ধন": "Register", "অনুরোধ": "Request", "আবেদন": "Application", "ডোনার খুঁজুন": "Find donors", "ডোনার হোন": "Become a Donor", "রক্তের অনুরোধ": "Blood requests", "অ্যাপ ইনস্টলের নিয়ম": "App installation guide", "হটলাইন কল": "Call hotline", "চলমান রক্তের অনুরোধ": "Active blood requests", "আগের ডোনারের আইডি কার্ড": "Previous donor ID card", "যেমন: মোঃ রহিম উদ্দিন": "e.g. Md. Rahim Uddin", "যেমন: চরপাথরঘাটা": "e.g. Charpathorghata", "Card Number / Donor ID ও নিবন্ধিত মোবাইল নম্বর দিয়ে": "With Card Number / Donor ID and registered mobile number", "কোনো Login বা Account ছাড়াই আবেদন করুন। Admin অনুমোদন করলে আপনার Donor ID Card তৈরি হবে।": "Apply without any login or account. Once the admin approves, your Donor ID Card will be created.", "Login প্রয়োজন নেই": "No login required", "আপনার রক্তদানের অভিজ্ঞতা এবং গোপনীয়তার পছন্দ জানান": "Share your donation experience and privacy preference", "ভবিষ্যতের তারিখ দেওয়া যাবে না": "A future date cannot be entered", "আমি চাই আমার নাম, রক্তের গ্রুপ ও এলাকা ডোনার তালিকায় প্রদর্শিত হোক।": "I want my name, blood group and area to be shown in the donor list.", "আমি স্বেচ্ছায় ডোনার হিসেবে নিবন্ধন করছি এবং রক্তের প্রয়োজনে আমার সঙ্গে যোগাযোগের জন্য প্রয়োজনীয় তথ্য প্রকাশে সম্মতি দিচ্ছি।।": "I am registering as a donor voluntarily and consent to disclosing the necessary information so that I can be contacted when blood is needed.", "আপনার আবেদন প্রথমে Pending থাকবে। Admin/অনুমতিপ্রাপ্ত Staff অনুমোদন করলে তবেই Donor ID Card পাবেন। শেষ রক্তদানের তারিখ যাচাই না হওয়া পর্যন্ত Public Profile-এ Verified Date হিসেবে দেখানো হবে না।": "Your application will be pending first. You will get the Donor ID Card only after the admin or authorised staff approves it. The last donation date will not show as a Verified Date on the public profile until it is verified.", "আবেদন জমা হয়েছে!": "Application submitted!", "অবস্থায় আছে। Admin যাচাই করে অনুমোদন দিলে Donor List-এ যুক্ত হবেন এবং ID Card পাবেন।": "is pending. Once the admin verifies and approves, you will be added to the Donor List and receive an ID Card."};
 const I18N={...I18N_EXTRA,
  'মোট রক্তদান':'Total donations','নতুন ডোনার':'New donor',
  'রক্তদানে জীবন বাঁচান':'Save Lives Through Blood Donation',
@@ -468,86 +608,34 @@ applyLanguage();observeLanguage();
 const SUPABASE_URL='https://bwbsguoictrzvyyhbney.supabase.co';
 const SUPABASE_PUBLISHABLE_KEY='sb_publishable_EfF5jhFMS4nrI3xrFhauOQ_-wFpoiKv';
 const db=supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
+const BG=['A+','A-','B+','B-','AB+','AB-','O+','O-'];
+const UP=['কর্ণফুলী','পটিয়া','বাঁশখালী','আনোয়ারা','চন্দনাইশ','সাতকানিয়া','লোহাগাড়া','বোয়ালখালী','রাঙ্গুনিয়া','রাউজান','ফটিকছড়ি','হাটহাজারী','সীতাকুণ্ড','মীরসরাই','সন্দ্বীপ','চট্টগ্রাম শহর'];
 const $=id=>document.getElementById(id);
-const localToday=()=>{const d=new Date();d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,10)};let currentCard=null,currentApplication=null,currentLookupPhone='';
-const digits=s=>String(s||'').replace(/[০-৯]/g,d=>'০১২৩৪৫৬৭৮৯'.indexOf(d)).replace(/\D/g,'').replace(/^88/,'');
-function err(id,msg){$(id).textContent=msg;$(id).style.display='block'}
-function statusCard(d){
- currentApplication=d.application_number||null;currentLookupPhone=d.phone||'';
- const s=$('status');s.style.display='block';s.innerHTML='';
- const title=document.createElement('h3');title.textContent=d.full_name||'আবেদন';s.append(title);
- const badge=document.createElement('span');badge.className='pill';badge.textContent=({pending:'Pending — যাচাই চলছে',approved:'Approved — অনুমোদিত',rejected:'Rejected — আবেদন বাতিল',suspended:'Suspended — সাময়িক স্থগিত'})[d.donor_status]||d.donor_status;s.append(badge);
- const p=document.createElement('p');p.textContent='Application Number: '+d.application_number;s.append(p);
- if(d.donor_status==='rejected'){
-  if(d.rejection_reason){const r=document.createElement('p');r.textContent='কারণ: '+d.rejection_reason;s.append(r)}
-  const b=document.createElement('button');b.textContent='আবেদন সংশোধন করে পুনরায় জমা দিন';b.style.marginTop='12px';b.onclick=openResubmit;s.append(b);
- }
- if(d.donor_status==='approved'&&d.card_number){const c=document.createElement('p');c.textContent='আপনার Donor Card Number: '+d.card_number;s.append(c);const b=document.createElement('button');b.textContent='কার্ড দেখুন ও ডাউনলোড করুন';b.onclick=()=>showCard(d);s.append(b)}
- if(d.donor_status==='approved'&&!d.card_number){const p2=document.createElement('p');p2.textContent='আবেদন Approved হয়েছে; কার্ড ইস্যু প্রক্রিয়াধীন।';s.append(p2)}
-}
-async function openResubmit(){
- $('resubmitError').style.display='none';
- const app=currentApplication,phone=digits(currentLookupPhone);
- if(!app||!phone){err('err1','আবেদনের তথ্য পাওয়া যায়নি। আবার Application ID অথবা নিবন্ধিত মোবাইল নম্বর দিয়ে খুঁজুন।');return}
- try{
-  const {data,error}=await db.rpc('get_public_resubmission_data',{p_application_number:app,p_phone:phone});
-  if(error)throw error;if(!data?.length)throw new Error('Rejected আবেদনটি পাওয়া যায়নি অথবা তথ্য মেলেনি');
-  const d=data[0];$('rsName').value=d.full_name||'';$('rsPhone').value=d.phone||phone;
-  $('rsGender').value=d.gender||'Male';$('rsBlood').value=d.blood_group||'A+';
-  $('rsDistrict').value=d.district||'Chattogram';$('rsUpazila').value=d.upazila||'';$('rsArea').value=d.area||'';
-  $('rsCount').value=d.donation_count_band||'০';$('rsLastDate').value=d.last_donation_date||'';
-  $('rsListing').checked=!!d.public_listing_consent;$('rsContact').checked=!!d.public_contact_consent;$('rsPolicy').checked=false;
-  $('rsLastDate').max=localToday();
-  $('resubmitPanel').style.display='block';$('resubmitPanel').scrollIntoView({behavior:'smooth',block:'start'});
- }catch(e){err('err1',e.message||'সংশোধনের তথ্য লোড করা যায়নি')}
-}
-$('resubmitForm').onsubmit=async e=>{
- e.preventDefault();$('resubmitError').style.display='none';
- const oldPhone=digits(currentLookupPhone),newPhone=digits($('rsPhone').value);
- if(!/^01[3-9]\d{8}$/.test(newPhone))return err('resubmitError','সঠিক ১১ সংখ্যার মোবাইল নম্বর দিন।');
- if($('rsContact').checked&&!$('rsListing').checked)return err('resubmitError','মোবাইল প্রকাশ করতে হলে Public Listing সম্মতি দিতে হবে।');
- if(!$('rsPolicy').checked)return err('resubmitError','নীতিমালায় সম্মতি আবশ্যক।');
- const b=$('resubmitBtn');b.disabled=true;b.textContent='আবেদন জমা হচ্ছে…';
- const args={p_application_number:currentApplication,p_phone:oldPhone,p_new_phone:newPhone,p_full_name:$('rsName').value.trim(),p_blood_group:$('rsBlood').value,p_district:$('rsDistrict').value.trim(),p_upazila:$('rsUpazila').value.trim(),p_area:$('rsArea').value.trim(),p_gender:$('rsGender').value,p_public_listing_consent:$('rsListing').checked,p_public_contact_consent:$('rsContact').checked,p_last_donation_date:$('rsLastDate').value||null,p_donation_count_band:$('rsCount').value,p_policy_consent:true};
- try{const {data,error}=await db.rpc('resubmit_public_donor_application',args);if(error)throw error;if(!data)throw new Error('Application Number পাওয়া যায়নি');$('app').value=currentApplication;$('resubmitPanel').style.display='none';$('status').style.display='none';$('check').click();alert('সংশোধিত আবেদন Pending অবস্থায় জমা হয়েছে।');}
- catch(e){err('resubmitError',e.message||'আবেদন পুনরায় জমা হয়নি')}
- finally{b.disabled=false;b.textContent='সংশোধিত আবেদন পুনরায় জমা দিন'}
+const localToday=()=>{const d=new Date();d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,10)};
+const toast=m=>{const t=$('ts');t.textContent=m;t.classList.add('on');clearTimeout(t.k);t.k=setTimeout(()=>t.classList.remove('on'),3500)};
+
+
+$('bgp').innerHTML=BG.map(g=>`<button type="button" data-v="${g}">${g.replace('-','−')}</button>`).join('');
+$('up').innerHTML+='<option value="কর্ণফুলী">কর্ণফুলী</option>'+UP.filter(x=>x!=='কর্ণফুলী').map(u=>`<option value="${u}">${u}</option>`).join('');
+const bnd=s=>String(s||'').replace(/[০-৯]/g,d=>'০১২৩৪৫৬৭৮৯'.indexOf(d));
+let step=0,submitted=false;const V={gender:'',group:'',tot:''};
+function pick(box,key){$(box).onclick=e=>{const b=e.target.closest('button');if(!b)return;[...$(box).children].forEach(x=>x.classList.toggle('on',x===b));V[key]=b.dataset.v;b.closest('.f').classList.remove('bad')}}
+pick('gd','gender');pick('bgp','group');pick('tt','tot');
+const bad=(k,t)=>{const f=document.querySelector(`[data-f="${k}"]`);if(f)f.classList.toggle('bad',!!t);return !!t};
+function check(s){let e=0;if(s===0){e+=bad('name',$('nm').value.trim().length<3);const p=bnd($('ph').value).replace(/[\s-]/g,'');e+=bad('phone',!/^01[3-9]\d{8}$/.test(p));e+=bad('gender',!V.gender);e+=bad('group',!V.group)}if(s===1){e+=bad('upa',!$('up').value);e+=bad('area',$('ar').value.trim().length<2)}if(s===2){e+=bad('tot',!V.tot);e+=bad('contact',$('contactConsent').checked&&!$('listingConsent').checked);e+=bad('policy',!$('policyConsent').checked);const date=$('lastDate').value;e+=bad('date',!!date&&date>localToday())}return !e}
+function go(n){step=n;document.querySelectorAll('[data-s]').forEach(d=>d.classList.toggle('h',+d.dataset.s!==n));const st=$('stp');[...st.children].forEach((c,i)=>{if(c.tagName==='HR')c.classList.toggle('on',i/2<n);else{c.classList.toggle('on',i/2===n);c.classList.toggle('dn',i/2<n);c.firstChild.textContent=i/2<n?'✓':'১২৩'[i/2]}});$('bk').classList.toggle('h',n===0);$('nx').innerHTML=n===2?'আবেদন জমা দিন <svg class="i"><use href="#check"/></svg>':'পরবর্তী <svg class="i"><use href="#arrow"/></svg>'}
+$('bk').onclick=()=>go(Math.max(0,step-1));
+$('nx').onclick=async()=>{if(submitted)return;if(!check(step)){toast('লাল চিহ্নিত তথ্যগুলো ঠিক করুন');return}if(step<2){go(step+1);return}
+ const b=$('nx');b.disabled=true;b.textContent='আবেদন জমা হচ্ছে…';
+ const phone=bnd($('ph').value).replace(/[\s-]/g,'');
+ const args={p_full_name:$('nm').value.trim(),p_phone:phone,p_blood_group:V.group,p_district:$('di').value,p_upazila:$('up').value,p_area:$('ar').value.trim(),p_gender:V.gender,p_public_listing_consent:$('listingConsent').checked,p_public_contact_consent:$('contactConsent').checked,p_last_donation_date:$('lastDate').value||null,p_donation_count_band:V.tot,p_policy_consent:$('policyConsent').checked};
+ try{const {data,error}=await db.rpc('submit_public_donor_application',args);if(error)throw error;if(!data||typeof data!=='string')throw Error('Application Number পাওয়া যায়নি। Supabase RPC response যাচাই করুন।');$('appNumber').textContent=data;$('appName').textContent=$('nm').value.trim();submitted=true;$('appPanel').classList.add('h');$('okSec').classList.remove('h');$('okSec').scrollIntoView({behavior:'smooth',block:'center'});}
+ catch(e){toast(e.message||'আবেদন জমা হয়নি। আবার চেষ্টা করুন।')}
+ finally{b.disabled=false;b.innerHTML='আবেদন জমা দিন <svg class="i"><use href="#check"/></svg>'}
 };
-function showCard(d){
- currentCard=d;$('cardPanel').style.display='block';$('idcard').style.display='block';
- const bloodGroup=d.blood_group||d.bloodGroup||d.blood_type||d.group||'';$('blood').textContent=bloodGroup||'রক্তের গ্রুপ পাওয়া যায়নি';$('cname').textContent=d.full_name||'';$('cno').textContent='Card No: '+d.card_number;$('cloc').textContent=[d.upazila,d.district].filter(Boolean).join(', ');$('cphone').textContent=d.phone?'মোবাইল: '+d.phone:'';$('cardPhoneControl').style.display=d.phone?'flex':'none';$('showCardPhone').checked=true;$('cphone').style.display=d.phone?'block':'none';
- $('qr').innerHTML='';const verifyUrl=location.origin+location.pathname.replace(/application-status\.html.*/,'')+'verify-donor.html?t='+encodeURIComponent(d.qr_token||'');
- $('qr').innerHTML='';
- if(d.qr_token&&typeof QRCode!=='undefined'){new QRCode($('qr'),{text:verifyUrl,width:74,height:74,colorDark:'#111827',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M});}
- else{$('qr').textContent=d.qr_token?'QR library load হয়নি':'QR token পাওয়া যায়নি';}
- $('cardPanel').scrollIntoView({behavior:'smooth',block:'center'});
-}
-$('check').onclick=async()=>{
- $('err1').style.display='none';$('status').style.display='none';$('resubmitPanel').style.display='none';
- const rawIdentifier=$('app').value.trim();
- if(!rawIdentifier){err('err1','Application ID অথবা নিবন্ধিত মোবাইল নম্বর দিন।');return}
- const normalizedPhone=digits(rawIdentifier);
- const identifier=/^01[3-9]\d{8}$/.test(normalizedPhone)?normalizedPhone:rawIdentifier;
- const b=$('check');b.disabled=true;b.textContent='খোঁজা হচ্ছে…';
- try{const {data,error}=await db.rpc('get_public_application_status_by_identifier',{p_identifier:identifier});if(error)throw error;if(!data?.length){err('err1','তথ্য পাওয়া যায়নি। Application ID অথবা নিবন্ধিত মোবাইল নম্বর যাচাই করুন।');return}statusCard(data[0]);}
- catch(e){err('err1',e.message||'আবেদন খুঁজে পাওয়া যায়নি।')}finally{b.disabled=false;b.textContent='আবেদনের অবস্থা দেখুন'}
-};
-$('findcard').onclick=async()=>{
- $('err2').style.display='none';$('cardPanel').style.display='none';
- const rawIdentifier=$('cardno').value.trim();
- if(!rawIdentifier){err('err2','Application ID অথবা নিবন্ধিত মোবাইল নম্বর দিন।');return}
- const normalizedPhone=digits(rawIdentifier);
- const identifier=/^01[3-9]\d{8}$/.test(normalizedPhone)?normalizedPhone:rawIdentifier;
- const b=$('findcard');b.disabled=true;b.textContent='কার্ড খোঁজা হচ্ছে…';
- try{const {data,error}=await db.rpc('get_public_donor_card_by_identifier',{p_identifier:identifier});if(error)throw error;if(!data?.length){err('err2','অনুমোদিত কার্ড পাওয়া যায়নি। Application ID অথবা নিবন্ধিত মোবাইল নম্বর যাচাই করুন।');return}const d=data[0];showCard({...d,donor_status:'approved'});}
- catch(e){err('err2',e.message||'কার্ড খুঁজে পাওয়া যায়নি।')}finally{b.disabled=false;b.textContent='কার্ড খুঁজুন'}
-};
-$('showCardPhone').onchange=()=>{$('cphone').style.display=$('showCardPhone').checked&&currentCard?.phone?'block':'none'};
-$('download').onclick=async()=>{
- if(!currentCard)return;if(typeof html2canvas!=='function'){alert('কার্ড ডাউনলোড লাইব্রেরি লোড হয়নি। ইন্টারনেট সংযোগ পরীক্ষা করে আবার চেষ্টা করুন।');return}const b=$('download');b.disabled=true;b.textContent='তৈরি হচ্ছে…';
- try{await document.fonts.ready;const canvas=await html2canvas($('idcard'),{scale:3,backgroundColor:null,useCORS:true});const a=document.createElement('a');a.download='Karnaphuli-Blood-Hub-'+currentCard.card_number+'.png';a.href=canvas.toDataURL('image/png');a.click();}
- catch(e){alert('কার্ড ডাউনলোড করা যায়নি। আবার চেষ্টা করুন।')}finally{b.disabled=false;b.textContent='ID Card Download (PNG)'}
-};
+$('copyApp').onclick=async()=>{try{await navigator.clipboard.writeText($('appNumber').textContent);toast('Application Number কপি হয়েছে')}catch(e){toast('কপি করা যায়নি')}};
+$('lastDate').max=localToday();
+go(0);
 
 }
 </script>
