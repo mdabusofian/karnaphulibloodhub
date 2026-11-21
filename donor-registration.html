@@ -211,6 +211,41 @@ nav a{white-space:nowrap;font-size:11px}
 #pwaBox button{min-height:44px;padding:10px 16px;border-radius:14px}
 @media(max-width:360px){#pwaBox{flex-wrap:wrap}#pwaBox button{width:100%}}
 
+
+/* ---- post-registration: WhatsApp group + Facebook page ---- */
+.join{margin:18px auto 0;max-width:520px;background:#fff;border:1px solid #ecdcdf;border-radius:20px;padding:18px 18px 20px;box-shadow:0 12px 26px -20px rgba(42,9,16,.5);text-align:center}
+.join h3{margin:0 0 6px;font-size:18px;color:#9b0f1f}
+.join p{margin:0 0 14px;font-size:14px;color:#6b4a52;line-height:1.6}
+.jbtns{display:flex;flex-direction:column;gap:10px}
+.jbtns a{display:block;padding:14px 16px;border-radius:14px;font-weight:700;font-size:15px;text-decoration:none;color:#fff}
+.jbtns .jw{background:#25D366;box-shadow:0 12px 22px -14px rgba(37,211,102,.9)}
+.jbtns .jf{background:#1877F2;box-shadow:0 12px 22px -14px rgba(24,119,242,.9)}
+
+/* ---- application progress after submit ---- */
+.apg{display:flex;align-items:flex-start;justify-content:center;margin:16px auto 4px;max-width:520px}
+.apgs{display:flex;flex-direction:column;align-items:center;gap:6px;min-width:76px;text-align:center}
+.apgs i{width:30px;height:30px;border-radius:50%;background:#f4d6da;color:#9b0f1f;display:grid;place-items:center;font-style:normal;font-weight:700;font-size:13px}
+.apgs span{font-size:11.5px;color:#8a6f75;line-height:1.3;white-space:nowrap}
+.apgs.done i{background:#9b0f1f;color:#fff}
+.apgs.now i{background:#c4202f;color:#fff;box-shadow:0 0 0 5px rgba(196,32,47,.18)}
+.apgs.done span,.apgs.now span{color:#2f1a1f;font-weight:600}
+.apgl{flex:1;height:3px;background:#f0d3d8;margin:14px 4px 0;border-radius:3px}
+.apgl.done{background:#9b0f1f}
+.apgn{text-align:center;font-size:13.5px;color:#6b4a52;margin:10px auto 6px;max-width:520px;line-height:1.6}
+.apgn b{color:#9b0f1f}
+
+/* ---- success: gentle entrance ---- */
+.appName{text-align:center;font-size:15px;color:#6b4a52;margin:4px 0 10px}
+.appName b{color:#2f1a1f}
+#okSec{animation:okIn .7s cubic-bezier(.2,.8,.2,1) both}
+#okSec .tk{animation:tkPop .8s cubic-bezier(.2,.9,.3,1.25) .15s both}
+#okSec .apgs.now i{animation:nowPulse 2s ease-in-out infinite}
+.card-shortcut .sc-ico{animation:scFloat 2.6s ease-in-out infinite}
+@keyframes okIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes tkPop{0%{opacity:0;transform:scale(.6)}100%{opacity:1;transform:scale(1)}}
+@keyframes nowPulse{0%,100%{box-shadow:0 0 0 0 rgba(196,32,47,.35)}50%{box-shadow:0 0 0 7px rgba(196,32,47,0)}}
+@keyframes scFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+@media (prefers-reduced-motion:reduce){#okSec,#okSec .tk,#okSec .apgs.now i,.card-shortcut .sc-ico{animation:none!important}}
 </style>
 <style>/* page content (scoped to main) */
 main .w{max-width:480px;margin:0 auto;padding:0 16px}
@@ -360,7 +395,6 @@ footer{font-size:14px}
 <symbol id="bank" viewBox="0 0 24 24"><path d="M3 21h18M5 21V9l7-5 7 5v12"/><path d="M10 21v-6h4v6"/></symbol>
 <symbol id="act" viewBox="0 0 24 24"><path d="M3 12h4l3-8 4 16 3-8h4"/></symbol>
 <symbol id="warn" viewBox="0 0 24 24"><path d="M12 3 2 21h20z"/><path d="M12 10v5M12 18h.01"/></symbol>
-</defs></svg>
 <symbol id="back" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
 <symbol id="check" viewBox="0 0 24 24"><path d="m5 12 5 5 9-10"/></symbol>
 <symbol id="arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
@@ -368,6 +402,14 @@ footer{font-size:14px}
 <symbol id="info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></symbol>
 <symbol id="msg" viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.800 7L4 20l1.200-4.500A8 8 0 1 1 21 12z"/></symbol>
 <symbol id="id" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M6 16c.5-2 5.500-2 6 0M14 10h4M14 14h3"/></symbol>
+</defs></svg>
+
+
+
+
+
+
+
 <header id="top"><div class="w">
  <div class="lg">
   <b><svg class="i"><use href="#drop"/></svg></b>
@@ -420,9 +462,29 @@ footer{font-size:14px}
  <div class="tk"><svg class="i"><use href="#check"/></svg></div>
  <h2>আবেদন জমা হয়েছে!</h2>
  <p>আপনার আবেদনটি এখন <b>Pending</b> অবস্থায় আছে। Admin যাচাই করে অনুমোদন দিলে Donor List-এ যুক্ত হবেন এবং ID Card পাবেন।</p>
- <div class="idb"><span>আপনার Application Number</span><b id="appNumber"></b><button type="button" id="copyApp">কপি</button></div>
+ <p class="appName">আবেদনকারী: <b id="appName"></b></p>
+ <div class="apg" aria-label="আবেদনের ধাপ">
+  <div class="apgs done"><i>✓</i><span>আবেদন জমা</span></div>
+  <div class="apgl done"></div>
+  <div class="apgs now"><i>2</i><span>Admin যাচাই</span></div>
+  <div class="apgl"></div>
+  <div class="apgs"><i>3</i><span>তালিকায় যুক্ত</span></div>
+  <div class="apgl"></div>
+  <div class="apgs"><i>4</i><span>আইডি কার্ড</span></div>
+</div>
+<p class="apgn">এখন: <b>অ্যাডমিন যাচাই চলছে</b>। যাচাই শেষ হলে আপনার অবস্থা স্ট্যাটাস পেজে আপডেট হবে।</p>
+<div class="idb"><span>আপনার Application Number</span><b id="appNumber"></b><button type="button" id="copyApp">কপি</button></div>
  <div class="act"><a class="p1" href="application-status.html">আবেদনের অবস্থা দেখুন</a><a class="p3" href="all-donors.html">ডোনার তালিকা</a><a class="p3" href="index.html">হোমপেজ</a></div>
  <div class="tip"><svg class="i"><use href="#info"/></svg><span>Application Number ও নিবন্ধিত মোবাইল নম্বর সংরক্ষণ করুন। Status ও পরবর্তীতে ID Card পেতে এগুলো লাগবে।</span></div>
+<div class="join">
+  <h3>আমাদের সাথে যুক্ত থাকুন</h3>
+  <p>জরুরি রক্তের অনুরোধ ও রক্তদানের খবর পেতে WhatsApp গ্রুপে যোগ দিন এবং Facebook পেজ Follow করুন।</p>
+  <div class="jbtns">
+    <a class="jw" href="https://chat.whatsapp.com/L7ei1twrItcAD2yDMqOetD" target="_blank" rel="noopener">WhatsApp গ্রুপে যোগ দিন</a>
+    <a class="jf" href="https://www.facebook.com/karnaphulibloodhub/" target="_blank" rel="noopener">Facebook পেজ Follow করুন</a>
+  </div>
+</div>
+
 </section>
 
 <div id="ts" role="status"></div>
@@ -567,7 +629,7 @@ $('nx').onclick=async()=>{if(submitted)return;if(!check(step)){toast('লাল 
  const b=$('nx');b.disabled=true;b.textContent='আবেদন জমা হচ্ছে…';
  const phone=bnd($('ph').value).replace(/[\s-]/g,'');
  const args={p_full_name:$('nm').value.trim(),p_phone:phone,p_blood_group:V.group,p_district:$('di').value,p_upazila:$('up').value,p_area:$('ar').value.trim(),p_gender:V.gender,p_public_listing_consent:$('listingConsent').checked,p_public_contact_consent:$('contactConsent').checked,p_last_donation_date:$('lastDate').value||null,p_donation_count_band:V.tot,p_policy_consent:$('policyConsent').checked};
- try{const {data,error}=await db.rpc('submit_public_donor_application',args);if(error)throw error;if(!data||typeof data!=='string')throw Error('Application Number পাওয়া যায়নি। Supabase RPC response যাচাই করুন।');$('appNumber').textContent=data;submitted=true;$('appPanel').classList.add('h');$('okSec').classList.remove('h');$('okSec').scrollIntoView({behavior:'smooth',block:'center'});}
+ try{const {data,error}=await db.rpc('submit_public_donor_application',args);if(error)throw error;if(!data||typeof data!=='string')throw Error('Application Number পাওয়া যায়নি। Supabase RPC response যাচাই করুন।');$('appNumber').textContent=data;$('appName').textContent=$('nm').value.trim();submitted=true;$('appPanel').classList.add('h');$('okSec').classList.remove('h');$('okSec').scrollIntoView({behavior:'smooth',block:'center'});}
  catch(e){toast(e.message||'আবেদন জমা হয়নি। আবার চেষ্টা করুন।')}
  finally{b.disabled=false;b.innerHTML='আবেদন জমা দিন <svg class="i"><use href="#check"/></svg>'}
 };
